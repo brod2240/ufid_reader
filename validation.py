@@ -43,4 +43,4 @@ if __name__ == '__main__':
         csvwriter.writerow(field)
         csvwriter.writerows(barcodes)
 
-    print("Barcodes Stored")
+    print("Barcodes Stored.")
