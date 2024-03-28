@@ -20,8 +20,8 @@ External communication to database with TCP/IP. Internal communication between m
 ### Integrity and Resiliance
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the class roster as stated in the interal systems section
 ## Bugs/Issues
-Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing
-Main Bugs/Issues: <br />
+Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing <br />
+Main Bugs/Issues:
 * MDR5 scanner not outputting via HID
   * Fixed by obtaining correctly configure MDR5 scanner
 * No database access
