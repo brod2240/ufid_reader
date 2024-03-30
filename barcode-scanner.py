@@ -20,7 +20,6 @@ if __name__ == '__main__':
     
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
-
         csvwriter.writerow(field)
         csvwriter.writerows(barcodes)
 

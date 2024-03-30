@@ -1,11 +1,12 @@
 import csv
 import datetime
+import re
 
 def validate_id(class_number, id_val, filename='UFIDProjectSampleDatabase.csv'):
     with open(filename, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
-            if (barcode_val == row[0] or barcode_val == row[1]):
+            if (id_val == row[0] or id_val == row[1]):
                 class_numbers = row[4].split()
                 if class_number in class_numbers:
                     return (True, row[2], row[3])
@@ -15,32 +16,42 @@ if __name__ == '__main__':
 
     filename = "ufid_barcodes.csv"
 
-    barcodes = []
+    initialScan = {}
 
-    field = ['Barcode Value']
+    field = ['Time Stamp', 'Student ID', 'Student Name']
 
-    class_number = input("Enter the class number: ")
+    while True: 
+        class_number = input("Enter the class number: ")
+        if re.match(r'^\d{5}$', class_number):
+            break
+        else:
+            print("Invalid class number. Please try again.")
 
     scan = True
 
     while scan:
-        barcode_val = input("Scan a barcode right now: ")
-        if (barcode_val == ''):
+        barcode_val = input("Swipe or tap your ID right now: ")
+        if re.match(r"^[qQ]$", barcode_val):
             scan = False
-        else:
+        elif re.match(r"^(\d{8}|\d{16})$", barcode_val):
             valid, firstName, lastName = validate_id(class_number, barcode_val)
             if valid:
                 currentTime = datetime.datetime.now().strftime("%Y-%m-%d, %I:%M %p")
                 print("Valid ID")
                 print(f"[{currentTime}] {firstName} {lastName} has been marked as present.")
-                barcodes.append([barcode_val])
+                initialScan[barcode_val] =(['[' + currentTime + ']', barcode_val, firstName + ' ' + lastName])
             else:
-                print("Invalid ID. Please try again.")
+                print("Student not found in class roster or invalid ID. Please try again.")
+        else:
+            print("Invalid ID. Please try again.")
         
     
-    with open(filename, 'w') as csvfile:
+    # Convert the dictionary values to a list of lists for writing to CSV
+    finalScans = list(initialScan.values())
+
+    with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(field)
-        csvwriter.writerows(barcodes)
+        csvwriter.writerows(finalScans)
 
-    print("Barcodes Stored.")
+    print("Student attendance updated.")
