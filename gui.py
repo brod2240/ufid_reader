@@ -1,70 +1,3 @@
-# import customtkinter
-# from PIL import Image
-
-# customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
-# customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
-
-
-# class App(customtkinter.CTk):
-#     def __init__(self):
-#         super().__init__()
-
-#         # configure window
-#         self.title("UFID READER")
-#         self.geometry(f"{1100}x{580}") 
-
-
-#         self.sidebar = SideBar(self,header_name="UFID Attendance")
-#         self.sidebar.grid(row=0, column=0, padx=10, pady=10)
-
-
-#         self.home_frame = ScanFrame(self)
-#         self.home_frame.grid(row=0, column=1, padx=5, pady=5)
-
-#         #frames
-#         self.frames = {}
-
-#     def sidebar_button_event(self):
-#         print("Button pressed")
-
-# class ScanFrame(customtkinter.CTkFrame):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-
-#         #home_frame = customtkinter.CTkFrame(self, bg_color="green")
-#         self.configure(width=810, height=560)
-
-#         label = customtkinter.CTkLabel(self, text="Scan UFID", font=("Roboto", 50))
-#         label.grid(pady=5, padx=10)
-#         label2 = customtkinter.CTkLabel(self, text="or", font=("Roboto", 50))
-#         label2.grid(pady=5, padx=10)
-#         label3 = customtkinter.CTkLabel(self, text="Tap Below", font=("Roboto", 50))
-#         label3.grid(pady=5, padx=10)
-
-#         img = customtkinter.CTkImage(light_image=Image.open("images/arrow.png"), dark_image=Image.open("images/arrow.png"), size=(200,200))
-#         img_label = customtkinter.CTkLabel(self, text='', image=img)
-#         img_label.grid(pady = 40)
-
-# class SideBar(customtkinter.CTkFrame):
-#     def __init__(self, *args, header_name="Scan Frame", **kwargs):
-#         super().__init__(*args, **kwargs)
-
-#         self.header_name = header_name
-#         self.header = customtkinter.CTkLabel(self, text=self.header_name)
-#         self.header.grid(padx=5, pady=5)
-
-#         side_frame = customtkinter.CTkFrame(self, bg_color="green")
-#         side_frame.configure(width=250, height=520)
-#         side_frame.grid(pady=2, padx=2)
-
-
-            
-
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.mainloop()
-
 import customtkinter
 import os
 from PIL import Image
@@ -122,6 +55,10 @@ class App(customtkinter.CTk):
         img_label = customtkinter.CTkLabel(self.home_frame, text='', image=img)
         img_label.grid(pady = 40)
 
+        text_box = customtkinter.CTkTextbox(self.home_frame)
+        text_box.focus_force()
+        text_box.grid()
+
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         manual_label = customtkinter.CTkLabel(self.second_frame, text="Type UFID", font=("Roboto", 50))
@@ -168,3 +105,5 @@ class App(customtkinter.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+
+
