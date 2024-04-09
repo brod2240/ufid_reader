@@ -12,6 +12,11 @@ def validate_id(class_number, id_val, filename='UFIDProjectSampleDatabase.csv'):
                     return (True, row[2], row[3])
     return (False, '', '')
 
+def validate_course(class_number):
+    if re.match(r'^\d{5}$', class_number):
+        return True
+    else:
+        return False
 if __name__ == '__main__':
 
     filename = "ufid_barcodes.csv"
@@ -22,7 +27,7 @@ if __name__ == '__main__':
 
     while True: 
         class_number = input("Enter the class number: ")
-        if re.match(r'^\d{5}$', class_number):
+        if validate_course(class_number) == True:
             break
         else:
             print("Invalid class number. Please try again.")
