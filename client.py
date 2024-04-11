@@ -1,8 +1,8 @@
 from sys import exit
 import socket,re
 
-import RPi.GPIO as GPIO # for use with Raspberry Pi 4 SBC for interrupt control from GPIO, will need to be changed for other SBCs / Microcontrollers.
-shutdown_button_GPIO = 16
+#import RPi.GPIO as GPIO # for use with Raspberry Pi 4 SBC for interrupt control from GPIO, will need to be changed for other SBCs / Microcontrollers.
+#shutdown_button_GPIO = 16 # comment out all Rpi GPIO code for use with non Pi4
 
 def run_client(client_socket):
     try:
@@ -20,11 +20,11 @@ def run_client(client_socket):
 
                 # server then sends back name_length, name, and picture based on sent UFID or ISO 
                 try:
-                    name_length = client_socket.recv(1).decode()
-                    name_length = name_length.int() # for first sent byte, send length of name so its known how many bytes to read next
+                    name_length = client_socket.recv(1).decode("utf-8") # for first sent byte, send length of name so its known how many bytes to read next
+                    name_length = int.from_bytes(name_length) # convert returned byte to int
                     # names shouldnt be bigger than 255 chars so a byte is enough, hopefully
 
-                    name = client_socket.recv(name_length)
+                    name = client_socket.recv(name_length).decode("utf-8") # recv returns a byte array, use decode to convert to string
 
                     picture = client_socket.recv(1024) # dont know how picture will be sent/how big it is, probably need another function to reconstruct it from the bytes for use with GUI
                 except socket.err as err:
@@ -37,10 +37,11 @@ def run_client(client_socket):
 
     except KeyboardInterrupt: # for testing
         print("Keyboard Interrupt entered. Exiting...")
+        client_socket.close()
         exit(0)
-
 def button_shutdown(): # for use with GPIO interrupt.
     print("Shutdown button pressed. Exiting...")
+    client_socket.close()
     exit(0)
 
 def init_socket():
@@ -48,6 +49,7 @@ def init_socket():
     server_port = 8000 # same ^
 
     try:
+        global client_socket
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create client socket using TCP
     except socket.err as err:
         print("Error when initializing socket.")
@@ -61,12 +63,12 @@ def init_socket():
 
     return client_socket
 
-def init_GPIO():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(shutdown_button_GPIO,GPIO.IN, pull_up_down=GPIO.PUD_UP) # might need to have pullup based on switch/push button used
-    GPIO.add_event_detect(shutdown_button_GPIO, GPIO.BOTH, callback=button_shutdown, bouncetime=100) # interrupt for GPIO shutdown button connection
+#def init_GPIO():
+    #GPIO.setmode(GPIO.BCM)
+    #GPIO.setup(shutdown_button_GPIO,GPIO.IN, pull_up_down=GPIO.PUD_UP) # might need to have pullup based on switch/push button used
+    #GPIO.add_event_detect(shutdown_button_GPIO, GPIO.BOTH, callback=button_shutdown, bouncetime=100) # interrupt for GPIO shutdown button connection
 
 if __name__ == '__main__':
-    init_GPIO()
+    #init_GPIO()
     run_client(init_socket())
     exit(0)
