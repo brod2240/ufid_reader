@@ -46,11 +46,15 @@ def handle_client(client_socket):
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 record = (timestamp, request, f"{first_name} {last_name}")
                 scan_records.append(record)
-                response = f" {first_name} {last_name}"
+
+                name = f"{first_name} {last_name}"
+                name_bytes = name.encode('utf-8')
+                name_length = len(name_bytes)
+                response = name_length.to_bytes(1, byteorder='big') + name_bytes
             else:
-                response = "Failure: ID not valid or not found"
+                response = b"Failure: ID not valid or not found"
             
-            client_socket.sendall(response.encode())
+            client_socket.sendall(response)
     except socket.error as err:
         print(f"Socket error: {err}")
     finally:
