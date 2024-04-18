@@ -39,8 +39,8 @@ def button_shutdown(): # for use with GPIO interrupt.
     exit(0)
 
 def init_socket():
-    server_ip = "0.0.0.0" # needs to be hardcoded based on laptop ip used in server file
-    server_port = 8000 # same ^
+    server_ip = "127.0.0.1" # needs to be hardcoded based on laptop ip used in server file
+    server_port = 5555 # same ^
 
     try:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
