@@ -6,7 +6,7 @@ from validation import validate_id, validate_course, get_student_name
 scan_records = []  # List to hold scan records
 
 def init_server_socket():
-    server_ip = "127.0.0.1" # Hard code server IP, adjust as needed
+    server_ip = "0.0.0.0" # Hard code server IP, adjust as needed
     server_port = 8000
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((server_ip, server_port))
