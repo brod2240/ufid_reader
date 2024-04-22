@@ -2,7 +2,19 @@
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
-Main Work Completed:
+Main Work Completed (Design Prototype):
+* Software
+   * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
+   * Updated data validation to reference new pseudo-database
+   * Wrote server side socket program to take in 8 digit UFID or 16 digit ISO from client request, validate existance in pseudo-database with data validation code, time-stamp it in csv if valid, and send back a response (either the name character length and name or error character length and the error)
+   * Created UI to display validation
+* Hardware
+   * Switched from Rasp Pi 2040 Microcontroller to Rasp Pi 4B Single-Board-Computer.
+   * Solved issue of HID input to be read directly into Rasp Pi 4.
+   * Wrote client side socket program to read data, validate that it is 8 or 16 digits, sends request to server side socket, and recieves output from server.
+
+<br /> <br />
+Main Work Completed (Pre-Alpha):
 * Tested barcode scanner. Received unique barcode number as output.
 * Tested MRD5 scanner. Received student ID from magnetic stripe and unique ISO from NFC card and mobile tap.
 * Tested MRD5 scanner. Received student ID from magnetic stripe and unique ISO from NFC card and mobile tap.
@@ -25,7 +37,26 @@ External communication to database with TCP/IP. Internal communication between m
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the class roster as stated in the interal systems section.
 ## Bugs/Issues
 Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing <br /> <br />
-Main Bugs/Issues:
+Main Bugs/Issues (Design Prototype):
+* Rasp Pi 4 display resolution too small on monitor
+  * Kept the same for now 
+* Reading HID data from MRD5 scanner directly not working
+  * Switched from Rasp Pi 2040 to Rasp Pi 4
+  * Used python input() function
+* Client-Server communication between Rasp Pi 4 and Server device via TCP/IP using sockets
+  *  Switched port number
+  *  Used ipconfig command on server device to set ip address for connection
+* No Database Access
+  *  Denied UF database access due to FERPA
+  *  Switched from using csv pseudo-database to SQLite pseudo-database hosted on a server device
+  *  Created csv for time-stamp data hosted on server device
+  *  Attempt to get indirect access to the database structure
+  *  Attempt to host server on CISE server
+* GUI connection to Rasp Pi 4
+  * Fixed using python tkinter
+
+<br /> <br />
+Main Bugs/Issues (Pre-Alpha):
 * MRD5 scanner not outputting via HID
   * Fixed by obtaining correctly configured MRD5 scanner.
 * No database access
