@@ -38,10 +38,20 @@ Data validation code will be written to ensure that the input is valid with rega
 ## Bugs/Issues
 Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing <br /> <br />
 Main Bugs/Issues (Design Prototype):
-* Rasp Pi 4 display resolution
-* Reading HID data from MRD5 scanner directly into Rasp Pi 4
+* Rasp Pi 4 display resolution too small on monitor
+  * Kept the same for now 
+* Reading HID data from MRD5 scanner directly not working
+  * Switched from Rasp Pi 2040 to Rasp Pi 4
+  * Used python input() function
 * Client-Server communication between Rasp Pi 4 and Server device via TCP/IP using sockets
-* Database Access
+  *  Switched port number
+  *  Used ipconfig command on server device to set ip address for connection
+* No Database Access
+  *  Denied UF database access due to FERPA
+  *  Switched from using csv pseudo-database to SQLite pseudo-database hosted on a server device
+  *  Created csv for time-stamp data hosted on server device
+  *  Attempt to get indirect access to the database structure
+  *  Attempt to host server on CISE server
 * GUI connection to Rasp Pi 4
   * Fixed using python tkinter
 
