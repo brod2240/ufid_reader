@@ -2,7 +2,17 @@
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
-Main Work Completed:
+Main Work Completed (Design Prototype):
+* Software
+ * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
+ * Updated data validation to reference new pseudo-database
+ * Wrote server side socket program to take in 8 digit UFID or 16 digit ISO from client request, validate existance in pseudo-database with data validation code, time-stamp it in csv if valid, and send back a response (either the name character length and name or error character length and the error) 
+ * Created UI to display validation
+* Hardware
+ * Switched from Rasp Pi 2040 Microcontroller to Rasp Pi 4B Single-Board-Computer.
+ * Solved issue of HID input to be read directly into Rasp Pi 4.
+ * Wrote client side socket program to read data, validate that it is 8 or 16 digits, sends request to server side socket, and recieves output from server.
+Main Work Completed (Pre-Alpha):
 * Tested barcode scanner. Received unique barcode number as output.
 * Tested MRD5 scanner. Received student ID from magnetic stripe and unique ISO from NFC card and mobile tap.
 * Tested MRD5 scanner. Received student ID from magnetic stripe and unique ISO from NFC card and mobile tap.
