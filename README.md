@@ -4,8 +4,8 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
 Main Work Completed (Design Prototype):
 * Software
- * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
- * Updated data validation to reference new pseudo-database
+    * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
+   * Updated data validation to reference new pseudo-database
  * Wrote server side socket program to take in 8 digit UFID or 16 digit ISO from client request, validate existance in pseudo-database with data validation code, time-stamp it in csv if valid, and send back a response (either the name character length and name or error character length and the error) 
  * Created UI to display validation
 * Hardware
