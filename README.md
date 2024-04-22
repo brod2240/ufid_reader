@@ -12,6 +12,7 @@ Main Work Completed (Design Prototype):
    * Switched from Rasp Pi 2040 Microcontroller to Rasp Pi 4B Single-Board-Computer.
    * Solved issue of HID input to be read directly into Rasp Pi 4.
    * Wrote client side socket program to read data, validate that it is 8 or 16 digits, sends request to server side socket, and recieves output from server.
+
 <br /> <br />
 Main Work Completed (Pre-Alpha):
 * Tested barcode scanner. Received unique barcode number as output.
