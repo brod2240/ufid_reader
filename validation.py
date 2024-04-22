@@ -17,6 +17,7 @@ def validate_course(class_number):
         return True
     else:
         return False
+        
 if __name__ == '__main__':
 
     filename = "ufid_barcodes.csv"
