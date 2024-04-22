@@ -41,6 +41,7 @@ create_tables(cursor)
 
 add_student("15854874", "6008600002030530", "Aaron", "Song", "27483", "11427", "11563", "11214", None, None, None, None)
 add_student("93549135", "6008600002046233", "John", "Fang-Wu", "27483", "11197", "26083", "24397", "12693", None, None, None)
+add_student("77211373", "6008600000325145", "Jonathan", "Lijewski", "27483", None, None, None, None, None, None, None)
 
 # Commit the changes and close the connection
 conn.commit()
