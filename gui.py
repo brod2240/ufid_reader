@@ -18,11 +18,7 @@ class App(customtkinter.CTk):
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
-        self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-        self.navigation_frame.grid_rowconfigure(4, weight=1)
-
-        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="UFID ATTENDANCE CHECK",
-                                                             compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="UFID ATTENDANCE CHECK", compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
         self.course_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Enter Course ID",
                                                    fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
@@ -80,6 +76,9 @@ class App(customtkinter.CTk):
         img_label = customtkinter.CTkLabel(self.scan_frame, text='', image=img)
         img_label.grid(pady = 40)
 
+        #id_display = customtkinter.CTkLabel(self.scan_frame, text=input(), font=("Roboto", 50))
+        #id_display.grid(pady=5, padx=10) #need to fix this
+
         # create manual search frame
         self.manual_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         manual_label = customtkinter.CTkLabel(self.manual_frame, text="Type UFID", font=("Roboto", 50))
@@ -97,9 +96,26 @@ class App(customtkinter.CTk):
 
         #create success page
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(100,100))
+        self.success_frame.grid_rowconfigure(0, weight=1)
+        self.success_frame.grid_columnconfigure(1, weight=1)
+        success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(200,200))
         success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=success_image)
-        success_image_label.grid(pady=20)
+        success_image_label.grid(padx=10)
+        success_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        student_name = customtkinter.CTkLabel(self.success_frame, text="Student Name Here", font=("Roboto", 50))
+        student_name.grid(row=1, column=0)
+        student_name.place(anchor="c",relx=0.25, rely=0.55)
+        student_id = customtkinter.CTkLabel(self.success_frame, text="Student ID Num Here", font=("Roboto", 50))
+        student_id.grid(row=1, column=1)
+        student_id.place(anchor="c",relx=0.75, rely=0.55)
+        check_in = customtkinter.CTkLabel(self.success_frame, text="Time Checked in Here", font=("Roboto", 50))
+        check_in.grid(row=2, column=1, pady=5)
+        check_in.place(anchor="c",relx=0.5, rely=0.75)
+        next_button = customtkinter.CTkButton(self.success_frame, text="Next", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("scan"))
+        next_button.grid()
+        next_button.place(anchor="c", relx=0.85, rely=0.9)
+
+
         
         # select default frame
         self.select_frame_by_name("course")
@@ -109,21 +125,29 @@ class App(customtkinter.CTk):
         self.course_button.configure(fg_color=("gray75", "gray25") if name == "course" else "transparent")
         self.scan_button.configure(fg_color=("gray75", "gray25") if name == "scan" else "transparent")
         self.manual_button.configure(fg_color=("gray75", "gray25") if name == "manual" else "transparent")
-
         # show selected frame
         if name == "scan":
             self.scan_frame.grid(row=0, column=1, sticky="nsew")
+            self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+            self.navigation_frame.grid_rowconfigure(4, weight=1)
         else:
             self.scan_frame.grid_forget()
         if name == "manual":
             self.manual_frame.grid(row=0, column=1, sticky="nsew")
+            self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+            self.navigation_frame.grid_rowconfigure(4, weight=1)
         else:
             self.manual_frame.grid_forget()
         if name == "course":
             self.landing_frame.grid(row=0, column=1, sticky="nsew")
+            self.navigation_frame.grid_forget()
         else:
             self.landing_frame.grid_forget()
-        
+        if name == "success":
+            self.success_frame.grid(row=0,column=1, sticky="nsew")
+            self.navigation_frame.grid_forget();
+        else:
+            self.success_frame.grid_forget()
 
     def scan_button_event(self):
         self.select_frame_by_name("scan")
@@ -144,9 +168,22 @@ class App(customtkinter.CTk):
             incorrect_label.place(anchor="c",relx=0.5, rely=0.40)
             print("Invalid course id")
 
-    def validate_student_id(self, course_id, barcode_val):
-        print("yes")
+    def validate_student_id(self, course_id, id_value):
+        print(course_id)
+        print(id_value)
+        value = validate_id(course_id, id_value, filename='UFIDProjectSampleDatabase.csv')
+        if (value[0] == True):
+            self.select_frame_by_name("success")
+        else:
+            incorrect_label = customtkinter.CTkLabel(self.manual_frame, text="Invalid Student ID Entered. Please Try Again.", font=("Roboto", 15), text_color="red")
+            incorrect_label.grid(padx=5, pady=5)
+            incorrect_label.place(anchor="c",relx=0.5, rely=0.40)
+            print("Invalid course id")
     
+    def check_frame(current_frame):
+        if (current_frame == "scan"):
+            input("scan id")
+
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
