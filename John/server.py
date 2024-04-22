@@ -6,8 +6,8 @@ from validation import validate_id, validate_course, get_student_name
 scan_records = []  # List to hold scan records
 
 def init_server_socket():
-    server_ip = "127.0.0.1" # Hard code server IP, adjust as needed
-    server_port = 5555
+    server_ip = "10.136.134.74" # Hard code server IP, adjust as needed
+    server_port = 8912
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((server_ip, server_port))
     server_socket.listen(5)
@@ -24,7 +24,7 @@ def run_server(server_socket):
         print("Server shutdown requested (Ctrl+C).")
     finally:
         server_socket.close()
-        print("Server socket closed.")
+        print("Server socket clocsed.")
 
 def handle_client(client_socket):
     class_number = "27483"  # Hard code example class number, adjust as needed
@@ -52,7 +52,9 @@ def handle_client(client_socket):
                 name_length = len(name_bytes)
                 response = name_length.to_bytes(1, byteorder='big') + name_bytes
             else:
-                response = b"Failure: ID not valid or not found"
+                temp = "Failure: UFID or ISO not found."
+                temp_length = len(temp)
+                response = temp_length.to_bytes() + temp.encode('utf-8')
             
             client_socket.sendall(response)
     except socket.error as err:
@@ -62,6 +64,8 @@ def handle_client(client_socket):
         print("Connection closed. Writing to CSV if records are present...")
         if scan_records:
             write_to_csv(scan_records)
+
+        exit(1)
 
 def write_to_csv(records):
     filename = "ufid_barcodes.csv"
