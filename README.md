@@ -1,7 +1,16 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
-## Instructions to run code
-1. Run Data.py to ensure data is populated in the StudentCourse2.db
+## Instructions for Device Set Up
+1. 
+## Instructions to Run Client-Server Communication Between Rasp Pi and Server
+1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the folder.
+2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
+3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the ip in the ________ file to match
+4. Run Server.py
+5. Run Client.py
+6. Scan ID
+# Instructions for GUI
+1. 
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
 Main Work Completed (Design Prototype):
