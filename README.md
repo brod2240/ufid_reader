@@ -1,14 +1,18 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
-## Instructions for Rasp Pi 4 Set Up
-1. 
+## Instructions for Client Host Device Set Up
+1. Connect Power, HDMI to monitor, and keyboard (ONLY FOR RASP PI 4)
+2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
+3. Connect MRD5 scanner via USB. Make sure to hold power button to turn on.
+4. Git Pull repository
+5. Follow the following instructions
 ## Instructions to Run Client-Server Communication Between Rasp Pi and Server
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
-3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the ip in the ________ file to match
-4. Run Server.py
-5. Run Client.py
-6. Scan ID
+3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match
+4. Run Server.py on server host device
+5. Run Client.py on client host device
+6. Scan ID.
 ## Instructions for GUI
 1. 
 ## Completed Work
