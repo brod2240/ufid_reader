@@ -14,7 +14,12 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 5. Run Client.py on client host device.
 6. Scan ID.
 ## Instructions for GUI
-1. 
+1. Ensure the validationSQL.py and gui.py files are in the same folder.
+2. On the command line, ensure you are inside the folder/directory.
+3. Run the command 'python gui.py' or 'python3 gui.py' depending on what version of python you have.
+4. Enter course id manually (27483)
+5. Scan or input id (functionality for manual input implemented only)
+6. Manually input 93549135
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
 Main Work Completed (Design Prototype):
