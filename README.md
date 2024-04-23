@@ -1,6 +1,6 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
-## Instructions for Device Set Up
+## Instructions for Rasp Pi 4 Set Up
 1. 
 ## Instructions to Run Client-Server Communication Between Rasp Pi and Server
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
