@@ -1,5 +1,7 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
+## Instructions to run code
+1. Run Data.py to ensure data is populated in the StudentCourse2.db
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
 Main Work Completed (Design Prototype):
