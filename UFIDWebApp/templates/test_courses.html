@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Fetch Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fetched Courses</h1>
+    {% if courses %}
+        <ul>
+            {% for course in courses %}
+                <li>
+                    Course Code: {{ course['course_code'] }}, Class Number: {{ course['class_number'] }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No courses found for the specified course code.</p>
+    {% endif %}
+</body>
+</html>

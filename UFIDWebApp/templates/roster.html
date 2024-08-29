@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Basic CSS for form styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex; /* Use flexbox for layout */
+            min-height: 100vh; /* Minimum height of viewport */
+            flex-direction: column; /* Arrange children vertically */
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1; /* Grow to take remaining space */
+            display: flex;
+            padding: 10px;
+        }
+
+        .sidebar-container {
+            position: relative; /* Add this line to make it the positioning context */
+            display: grid;
+            grid-template-columns: 40px 0; /* Sidebar buttons take auto width, content takes remaining space */
+            gap: 10px; /* Gap between sidebar buttons and content */
+            width: 40px; /* Initial width */
+            height: 140px; /* Initial height */
+            background-color: #fff;
+            padding: 10px;
+            transition: grid-template-columns 0.15s, width 0.3s;
+            overflow: hidden;
+            border-radius: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            grid-column: 1 / 2; /* Sidebar buttons start from column 1 */
+            grid-row: 1; /* All buttons in the first row */
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .sidebar li a {
+            display: flex;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s;
+            border-radius: 10px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .sidebar li a:hover {
+            background-color: #ddd;
+        }
+
+        .sidebar li a.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .sidebar ul li a .icon {
+            width: 24px;
+            height: 24px;
+            filter: invert(27%) sepia(90%) saturate(5663%) hue-rotate(188deg) brightness(95%) contrast(91%);
+        }
+
+        .sidebar ul li a.active .icon {
+            filter: invert(100%);
+        }
+
+        .sidebar-content {
+            grid-column: 2 / 3;
+            transition: transform 0.3s ease, clip-path 0.3s ease;
+            clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%); /* Clip the box to show only right side */
+            width: 220px; /* Adjust width as needed */
+            height: 100%; /* Full height */
+            margin-left: 15px;
+        }
+
+        .sidebar-container.expanded {
+            grid-template-columns: 40px 240px; /* Expanded to show both columns */
+            width: 290px;
+            height: auto; /* Adjust height as needed */
+        }
+
+
+        .sidebar-container.expanded .sidebar-content {
+            clip-path: polygon(0% 0, 100% 0, 100% 100%, 0% 100%); /* Full visibility when hovered */
+        }
+
+        .sidebar-content h2 {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 28px; /* Increased font size */
+        }
+
+        /* Vertical line */
+        .vertical-line {
+            position: absolute;
+            left: 60px; /* 60px from the left edge */
+            top: 20px; /* 15px from the top edge */
+            bottom: 20px; /* 15px from the bottom edge */
+            width: 2px; /* Line width */
+            background-color: #ccc;
+            display: none; /* Initially hidden */
+        }
+
+        .sidebar-container.expanded .vertical-line {
+            display: block; /* Display when sidebar is expanded */
+        }
+
+        .form-group {
+            margin-bottom: 10px; /* Default vertical margin between rows */
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px; /* Increased font size */
+        }
+        .required-note {
+            color: red;
+            font-size: 10px;
+            margin-top: 3px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px; /* Increased font size */
+        }
+        .form-group.half-width {
+            width: calc(50% - 2%); /* Adjusted width */
+            float: left;
+            margin-bottom: 20px; /* Default vertical margin between rows */
+        }
+        .form-group.half-width:nth-child(odd) {
+            margin-right: 4%; /* Adjust right margin for odd-numbered form groups */
+        }
+        .clear {
+            clear: both;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        button {
+            width: 100%; /* Button takes full width of container */
+            padding: 13px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .table-container {
+            flex: 1; /* Take remaining space */
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent table from expanding */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px; /* Add this line */
+            overflow: hidden; /* Add this line */
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Styling for table rows to alternate colors */
+        tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Light grey for odd rows */
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff; /* White for even rows */
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .pagination li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .pagination li a {
+            padding: 8px 12px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination li a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">GatorCheck</div>
+        <div>
+            <a href="/roster">Roster</a>
+            <a href="/timesheet">Timesheet</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="sidebar-container">
+            <div class="sidebar">
+                <ul>
+                    <li>
+                        <a href="#" id="toggleSidebar1">
+                            <img src="{{ url_for('static', filename='bx-search.svg') }}" alt="My Icon" class="icon">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="toggleSidebar2">
+                            <img src="{{ url_for('static', filename='bx-plus-circle.svg') }}" alt="My Icon" class="icon">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="toggleSidebar3">
+                            <img src="{{ url_for('static', filename='bx-file-plus.svg') }}" alt="My Icon" class="icon">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="sidebar-content">
+
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h2>Student Roster</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>UFID</th>
+                        <th>ISO</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Class 1</th>
+                        <th>Class 2</th>
+                        <th>Class 3</th>
+                        <th>Class 4</th>
+                        <th>Class 5</th>
+                        <th>Class 6</th>
+                        <th>Class 7</th>
+                        <th>Class 8</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student[0] }}</td>
+                        <td>{{ student[1] }}</td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[3] }}</td>
+                        <td>{{ student[4] }}</td>
+                        <td>{{ student[5] }}</td>
+                        <td>{{ student[6] }}</td>
+                        <td>{{ student[7] }}</td>
+                        <td>{{ student[8] }}</td>
+                        <td>{{ student[9] }}</td>
+                        <td>{{ student[10] }}</td>
+                        <td>{{ student[11] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if total_pages > 1 %}
+            <div class="pagination">
+                <ul>
+                    {% if page > 1 %}
+                    <li><a href="{{ url_for('roster', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('roster', page=page-1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {% if page == 1 %}
+                    <li><a href="{{ url_for('roster', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('roster', page=1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {# Determine start and end page numbers #}
+                    {% set start_page = page - 2 if page - 2 > 0 else 1 %}
+                    {% set end_page = start_page + 4 if start_page + 4 < total_pages else total_pages %}
+
+                    {# Adjust start_page if end_page is less than 5 #}
+                    {% if end_page - start_page < 4 %}
+                        {% set start_page = end_page - 4 if end_page - 4 > 0 else 1 %}
+                    {% endif %}
+
+                    {# Loop through the page numbers #}
+                    {% for num in range(start_page, end_page + 1) %}
+                        <li {% if num == page %}class="active"{% endif %}>
+                            <a href="{{ url_for('roster', page=num) }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page < total_pages %}
+                    <li><a href="{{ url_for('roster', page=page+1) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('roster', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+
+                    {% if page == total_pages %}
+                    <li><a href="{{ url_for('roster', page=total_pages) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('roster', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton1 = document.getElementById('toggleSidebar1');
+            const toggleButton2 = document.getElementById('toggleSidebar2');
+            const toggleButton3 = document.getElementById('toggleSidebar3');
+            const sidebarContainer = document.querySelector('.sidebar-container');
+            const sidebarContent = document.querySelector('.sidebar-content');
+            const sidebarLinks = document.querySelectorAll('.sidebar li a');
+
+            // Retrieve sidebar state from localStorage or default to empty string
+            let sidebarState = localStorage.getItem('sidebar_state') || '';
+            let previousSidebarState = '';
+
+            function toggleSidebar(buttonId) {
+                // Store previous sidebar state
+                previousSidebarState = sidebarState;
+
+                if (buttonId === 'toggleSidebar1') {
+                    sidebarContent.innerHTML = `
+                        <h2>Section 1</h2>
+                        <p>This is the content for section 1.</p>
+                    `;
+                    sidebarState = '1';
+                } else if (buttonId === 'toggleSidebar2') {
+                    sidebarContent.innerHTML = `
+                        <h2>Add Student</h2>
+                        <form action="{{ url_for('roster') }}" method="POST">
+                            <div class="form-group">
+                                <label for="ufid">UFID (8 digits)</label>
+                                <input type="text" id="ufid" name="ufid" pattern="[0-9]{8}" placeholder="xxxx-xxxx" required>
+                                <div class="required-note">* Required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="iso">ISO (16 digits)</label>
+                                <input type="text" id="iso" name="iso" pattern="[0-9]{16}" placeholder="xxxxxxxxxxxxxxxx" required>
+                                <div class="required-note">* Required</div>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="first_name">First Name</label>
+                                <input type="text" id="first_name" name="first_name" pattern="[A-Za-z]+" placeholder="First Name" required>
+                                <div class="required-note">* Required</div>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" id="last_name" name="last_name" pattern="[A-Za-z]+" placeholder="Last Name" required>
+                                <div class="required-note">* Required</div>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class1">Class 1</label>
+                                <input type="text" id="class1" name="class1" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class2">Class 2</label>
+                                <input type="text" id="class2" name="class2" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class3">Class 3</label>
+                                <input type="text" id="class3" name="class3" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class4">Class 4</label>
+                                <input type="text" id="class4" name="class4" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class5">Class 5</label>
+                                <input type="text" id="class5" name="class5" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class6">Class 6</label>
+                                <input type="text" id="class6" name="class6" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class7">Class 7</label>
+                                <input type="text" id="class7" name="class7" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="class8">Class 8</label>
+                                <input type="text" id="class8" name="class8" pattern="[0-9]{5}" placeholder="xxxxx">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="button-container">
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                    `;
+                    sidebarState = '2';
+                } else if (buttonId === 'toggleSidebar3') {
+                    sidebarContent.innerHTML = `
+                        <h2>Section 3</h2>
+                        <p>This is the content for section 3.</p>
+                    `;
+                    sidebarState = '3';
+                }
+
+                // Toggle 'expanded' class on sidebar container based on state change
+                if (sidebarState !== previousSidebarState) {
+                    sidebarContainer.classList.add('expanded')
+                    sidebarLinks.forEach(link => {
+                        link.classList.toggle('active', link.id === buttonId);
+                    });
+                } else {
+                    sidebarContainer.classList.toggle('expanded');
+                    sidebarLinks.forEach(link => {
+                        if (link.id === buttonId) {
+                            link.classList.toggle('active');
+                        }
+                    });
+                }
+
+                // Save current sidebar state to localStorage
+                localStorage.setItem('sidebar_state', sidebarState);
+
+                // Update pagination links to include the current sidebar state
+                updatePaginationLinks();
+            }
+
+            toggleButton1.addEventListener('click', function() {
+                toggleSidebar('toggleSidebar1');
+            });
+
+            toggleButton2.addEventListener('click', function() {
+                toggleSidebar('toggleSidebar2');
+            });
+
+            toggleButton3.addEventListener('click', function() {
+                toggleSidebar('toggleSidebar3');
+            });
+
+            // Update pagination links with the current sidebar state
+            function updatePaginationLinks() {
+                const paginationLinks = document.querySelectorAll('.pagination a');
+                paginationLinks.forEach(function (link) {
+                    const url = new URL(link.href);
+                    url.searchParams.set('sidebar_state', sidebarState);
+                    link.href = url.toString();
+                });
+            }
+
+            if (sidebarState) {
+                toggleSidebar('toggleSidebar' + sidebarState);
+            }
+        });
+    </script>
+</body>
+</html>

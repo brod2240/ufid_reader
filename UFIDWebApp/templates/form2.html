@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Fetch Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <style>
+        /* Basic CSS for form styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 400px; /* Set to previous width */
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .required-note {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse; /* Collapses borders */
+        }
+        .table th, .table td {
+            border: none; /* No border for table */
+            padding: 10px; /* Padding for cells */
+            text-align: left; /* Align text to left */
+        }
+        .table th {
+            font-weight: bold;
+            background-color: #f0f0f0; /* Light background for header */
+        }
+        .class-label {
+            width: 20%; /* 20% width for Class labels */
+        }
+        .course-id {
+            width: 40%; /* 40% width for Course ID column */
+        }
+        .class-number {
+            width: 20%; /* 20% width for Class Number column */
+        }
+        .course-results {
+            margin-top: 10px;
+            background-color: #e7f3fe;
+            border: 1px solid #bce8f1;
+            border-radius: 5px;
+            padding: 10px;
+            display: none; /* Initially hidden */
+        }
+        .course-results.active {
+            display: block; /* Show when active */
+        }
+        .course-id-results {
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        async function fetchCourses(courseIds) {
+            if (courseIds.length === 0) return;
+
+            try {
+                const response = await fetch('/form2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ course_ids: courseIds })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    updateCourseResults(data);
+                } else {
+                    console.error('Failed to fetch courses:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        }
+
+        function updateCourseResults(courses) {
+            for (const [courseId, courseList] of Object.entries(courses)) {
+                const resultsDiv = document.getElementById('results-' + courseId);
+                const resultsList = resultsDiv.querySelector('.course-id-results');
+                resultsList.innerHTML = ''; // Clear previous results
+
+                if (courseList && courseList.length > 0) {
+                    courseList.forEach(course => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = course; // Assuming course is a string
+                        resultsList.appendChild(listItem);
+                    });
+                    resultsDiv.classList.add('active'); // Show results
+                } else {
+                    resultsDiv.classList.remove('active'); // Hide if no courses
+                }
+            }
+        }
+
+        function toggleCourseResults(inputId) {
+            // Hide all course results
+            const allResults = document.querySelectorAll('.course-results');
+            allResults.forEach(result => result.classList.remove('active'));
+
+            // Show the results for the focused input
+            const resultsDiv = document.getElementById('results-' + inputId);
+            if (resultsDiv) {
+                resultsDiv.classList.add('active');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">GatorCheck</div>
+        <div>
+            <a href="/form">Form</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Fetch Courses</h2>
+        <form action="{{ url_for('form2') }}" method="POST">
+            <div class="form-group">
+                <label for="ufid">UFID (8 digits)</label>
+                <input type="text" id="ufid" name="ufid" pattern="[0-9]{8}" placeholder="xxxx-xxxx" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="iso">ISO (16 digits)</label>
+                <input type="text" id="iso" name="iso" pattern="[0-9]{16}" placeholder="xxxxxxxxxxxxxxxx" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" pattern="[A-Za-z]+" placeholder="Enter your first name" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" pattern="[A-Za-z]+" placeholder="Enter your last name" required>
+                <div class="required-note">* Required</div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="class-label">Class</th>
+                        <th class="course-id">Course ID</th>
+                        <th class="class-number">Class Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(1, 9) %}
+                    <tr>
+                        <td>Class {{ i }}</td>
+                        <td>
+                            <input type="text" id="courseId{{ i }}" name="courseId{{ i }}" placeholder="Enter Course ID"
+                                   onfocus="toggleCourseResults('courseId{{ i }}')"
+                                   oninput="fetchCourses([this.value])">
+                            <div id="results-courseId{{ i }}" class="course-results">
+                                <h4>Fetched Courses:</h4>
+                                <ul class="course-id-results">
+                                    {% if courses and courses['courseId{{ i }}'] %}
+                                        {% for course in courses['courseId{{ i }}'] %}
+                                            <li>{{ course }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" id="classNumber{{ i }}" name="classNumber{{ i }}" placeholder="Enter Class Number" required>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

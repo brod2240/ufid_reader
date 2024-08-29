@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Input Suggestions</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #suggestionsList {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 0;
+            list-style-type: none;
+        }
+        #suggestionsList li {
+            padding: 8px;
+            cursor: pointer;
+        }
+        #suggestionsList li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamic Input Suggestions</h1>
+    <input type="text" id="inputField" placeholder="Type a course code...">
+    <ul id="suggestionsList"></ul>
+
+    <script>
+        $(document).ready(function() {
+            $('#inputField').on('input', function() {
+                const query = $(this).val();
+                $.get('/suggestions', { query: query }, function(data) {
+                    $('#suggestionsList').empty();  // Clear previous suggestions
+
+                    // Display the count of suggestions
+                    if (data.count > 0) {
+                        $('#suggestionsList').append(`<li>Found ${data.count} suggestions</li>`);
+                        data.suggestions.forEach(function(item) {
+                            $('#suggestionsList').append(`<li>${item}</li>`);
+                        });
+                    } else {
+                        $('#suggestionsList').append('<li>No suggestions found</li>');  // Show message if no suggestions
+                    }
+                }).fail(function() {
+                    console.error("Error fetching suggestions");
+                });
+            });
+
+            // Click event for suggestions
+            $(document).on('click', '#suggestionsList li', function() {
+                $('#inputField').val($(this).text());  // Fill input with clicked suggestion
+                $('#suggestionsList').empty();  // Clear suggestions
+            });
+        });
+    </script>
+</body>
+</html>

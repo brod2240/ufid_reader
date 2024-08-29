@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Form</title>
+    <style>
+        /* Basic CSS for form styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .required-note {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">GatorCheck</div>
+        <div>
+            <a href="/form">Form</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Enrolled Courses</h2>
+        <form action="{{ url_for('form') }}" method="POST">
+            <div class="form-group">
+                <label for="ufid">UFID (8 digits)</label>
+                <input type="text" id="ufid" name="ufid" pattern="[0-9]{8}" placeholder="xxxx-xxxx" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="iso">ISO (16 digits)</label>
+                <input type="text" id="iso" name="iso" pattern="[0-9]{16}" placeholder="xxxxxxxxxxxxxxxx" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" pattern="[A-Za-z]+" placeholder="Enter your first name" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" pattern="[A-Za-z]+" placeholder="Enter your last name" required>
+                <div class="required-note">* Required</div>
+            </div>
+            <div class="form-group">
+                <label for="class1">Class 1</label>
+                <input type="text" id="class1" name="class1" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class2">Class 2</label>
+                <input type="text" id="class2" name="class2" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class3">Class 3</label>
+                <input type="text" id="class3" name="class3" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class4">Class 4</label>
+                <input type="text" id="class4" name="class4" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class5">Class 5</label>
+                <input type="text" id="class5" name="class5" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class6">Class 6</label>
+                <input type="text" id="class6" name="class6" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class7">Class 7</label>
+                <input type="text" id="class7" name="class7" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <div class="form-group">
+                <label for="class8">Class 8</label>
+                <input type="text" id="class8" name="class8" pattern="[0-9]{5}" placeholder="xxxxx">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            localStorage.removeItem('sidebar_state');
+        });
+    </script>
+</body>
+</html>
