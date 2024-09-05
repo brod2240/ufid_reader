@@ -1,5 +1,5 @@
 # import gui functions
-from GUI.gui import *
+#from gui import *
 
 def gui_main_loop(shared_queue):
     while(1):

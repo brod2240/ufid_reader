@@ -1,5 +1,5 @@
-from src.client import *
-from src.validation import *
+from client import *
+from validation import *
 
 def parsing_main_loop(shared_queue):
     client_socket = init_socket()

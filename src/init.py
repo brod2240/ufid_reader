@@ -1,4 +1,4 @@
-import threading, os
+import threading, os, time
 from queue import Queue
 from parsing_main_loop import *
 from gui_main_loop import *
@@ -7,8 +7,9 @@ from gui_main_loop import *
 
 def start_gui():
     os.system("FRAMEBUFFER=/dev/fb1 startx -- -dpi 60")
-    #os.system("DISPLAY=:0 python gui_main_loop.py")
-    os.system("DISPLAY=:0 python gui.py")
+    time.sleep(5)
+   # os.system("DISPLAY=:0 python gui_main_loop.py")
+    os.system("DISPLAY=:0 python ../GUI/gui.py")
     
 
 def init_threads():
@@ -27,6 +28,6 @@ def init_threads():
     
 
 if __name__ == '__main__':
-    init_gui()
+    start_gui()
     init_threads()
     exit(0)

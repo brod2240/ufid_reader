@@ -1,7 +1,7 @@
 import customtkinter
 import datetime
 from PIL import Image
-from src.validation import validate_course, validate_id
+from validation import validate_course, validate_id
 
 
 
