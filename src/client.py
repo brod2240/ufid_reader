@@ -1,6 +1,5 @@
 from sys import exit
 import socket, re
-from validation import *
 
 #import RPi.GPIO as GPIO # for use with Raspberry Pi 4 SBC for interrupt control from GPIO, will need to be changed for other SBCs / Microcontrollers.
 #shutdown_button_GPIO = 16 # comment out all Rpi GPIO code for use with non Pi4
@@ -26,7 +25,7 @@ def run_client(client_socket):
                 name_length = int.from_bytes(name_length_bytes, byteorder='big')
                 name = client_socket.recv(name_length).decode("utf-8")
                 print("Received Name:", name)
-                return name, accept 
+                return name, accept
             except socket.error as err:
                 print("Error when receiving info from server:", err)
                 break
