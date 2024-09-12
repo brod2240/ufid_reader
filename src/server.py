@@ -6,7 +6,7 @@ from validation import validate_id, validate_course, get_student_name
 scan_records = []  # List to hold scan records
 
 def init_server_socket():
-    server_ip = "10.136.233.227" # Hard code server IP, adjust as needed
+    server_ip = "10.136.122.126" # Hard code server IP, adjust as needed
     server_port = 8912
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((server_ip, server_port))
@@ -42,20 +42,24 @@ def handle_client(client_socket):
                 break
 
             valid, first_name, last_name = validate_id(class_number, request)
+
+            response = "" + valid
+
             if valid:
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 record = (timestamp, request, f"{first_name} {last_name}")
                 scan_records.append(record)
 
                 name = f"{first_name} {last_name}"
-                name_bytes = name.encode('utf-8')
+                name_bytes = name.encode('utf-8') + 1
                 name_length = len(name_bytes)
-                response = name_length.to_bytes(1, byteorder='big') + name_bytes
+                response = valid.to_bytes(1) + name_length.to_bytes(1, byteorder='big') + name_bytes
             else:
                 temp = "Failure: UFID or ISO not found."
-                temp_length = len(temp)
-                response = temp_length.to_bytes() + temp.encode('utf-8')
+                temp_length = len(temp) + 1
+                response = valid.to_bytes(1) + temp_length.to_bytes() + temp.encode('utf-8')
             
+
             client_socket.sendall(response)
     except socket.error as err:
         print(f"Socket error: {err}")
