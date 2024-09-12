@@ -53,13 +53,15 @@ def retrieve_data_socket(UFID, client_socket):
             
             name = client_socket.recv(name_length).decode("utf-8")
             
-            return valid, name 
+            return valid
     except socket.error as err:
         print("Error when receiving info from server:", err)
     except KeyboardInterrupt:
         print("Keyboard Interrupt entered. Exiting...")
     finally:
         client_socket.close()
+
+
 
 # def daily_interrupt():
 #     #temp
