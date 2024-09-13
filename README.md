@@ -121,6 +121,7 @@ Test plan is provided on how testing was done, including testing API endpoints m
    * Wrote GUI thread program to change between interface frame based on input
    * Implemented communication program between parsing thread and GUI thread
    * Modified Raspi4 configuration to work with custontkinter package and display on LCD monitors
+
 \
 **Main Work Completed (Design Prototype):**
 * Software
