@@ -222,9 +222,12 @@ Data validation code will be written to ensure that the input is valid with rega
   *  Utilized publically available API for courses
   *  Created table in database for student info, RaspPi configurations, and time-stamp data
   *  Inquired UFIT about the type of database (SQL) and what data headings were on the database
-* Sockets???
-* Internet??
-* Threading??  
+* Internet
+  * Raspi4 disconnects from EDUROAM wifi on startup and does not allow communication with website/database
+  * Solution for now is to use ethernet connection to facilitate communication
+* Threading
+  *GUI thread blocks input from accessing parsing thread
+  *Current solution will be to take input directly from USB connection instead of from console  
 
 \
 **Main Bugs/Issues (Design Prototype):**
