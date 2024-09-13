@@ -120,7 +120,7 @@ administrators manage timesheets created when UFIDs are scanned on the raspberry
 - GET /api/timesheets: Fetch timesheets with optional filters for date, course, section, and student
 
 ### Instructions for Admin Site
-1. If you want to replicate the app do the following, else if you just want access to the website go to the link GatorUFID.pythonanywhere.com
+1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com
 2. Create pythonanywhere account
 3. Create webapp and set backend to flask
 4. Copy the folder into the mysite folder in the file tab
