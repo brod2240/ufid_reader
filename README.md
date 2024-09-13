@@ -25,11 +25,11 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
 ### How to Use:
 **Base URL:**
-\[GET\] https://one.ufl.edu/apix/soc/schedule/\[parameters\] \
+\[GET\] <span>https://one.ufl.edu/apix/soc/schedule/\[parameters\]</span> \
 Note: term and category are required. lastcontrolnumber is highly suggested \
 \
 Sample Call (Bare Minimum): \
-https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
+<span>https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165</span> \
 \
 **Parameters:** \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
