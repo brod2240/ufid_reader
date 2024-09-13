@@ -113,11 +113,9 @@ administrators manage timesheets created when UFIDs are scanned on the raspberry
 - Responsive design: This application works across different screen devices, though there is room for improvement in layout adaptability. (Implemented for alpha build)
 
 ### Website API Endpoints
-**FIX THE FOLLOWING**
-- GET /api/professors/int:professor_id/courses: Retrieve courses taught by a specific professor
-- GET /api/courses: Get a list of all courses
-- GET /api/sections: Get a list of all sections numbers taught
-- GET /api/timesheets: Fetch timesheets with optional filters for date, course, section, and student
+- GET /kiosks/\[serial_num\]: Retrieves room number associated with kiosk
+- GET /roster/\[UFID or ISO\]: Retrieves UFID, ISO, first name, last name, class numbers associated with UFID or ISO (Not yet implemented)
+- POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database
 
 ### Instructions for Admin Site
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com
