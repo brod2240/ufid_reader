@@ -40,6 +40,8 @@ Spring: 1 \
 Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C) \
 Fall: 8 \
 \
+Example: Summer A 2024 would be 22456W1; Fall 2024 would be 2248 \
+\
 **Program/Category (Required)** \
 RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
 CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond) \
@@ -60,10 +62,13 @@ The JSON response from the API includes the last control number, retrieved rows,
 \
 This API limits the number of returned courses. In order to get the next set of results you must set last-control-number= the previous last-control-number. \
 Example: Using last-control-number=0 along with the required parameters gets you the course results along with LASTCONTROLNUMBER: \[50\], you can then set last-control-number=50 to get the next set of results \
+\
 **Course Code** \
 course-code=eel3135 This parameter lets you pass the course code as a parameter \
+\
 **Class Number/Section** \
-class-num=12345 This parameter lets you pass the class/section number as a parameter
+class-num=12345 This parameter lets you pass the class/section number as a parameter \
+\
 ### Sample Code:
 Found in AaronHelpFunc folder 
 ### Instructions to Run Sample Code 
