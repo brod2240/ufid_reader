@@ -100,8 +100,46 @@ UFID Check In is a web application that allows administrators manage timesheets 
 6. In flask-backend folder, run python app.py
 7. In ufid-web folder, run npm start
 
+## Admin Site (Aaron Version PythonAnywhere Hosted)
+GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. \
+**FIX THE FOLLOWING**
+administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
+
+### Features
+**FIX THE FOLLOWING**
+- Accounts: These keep track of the courses each professor teaches. (Hardcoded,  plan to implement in beta build)
+- Course and Section management: Professors have their courses organized for them, in which each course card will display timesheet daata for only that course. (Additional accounts set for creation for beta build)
+- Attendance Tracking: Professors can track student attendance, taken from the backend, for all of their courses and section numbers. This application supports filtering of attendance records by date, course number, section number, and student name (plan to change to UFID in beta build). (Implemented for alpha build)
+- Responsive design: This application works across different screen devices, though there is room for improvement in layout adaptability. (Implemented for alpha build)
+
+### Website API Endpoints
+**FIX THE FOLLOWING**
+- GET /api/professors/int:professor_id/courses: Retrieve courses taught by a specific professor
+- GET /api/courses: Get a list of all courses
+- GET /api/sections: Get a list of all sections numbers taught
+- GET /api/timesheets: Fetch timesheets with optional filters for date, course, section, and student
+
+### Instructions for Admin Site
+1. If you want to replicate the app do the following, else if you just want access to the website go to the link GatorUFID.pythonanywhere.com
+2. Create pythonanywhere account
+3. Create webapp and set backend to flask
+4. Copy the folder into the mysite folder in the file tab
+* Structure:
+   * mysite
+      * app.py
+      * api/
+      * data/
+      * static/
+      * templates/
+      * uploads/  
+5. Reload the website in the Web tab
+6. Click the link above the reload button to open the website  
+
 ### Testing
-Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displalys.
+Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
+
+### Testing
+Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
