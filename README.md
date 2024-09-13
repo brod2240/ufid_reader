@@ -120,7 +120,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com
 2. Create pythonanywhere account
 3. Create webapp and set backend to flask
-4. Copy the folder into the mysite folder in the file tab
+4. Copy the UFIDWebapp folder into the mysite folder in the file tab
 * Structure:
    * mysite
       * app.py
