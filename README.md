@@ -34,8 +34,7 @@ Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
 **Semester/Term (Required)** \
 term = [Year(with second digit removed][Semester number][optional Summer Semester] \
 Spring: 1 \
-Summer: 5 \
-- Append 6W1 for A. 6W2 for B. 1 for C \
+Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C)
 Fall: 8 \
 **Program/Category (Required)** \
 RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
