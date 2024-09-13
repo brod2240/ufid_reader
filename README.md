@@ -113,7 +113,11 @@ Main Work Completed (Alpha Build):
    * Wrote program to extract all information given from the public Course API (located in AaronHelpFunc folder)
    * Wrote and tested app routing code for internal get and post methods (including page navigation, form submissions to update database, etc.) as well as external get and post requests so website would act like API
 * Hardware
-   * 
+   * Created Multi-threaded program to handle multiple processes (GUI & Input Validation)
+   * Created Parsing thread to take in input from scanner and validate data
+   * Wrote GUI thread program to change between interface frame based on input
+   * Implemented communication program between parsing thread and GUI thread
+   * Modified Raspi4 configuration to work with custontkinter package and display on LCD monitors
 
 <br /> <br />
 Main Work Completed (Design Prototype):
