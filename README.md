@@ -133,6 +133,7 @@ Test plan is provided on how testing was done, including testing API endpoints m
    * Switched from Rasp Pi 2040 Microcontroller to Rasp Pi 4B Single-Board-Computer.
    * Solved issue of HID input to be read directly into Rasp Pi 4.
    * Wrote client side socket program to read data, validate that it is 8 or 16 digits, sends request to server side socket, and recieves output from server.
+
 \
 **Main Work Completed (Pre-Alpha):**
 * Tested barcode scanner. Received unique barcode number as output.
