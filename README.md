@@ -20,8 +20,45 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 4. Enter course id manually (27483)
 5. Scan or input id (functionality for manual input implemented only)
 6. Manually input 93549135
+## Public Course API
+### Credit: 
+https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
+### How to Use:
+**Base URL:**
+[GET] https://one.ufl.edu/apix/soc/schedule/[parameters]
+Note: term and category are required. lastcontrolnumber is highly suggested
+Sample Call (Bare Minimum):
+https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165
+**Parameters:**
+Appended to the BaseURL as parameter=value1&parameter2=value2 ...
+**Semester/Term (Required)**
+term = [Year(with second digit removed][Semester number][optional Summer Semester]
+Spring: 1
+Summer: 5
+- Append 6W1 for A. 6W2 for B. 1 for C
+Fall: 8
+**Program/Category (Required)**
+RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before)
+CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond)
+UFO: UF online program
+IA: Innovation Academy
+HUR: USVI and Puerto Rico
+**Number of Results**
+The JSON response from the API includes the last row and total number of rows as of the results as
+[
+  {
+    "COURSES":[],
+    "LASTCONTROLNUMBER": [number]
+    "RETRIEVEDROWS": [number]
+    "TOTALROWS": [number]
+  }
+]
+### Sample Code:
+Found in AaronHelpFunc folder
+### Instructions to Run Sample Code
+1. 
 
-## Admin Site
+## Admin Site (Brianna Version Locally Hosted)
 UFID Check In is a web application that allows administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
 ### Features
 - Accounts: These keep track of the courses each professor teaches. (Hardcoded,  plan to implement in beta build)
