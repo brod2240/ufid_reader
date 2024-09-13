@@ -85,8 +85,7 @@ Pre-Alpha Project Architecture: https://docs.google.com/document/d/1tP44RrBhFNyO
 Current Project Architecture: https://docs.google.com/document/d/16P1VVmUHEkcT9Zi2FqWKvdya8piKoZl4C9z6rgN8DTU/edit?usp=sharing <br />
 ### End Goal Project Architecture:
 #### External Interface
-Users will interface with a MRD5 scanner and LCD screen. The MRD5 scanner will take in input from either the magnetic stripe of a physical card or the NFC tap of a physical or mobile card. The validation of the ID will be displayed on screen (error, not in roster, present, etc.) along with the name and photo of the student. 
-Users will interface with a MRD5 scanner and LCD screen. The MRD5 scanner will take in input from either the magnetic stripe of a physical card or the NFC tap of a physical or mobile card. The validation of the ID will be displayed on screen (error, not in roster, present, etc.) along with the name and photo of the student. 
+Users will interface with a MRD5 scanner and LCD screen. The MRD5 scanner will take in input from either the magnetic stripe of a physical card or the NFC tap of a physical or mobile card. The validation of the ID will be displayed on screen (error, not in roster, present, etc.) along with the name and photo of the student.
 #### Persistent State
 The UF directory and ESODBC data warehouse will be the persistent state in which information such as the student ISO, name, ID number, photo, and class number of enrolled course can be accessed. Another database will be used to store the timestamp data. 
 #### Internal System
