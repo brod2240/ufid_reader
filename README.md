@@ -101,21 +101,20 @@ UFID Check In is a web application that allows administrators manage timesheets 
 7. In ufid-web folder, run npm start
 
 ## Admin Site (Aaron Version PythonAnywhere Hosted)
-GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. \
-**FIX THE FOLLOWING**
-administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
+GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
 ### Features
-**FIX THE FOLLOWING**
-- Accounts: These keep track of the courses each professor teaches. (Hardcoded,  plan to implement in beta build)
-- Course and Section management: Professors have their courses organized for them, in which each course card will display timesheet daata for only that course. (Additional accounts set for creation for beta build)
-- Attendance Tracking: Professors can track student attendance, taken from the backend, for all of their courses and section numbers. This application supports filtering of attendance records by date, course number, section number, and student name (plan to change to UFID in beta build). (Implemented for alpha build)
-- Responsive design: This application works across different screen devices, though there is room for improvement in layout adaptability. (Implemented for alpha build)
+- Accounts: These keep track of the courses each professor teaches. (Not yet implemented) Basic admin login capability is implemented.
+- Student Form: Adds or edits student data in student table in database.
+- Roster Page: Displays student data and has Student Form to add more data. (Search and filter to be added).
+- Timesheet Page: (Display timesheet data, has search and filter, ability to download sheet, all to be added).
+- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks (Add is implemented)(edit, delete, and display have been created but have not yet been integrated into the code).
+- Page Navigation
 
 ### Website API Endpoints
 - GET /kiosks/\[serial_num\]: Retrieves room number associated with kiosk
 - GET /roster/\[UFID or ISO\]: Retrieves UFID, ISO, first name, last name, class numbers associated with UFID or ISO (Not yet implemented)
-- POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database
+- POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database (Not yet implemented)
 
 ### Instructions for Admin Site
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com
