@@ -226,8 +226,8 @@ Data validation code will be written to ensure that the input is valid with rega
   * Raspi4 disconnects from EDUROAM wifi on startup and does not allow communication with website/database
   * Solution for now is to use ethernet connection to facilitate communication
 * Threading
-  *GUI thread blocks input from accessing parsing thread
-  *Current solution will be to take input directly from USB connection instead of from console  
+  * GUI thread blocks input from accessing parsing thread
+  * Current solution will be to take input directly from USB connection instead of from console  
 
 \
 **Main Bugs/Issues (Design Prototype):**
