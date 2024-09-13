@@ -70,10 +70,12 @@ course-code=eel3135 This parameter lets you pass the course code as a parameter 
 **Class Number/Section** \
 class-num=12345 This parameter lets you pass the class/section number as a parameter 
 
-### Sample Code:
-Found in AaronHelpFunc folder 
-### Instructions to Run Sample Code 
-1. 
+## Course API and HTML Parser Helper Functions (AaronHelpFunc):
+### Instructions
+1. Install required libraries: datetime, requests, BeautifulSoup from bs4, and re
+2. Run python file of choice
+3. Depending on file it will automatically return results or prompt for input
+Note: Some files contain commented out blocks which can be switched out for slightly different result or was used for testing and is no longer needed
 
 ## Admin Site (Brianna Version Locally Hosted)
 UFID Check In is a web application that allows administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
