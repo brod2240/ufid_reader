@@ -57,7 +57,7 @@ Main Work Completed (Alpha Build):
    * Added table to roster page which allows for visualization of student data
    * Wrote program to parse HTML in "dates and deadlines" page of the UF catalog website to find the start and end dates of semesters (located in AaronHelpFunc folder)
    * Wrote program to extract all information given from the public Course API (located in AaronHelpFunc folder)
-   * Wrote and tested app routing code so website would act like API
+   * Wrote and tested app routing code for internal get and post methods (including page navigation, form submissions to update database, etc.) as well as external get and post requests so website would act like API
 * Hardware
    * 
 
