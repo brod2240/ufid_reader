@@ -70,21 +70,25 @@ Main Bugs/Issues (Alpha Build):
   *  First used on website but did not work due to whitelist of websites
   *  Likely reutilized now that access to course API can be done from RaspPi      
 * Lacking permanent hosting and effient way to visualize and edit data
-  *  Created website on pythonanywhere to host database and easily manipulate and visualize data  
-* No way to add to data to student database besides hardcoding it or commandline
-  *  Created a form on the new website with the assumption that at the beginning of the year students would manually input there own info
-  *  Now operating under the ideal assumption that data is provided in UF database and will therefore be taken from there instead of provided by students
-  *  Using form for testing purposes and easy way to edit data
-* Website form doesn't restrict class data to existing data and allows overwriting which is okay for updating but has the possibility of writing over other students data unitentionally.
-  *  Attempted to use publicly available course API to restrict options though it is not on the whitelist of website allowed on the free version of pythonanywhere
-  *  Operating under the ideal assumption that data is provided in UF database and will therefore be taken from there instead of provided by students
-  *  Using form for testing purposes and easy way to edit data      
-* No Database Access
+  *  Created website on pythonanywhere to host database and easily manipulate and visualize data
+* Website Form / Web Database Issues   
+  * No way to add to data to student database besides hardcoding it or commandline
+  * Website form doesn't restrict class data to existing data and allows overwriting which is okay for updating but has the possibility of writing over other students data unitentionally.  
+  * ISO is not know by student unless they tap their card or mobile device
+    *  Created a form on the new website with the assumption that at the beginning of the year students would manually input there own info
+    *  Attempted to use publicly available course API to restrict course/class options though it is not on the whitelist of website allowed on the free version of pythonanywhere
+    *  Attempted to get MRD5 scanner reconfigured so that only UFID is received from swipe or tap so ISO is not needed
+    *  Now operating under the ideal assumption that student and course data is provided in UF database and will therefore be taken from there instead of provided by students
+    *  Using form for testing purposes and easy way to edit data 
+* No UF Database Access
   *  Denied UF database access due to FERPA
   *  Switched pseudo-database to be hosted on a pythonanywhere website as closest to ideal solution simulating the UF database servers
   *  Utilized publically available API for courses
   *  Created table in database for student info, RaspPi configurations, and time-stamp data
   *  Inquired UFIT about the type of database (SQL) and what data headings were on the database
+* Sockets???
+* Internet??
+* Threading??  
 
 <br /> <br />
 Main Bugs/Issues (Design Prototype):
