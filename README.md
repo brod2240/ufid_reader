@@ -105,6 +105,7 @@ Test plan is provided on how testing was done, including testing API endpoints m
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing /
+\
 **Main Work Completed (Alpha Build):**
 * Software
    * Created webapp to host database thus emulating UF database and to act as a data manipulation and visualization tool for testing purposes and UI
@@ -120,7 +121,7 @@ Test plan is provided on how testing was done, including testing API endpoints m
    * Wrote GUI thread program to change between interface frame based on input
    * Implemented communication program between parsing thread and GUI thread
    * Modified Raspi4 configuration to work with custontkinter package and display on LCD monitors
-/
+\
 **Main Work Completed (Design Prototype):**
 * Software
    * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
@@ -131,7 +132,7 @@ Test plan is provided on how testing was done, including testing API endpoints m
    * Switched from Rasp Pi 2040 Microcontroller to Rasp Pi 4B Single-Board-Computer.
    * Solved issue of HID input to be read directly into Rasp Pi 4.
    * Wrote client side socket program to read data, validate that it is 8 or 16 digits, sends request to server side socket, and recieves output from server.
-/
+\
 **Main Work Completed (Pre-Alpha):**
 * Tested barcode scanner. Received unique barcode number as output.
 * Tested MRD5 scanner. Received student ID from magnetic stripe and unique ISO from NFC card and mobile tap.
