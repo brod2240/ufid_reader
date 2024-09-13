@@ -20,6 +20,33 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 4. Enter course id manually (27483)
 5. Scan or input id (functionality for manual input implemented only)
 6. Manually input 93549135
+
+## Admin Site
+UFID Check In is a web application that allows administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
+# Features
+- Accounts: These keep track of the courses each professor teaches. (Hardcoded,  plan to implement in beta build)
+- Course and Section management: Professors have their courses organized for them, in which each course card will display timesheet daata for only that course. (Additional accounts set for creation for beta build)
+- Attendance Tracking: Professors can track student attendance, taken from the backend, for all of their courses and section numbers. This application supports filtering of attendance records by date, course number, section number, and student name (plan to change to UFID in beta build). (Implemented for alpha build)
+- Responsive design: This application works across different screen devices, though there is room for improvement in layout adaptability. (Implemented for alpha build)
+
+# API Endpoints
+- GET/api/professors/int:professor_id/courses: Retrieve courses taught by a specific professor
+- GET /api/courses: Get a list of all courses
+- GET /api/sections: Get a list of all sections numbers taught
+- GET /api/timesheets: Fetch timesheets with optional filters for date, course, section, and student
+
+# Instructions for Admin Site
+1. Unzip ufid-web folder
+2. In terminal: cd flask-backend
+3. enter command: pip install -r requirements.txt
+4. cd ../ufid-web
+5. enter command: npm install
+6. In flask-backend folder, run python app.py
+7. In ufid-web folder, run npm start
+
+# Testing
+Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displalys.
+   
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
 Main Work Completed (Design Prototype):
