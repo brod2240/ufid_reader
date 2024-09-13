@@ -25,11 +25,11 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
 ### How to Use:
 **Base URL:**
-\[GET\] <span>https://one.ufl.edu/apix/soc/schedule/\[parameters\]</span> \
+\[GET\] https://one.ufl.edu/apix/soc/schedule/[parameters] \
 Note: term and category are required. lastcontrolnumber is highly suggested \
 \
 Sample Call (Bare Minimum): \
->https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
+https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
 \
 **Parameters:** \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
@@ -48,7 +48,7 @@ IA: Innovation Academy \
 HUR: USVI and Puerto Rico \
 \
 **Number of Results** \
-The JSON response from the API includes the last row and total number of rows as of the results as \
+The JSON response from the API includes the last control number, retrieved rows, and total number of rows as of the results as \
 \[ \
 &nbsp;{ \
 &nbsp;&nbsp;"COURSES":[ ], \
@@ -59,7 +59,11 @@ The JSON response from the API includes the last row and total number of rows as
 \] \
 \
 This API limits the number of returned courses. In order to get the next set of results you must set last-control-number= the previous last-control-number. \
-Example: Using last-control-number=0 along with the required parameters gets you LASTCONTROLNUMBER: [50]
+Example: Using last-control-number=0 along with the required parameters gets you the course results along with LASTCONTROLNUMBER: \[50\], you can then set last-control-number=50 to get the next set of results \
+**Course Code** \
+course-code=eel3135 This parameter lets you pass the course code as a parameter \
+**Class Number/Section** \
+class-num=12345 This parameter lets you pass the class/section number as a parameter
 ### Sample Code:
 Found in AaronHelpFunc folder 
 ### Instructions to Run Sample Code 
