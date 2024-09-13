@@ -68,7 +68,7 @@ Example: Using last-control-number=0 along with the required parameters gets you
 course-code=eel3135 This parameter lets you pass the course code as a parameter \
 \
 **Class Number/Section** \
-class-num=12345 This parameter lets you pass the class/section number as a parameter \
+class-num=12345 This parameter lets you pass the class/section number as a parameter 
 
 ### Sample Code:
 Found in AaronHelpFunc folder 
