@@ -100,6 +100,9 @@ UFID Check In is a web application that allows administrators manage timesheets 
 6. In flask-backend folder, run python app.py
 7. In ufid-web folder, run npm start
 
+### Testing
+Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
+
 ## Admin Site (Aaron Version PythonAnywhere Hosted)
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
@@ -131,12 +134,6 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
       * uploads/  
 5. Reload the website in the Web tab
 6. Click the link above the reload button to open the website  
-
-### Testing
-Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
-
-### Testing
-Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
