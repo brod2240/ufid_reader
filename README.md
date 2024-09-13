@@ -120,7 +120,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 - POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database (Not yet implemented)
 
 ### Instructions for Admin Site
-1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com
+1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com (to get to admin page use login admin1 for both username and password)
 2. Create pythonanywhere account
 3. Create webapp and set backend to flask
 4. Copy the UFIDWebapp folder into the mysite folder in the file tab
