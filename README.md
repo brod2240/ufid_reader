@@ -29,7 +29,7 @@ https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
 Note: term and category are required. lastcontrolnumber is highly suggested \
 \
 Sample Call (Bare Minimum): \
-<span>https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165</span> \
+>https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
 \
 **Parameters:** \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
