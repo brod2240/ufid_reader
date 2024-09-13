@@ -25,7 +25,7 @@ Program to allow a barcode scanner and rfid module to read ufid numbers and outp
 https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
 ### How to Use:
 **Base URL:**
-[GET] https://one.ufl.edu/apix/soc/schedule/[parameters] \
+\[GET\] https://one.ufl.edu/apix/soc/schedule/\[parameters\] \
 Note: term and category are required. lastcontrolnumber is highly suggested \
 \
 Sample Call (Bare Minimum): \
@@ -35,9 +35,9 @@ https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
 \
 **Semester/Term (Required)** \
-term = [Year(with second digit removed][Semester number][optional Summer Semester] \
+term = \[Year(with second digit removed\]\[Semester number\]\[optional Summer Semester\] \
 Spring: 1 \
-Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C)
+Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C) \
 Fall: 8 \
 \
 **Program/Category (Required)** \
@@ -49,14 +49,17 @@ HUR: USVI and Puerto Rico \
 \
 **Number of Results** \
 The JSON response from the API includes the last row and total number of rows as of the results as \
-[ \
+\[ \
 &nbsp;{ \
 &nbsp;&nbsp;"COURSES":[ ], \
-&nbsp;&nbsp;"LASTCONTROLNUMBER": [number] \
-&nbsp;&nbsp;"RETRIEVEDROWS": [number] \
-&nbsp;&nbsp;"TOTALROWS": [number] \
+&nbsp;&nbsp;"LASTCONTROLNUMBER": \[number\] \
+&nbsp;&nbsp;"RETRIEVEDROWS": \[number\] \
+&nbsp;&nbsp;"TOTALROWS": \[number\] \
 &nbsp;} \
-] 
+\] \
+\
+This API limits the number of returned courses. In order to get the next set of results you must set last-control-number= the previous last-control-number. \
+Example: Using last-control-number=0 along with the required parameters gets you LASTCONTROLNUMBER: [50]
 ### Sample Code:
 Found in AaronHelpFunc folder 
 ### Instructions to Run Sample Code 
