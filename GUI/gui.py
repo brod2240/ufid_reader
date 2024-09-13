@@ -9,8 +9,10 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("image_example.py")
-        self.geometry("1000x600")
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        win.geometry(f"{screen_width}x{screen_height}")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
