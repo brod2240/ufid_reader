@@ -57,6 +57,36 @@ External communication to database with TCP/IP. Internal communication between m
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the class roster as stated in the interal systems section.
 ## Bugs/Issues
 Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing <br /> <br />
+Main Bugs/Issues (Alpha Build):
+* Rasp Pi 4 display resolution too small on monitor
+  * Commandline still appears small but display of the GUI can be adapted to take up the whole screen
+* Publicly available course API has inaccurate information with regards to the total rows returned
+  *  Fixed by receiving data until all was there was no more
+* Publicly available course API not on whitelist of website on free version of pythonanywhere so it doesn't work
+  *  Running course API on RaspPi instead of website
+  *  Also, is closer to ideal design where everything but the databases are on the RaspPi and to get info the RaspPi is making API request to the website or course API
+* Course API needs year and semester to obtain course data for the desired semester
+  *  Programmed a HTML parser to parse for start and end dates from the academic calendar
+  *  First used on website but did not work due to whitelist of websites
+  *  Likely reutilized now that access to course API can be done from RaspPi      
+* Lacking permanent hosting and effient way to visualize and edit data
+  *  Created website on pythonanywhere to host database and easily manipulate and visualize data  
+* No way to add to data to student database besides hardcoding it or commandline
+  *  Created a form on the new website with the assumption that at the beginning of the year students would manually input there own info
+  *  Now operating under the ideal assumption that data is provided in UF database and will therefore be taken from there instead of provided by students
+  *  Using form for testing purposes and easy way to edit data
+* Website form doesn't restrict class data to existing data and allows overwriting which is okay for updating but has the possibility of writing over other students data unitentionally.
+  *  Attempted to use publicly available course API to restrict options though it is not on the whitelist of website allowed on the free version of pythonanywhere
+  *  Operating under the ideal assumption that data is provided in UF database and will therefore be taken from there instead of provided by students
+  *  Using form for testing purposes and easy way to edit data      
+* No Database Access
+  *  Denied UF database access due to FERPA
+  *  Switched pseudo-database to be hosted on a pythonanywhere website as closest to ideal solution simulating the UF database servers
+  *  Utilized publically available API for courses
+  *  Created table in database for student info, RaspPi configurations, and time-stamp data
+  *  Inquired UFIT about the type of database (SQL) and what data headings were on the database
+
+<br /> <br />
 Main Bugs/Issues (Design Prototype):
 * Rasp Pi 4 display resolution too small on monitor
   * Kept the same for now 
