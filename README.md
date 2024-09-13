@@ -104,7 +104,7 @@ UFID Check In is a web application that allows administrators manage timesheets 
 Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displalys.
    
 ## Completed Work
-**Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing /
+**Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
 \
 **Main Work Completed (Alpha Build):**
 * Software
@@ -156,8 +156,9 @@ External communication to database with internet connection and API request with
 #### Integrity and Resiliance
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the student database as stated in the internal system section. Sensitive data will also encrypted before being sent through API requests and requests for sensitive data will need authorized device checked with the serial number of the kiosks in the Pi/Kiosks database. 
 ## Bugs/Issues
-Full and Detailed List of Bugs/Issues: https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing <br /> <br />
-Main Bugs/Issues (Alpha Build):
+**Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
+\
+**Main Bugs/Issues (Alpha Build):**
 * Rasp Pi 4 display resolution too small on monitor
   * Commandline still appears small but display of the GUI can be adapted to take up the whole screen
 * Publicly available course API has inaccurate information with regards to the total rows returned
@@ -190,8 +191,8 @@ Main Bugs/Issues (Alpha Build):
 * Internet??
 * Threading??  
 
-<br /> <br />
-Main Bugs/Issues (Design Prototype):
+\
+**Main Bugs/Issues (Design Prototype):**
 * Rasp Pi 4 display resolution too small on monitor
   * Kept the same for now 
 * Reading HID data from MRD5 scanner directly not working
@@ -209,8 +210,8 @@ Main Bugs/Issues (Design Prototype):
 * GUI connection to Rasp Pi 4
   * Fixed using python tkinter
 
-<br /> <br />
-Main Bugs/Issues (Pre-Alpha):
+\
+**Main Bugs/Issues (Pre-Alpha):**
 * MRD5 scanner not outputting via HID
   * Fixed by obtaining correctly configured MRD5 scanner.
 * No database access
