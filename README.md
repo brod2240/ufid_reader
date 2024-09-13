@@ -49,6 +49,19 @@ Test plan is provided on how testing was done, including testing API endpoints m
    
 ## Completed Work
 Log of Completed Work: https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing <br /> <br />
+Main Work Completed (Alpha Build):
+* Software
+   * Created webapp to host database thus emulating UF database and to act as a data manipulation and visualization tool for testing purposes and UI
+   * Added table to database for Pi/Kiosk Configuration with the serial number as the primary key and the room the kiosk is in
+   * Made a form on webapp to easily add student data to student database for testing
+   * Added table to roster page which allows for visualization of student data
+   * Wrote program to parse HTML in "dates and deadlines" page of the UF catalog website to find the start and end dates of semesters (located in AaronHelpFunc folder)
+   * Wrote program to extract all information given from the public Course API (located in AaronHelpFunc folder)
+   * Wrote and tested app routing code so website would act like API
+* Hardware
+   * 
+
+<br /> <br />
 Main Work Completed (Design Prototype):
 * Software
    * Changed database over to SQLite. Stores data with UFID or ISO as primary key, student name, and up to 8 courses belonging to student.
