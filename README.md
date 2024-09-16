@@ -190,9 +190,14 @@ Data validation code will be written to ensure that the input is valid with rega
 ## Bugs/Issues
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
 \
+**Main Bugs/Issues (Beta Build and Alpha Test):**
+* Kiosks page can be accessed without login. Note: only form seen not any data.
+  *  Fixed by integrating sessions in Kiosks page app routing
+
+\
 **Main Bugs/Issues (Alpha Build):**
 * Rasp Pi 4 display resolution too small on monitor
-  * Commandline still appears small but display of the GUI can be adapted to take up the whole screen
+  *  Commandline still appears small but display of the GUI can be adapted to take up the whole screen
 * Publicly available course API has inaccurate information with regards to the total rows returned
   *  Fixed by receiving data until all was there was no more
 * Publicly available course API not on whitelist of website on free version of pythonanywhere so it doesn't work
