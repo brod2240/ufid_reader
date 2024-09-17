@@ -193,6 +193,11 @@ Data validation code will be written to ensure that the input is valid with rega
 **Main Bugs/Issues (Beta Build and Alpha Test):**
 * Kiosks page can be accessed without login. Note: only form seen not any data.
   *  Fixed by integrating sessions in Kiosks page app routing
+* Sessions not ending after tab or window exited
+  *  Fixed using beforeunload listener along with navigation flag
+  *  Navigation flag ensures that session is only exited when tab closed and not when page is changed
+* Logout button on roster page not displaying properly
+  * Fixed with display: inline-block instead of inline        
 
 \
 **Main Bugs/Issues (Alpha Build):**
