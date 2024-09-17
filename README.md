@@ -197,7 +197,8 @@ Data validation code will be written to ensure that the input is valid with rega
   *  Fixed using beforeunload listener along with navigation flag
   *  Navigation flag ensures that session is only exited when tab closed and not when page is changed
 * Logout button on roster page not displaying properly
-  * Fixed with display: inline-block instead of inline        
+  * Fixed with display: inline-block instead of inline
+* Kiosk form submit button kicks user out of session       
 
 \
 **Main Bugs/Issues (Alpha Build):**
