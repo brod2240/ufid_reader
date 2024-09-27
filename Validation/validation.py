@@ -4,7 +4,7 @@ import json
 import urllib.parse
 
 
-def web_api_request(page, params):
+def web_api_get_request(page, params):
     url = "https://gatorufid.pythonanywhere.com/"
     url += page
     response = requests.get(url, params=params)
@@ -123,13 +123,15 @@ def fetch_courses(time, day, room, course_code=None, class_num=None, day_m=None,
 '''
     
 
-def validate(serial_num, iso=None, ufid=None):
+def validate(serial_num, card_iso=None, card_ufid=None):
     params = {
         "serial_num": serial_num,
-        "iso": iso
+        "iso": card_iso,
+        "ufid": card_ufid
     }
 
-    student = web_api_request(page="roster", params=params)
+    student = web_api_get_request(page="roster", params=params)
+    #print(student)
 
     student_sec_nums = [student['student_data'][i] for i in range(4, 12) if student['student_data'][i] is not None]
 
@@ -137,6 +139,7 @@ def validate(serial_num, iso=None, ufid=None):
 
     # Extract UFID, first name, and last name
     ufid = student['student_data'][0]
+    iso = student['student_data'][1]
     first_name = student['student_data'][2]
     last_name = student['student_data'][3]
 
@@ -146,16 +149,19 @@ def validate(serial_num, iso=None, ufid=None):
     params = {
         "serial_num": serial_num
     }
-    room = (web_api_request(page="kiosks", params=params))['room_num']
+    #print(params)
+    room = (web_api_get_request(page="kiosks", params=params))['room_num']
+    #print(room)
     #print(room)
 
-    #now = datetime.datetime.now()
+    #now = datetime.now()
     now = datetime(2024, 9, 19, 11, 0, 0)
 
     day = now.weekday()
 
-    #current_time = now.time()
-    current_time = datetime.strptime('10:40 AM', '%I:%M %p')
+    current_time = now.time()
+    #current_time = datetime.strptime('10:40 AM', '%I:%M %p')
+    #current_time = now.strptime('10:40:00 AM', '%I:%M:%S %p')
 
     match day:
         case 0:  # Monday
@@ -178,7 +184,7 @@ def validate(serial_num, iso=None, ufid=None):
         "roomCode": room
     }
 
-    results = web_api_request(page='courses', params=params)
+    results = web_api_get_request(page='courses', params=params)
 
     #print(results)
 
@@ -189,7 +195,7 @@ def validate(serial_num, iso=None, ufid=None):
     for result in results:
         start = datetime.strptime(result[5], '%I:%M %p') - timedelta(minutes=15)
         end = datetime.strptime(result[6], '%I:%M %p') + timedelta(minutes=15) #possible change
-        if start <= current_time <= end:
+        if start.time() <= current_time <= end.time():
             courses.append(result)
 
 
@@ -199,8 +205,24 @@ def validate(serial_num, iso=None, ufid=None):
         course_sec_num = course[1]
         for student_sec_num in student_sec_nums:
             if course_sec_num == student_sec_num:
+                params = {
+                    'serial_num': serial_num, 
+                    'ufid': ufid,
+                    'iso': iso, 
+                    'first_name': first_name, 
+                    'last_name': last_name,
+                    'course': course[0],
+                    'class': course[1],
+                    'instructor': course[2],
+                    'room_num': course[7],
+                    'time':  now.strftime("%m/%d/%Y %I:%M:%S %p")
+                }
                 #print(student_sec_num)
                 #do post request to timesheet
+                url = "https://gatorufid.pythonanywhere.com/timesheet"
+                response = requests.post(url, params=params)
+                #print(response)
+
                 is_valid = True
 
 
@@ -216,5 +238,5 @@ def validate(serial_num, iso=None, ufid=None):
     return validation
 
 #fetch_courses(course_code="CHM6586")
-valid = validate("10000000d340eb60", iso="2000000000000000")
+valid = validate("10000000d340eb60", card_iso="2000000000000000")
 print(valid)
