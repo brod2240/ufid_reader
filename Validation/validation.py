@@ -9,10 +9,11 @@ def web_api_get_request(page, params):
     url += page
     response = requests.get(url, params=params)
 
+    return response
     # Check if the request was successful
-    if response.status_code == 200:
-        data = response.json()
-    return data
+    #if response.status_code == 200:
+    #    data = response.json()
+    #return data
 
 
 '''
@@ -133,6 +134,26 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     student = web_api_get_request(page="roster", params=params)
     #print(student)
 
+    if student.status_code != 200:
+        if student.json()['error'] == "Serial number not found":
+            return {
+                "UFID": None,
+                "First Name": None,
+                "Last Name": None,
+                "Valid": -1  # -1 indicates invalid serial number
+            }
+
+        if student.json()['error'] == "UFID or ISO not found":
+            return {
+                "UFID": None,
+                "First Name": None,
+                "Last Name": None,
+                "Valid": -2  # -1 indicates invalid serial number
+            }
+
+    student = student.json()
+    #print(student)
+
     student_sec_nums = [student['student_data'][i] for i in range(4, 12) if student['student_data'][i] is not None]
 
     #print(student_sec_nums)
@@ -143,14 +164,14 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     first_name = student['student_data'][2]
     last_name = student['student_data'][3]
 
-    # Initialize a boolean for validation
-    is_valid = False
+    # Initialize a validation as -3; validation ranges from 0 - -3;
+    is_valid = -3
 
     params = {
         "serial_num": serial_num
     }
     #print(params)
-    room = (web_api_get_request(page="kiosks", params=params))['room_num']
+    room = (web_api_get_request(page="kiosks", params=params)).json()['room_num']
     #print(room)
     #print(room)
 
@@ -184,7 +205,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
         "roomCode": room
     }
 
-    results = web_api_get_request(page='courses', params=params)
+    results = (web_api_get_request(page='courses', params=params)).json()
 
     #print(results)
 
@@ -223,7 +244,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                 response = requests.post(url, params=params)
                 #print(response)
 
-                is_valid = True
+                is_valid = 0
 
 
     #fetch_courses()
@@ -238,5 +259,5 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     return validation
 
 #fetch_courses(course_code="CHM6586")
-valid = validate("10000000d340eb60", card_iso="2000000000000000")
+valid = validate("10000000d340eb60", card_ufid="12345678")
 print(valid)
