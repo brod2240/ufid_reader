@@ -8,7 +8,8 @@ System allows a magnetic stripe/RFID module to read, validate, and save student 
 ## Instructions to Run Code on Device
 1. Git Pull from repository: BLANK, BLANK
 2. OTHER INSTR
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server \ (Not Needed in Current Version)
+## Instructions to Run Client-Server Communication Between Rasp Pi and Server 
+## (Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
 3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
