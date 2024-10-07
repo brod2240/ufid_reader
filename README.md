@@ -1,7 +1,7 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
-1. Connect power to device, HDMI to monitor, and keyboard to device as temporary input
+1. Connect device to power, to monitor, and to keyboard as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
 3. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
 4. Follow the following instructions
