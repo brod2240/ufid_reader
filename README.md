@@ -118,11 +118,11 @@ Test plan is provided on how testing was done, including testing API endpoints m
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
 ### Features
-- Accounts: These keep track of the courses each professor teaches. (Not yet implemented) Basic admin login capability is implemented.
-- Student Form: Adds or edits student data in student table in database.
-- Roster Page: Displays student data and has Student Form to add more data. (Search and filter to be added).
-- Timesheet Page: (Display timesheet data, has search and filter, ability to download sheet, all to be added).
-- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks (Add is implemented)(edit, delete, and display have been created but have not yet been integrated into the code).
+- Accounts: These keep track of the courses each professor teaches (Being Implemented in Brianna's Version). Basic admin login capability is implemented.
+- Student Form: Adds or edits student data in student table in roster database.
+- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. (Search and filter to be added)
+- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). (Search, filter, and ability to download sheet to be added).
+- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks.
 - Page Navigation
 
 ### Website API Endpoints
@@ -158,9 +158,18 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
-**Main Work Completed (Beta Build):**
+**Main Work Completed (Beta Build and Alpha Test):**
 * Software
-   * BLANK
+   * Wrote program API-to-Database.py which utilized public course API to get all class sections for that semester and save them to a database
+     * Database contains the code, classNumber, instructor(s), meetNo, meetDay, meetTimeBegin, meetTimeEnd, and meetRoomCode
+     * Classes were saved using the class section and meeting number as a composite key
+     * Allows custom API calls to be made, reducing lag by using new parameters to filter data before returning it
+   * Made GET API endpoints for the website to access the student, kiosk, and course data from the kiosk (Details of API endpoints found above)
+     * Courses GET endpoint reduces lag previously caused by calling public course API which had a lack of parameters leading to many result being returnned and manually filtered for
+   * Made POST API endpoint for the website to save timestamp data from the kiosk to the timesheet table of the database hosted on the website
+   * Wrote validation.py code which utilized the new website API endpoints to obtain, validate, save, and return data
+   * Added buttons to edit, delete, and delete all kiosks
+   * Fixed login to time out after 15 minutes and restrict access to the roster, kiosks, and timesheet page 
 * Hardware
    * BLANK
 
@@ -218,14 +227,25 @@ Data validation code will be written to ensure that the input is valid with rega
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
 \
 **Main Bugs/Issues (Beta Build and Alpha Test):**
-* Kiosks page can be accessed without login. Note: only form seen not any data.
+* Kiosks page can be accessed without login. Note: only temp form page can be seen at time of bug.
   *  Fixed by integrating sessions in Kiosks page app routing
 * Sessions not ending after tab or window exited
   *  Fixed using beforeunload listener along with navigation flag
   *  Navigation flag ensures that session is only exited when tab closed and not when page is changed
 * Logout button on roster page not displaying properly
   * Fixed with display: inline-block instead of inline
-* Kiosk form submit button kicks user out of session       
+* Kiosk form submit button kicks user out of session
+  * Form changed to table and no longer has submit button which kicks users out
+* Session kicks out after refreshing twice
+  * Session time out after 15 minutes of inactivity instead now not relying on beforeunload listener or navigation flags
+* Validation code produces unexpected output sometimes returning an error and other times the UFID, Name, and Validity
+  * Fixed by returning the UFID, Name, and Validity each time but with the validity being 0, -1, -2, -3 instead of a boolean. With the errors being converted to a -1, -2, or -3 validity representing serial number not found, UFID or ISO not found, and no matching class, respectively.
+* Incorrect output of validation function when cards sequentially scanned
+  * Tested validation function for output (Worked as expected)
+  * Fixed by clearing input using strip after each scan.
+* Lag in validation caused by lack of parameters for public course API
+  * Wrote API-to-Database.py program (similar to CourseFetch.py) to take data relating to a semester from the public course API and save it to a database
+  * Hosted new course database on website in /data folder
 
 \
 **Main Bugs/Issues (Alpha Build):**
