@@ -1,19 +1,19 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
 ## Instructions for Client Host Device Set Up
-1. Connect Power, HDMI to monitor, and keyboard (ONLY FOR RASP PI 4)
+1. Connect Power, HDMI to monitor, and keyboard
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
 3. Connect MRD5 scanner via USB. Make sure to hold power button to turn on.
 4. Git Pull repository
 5. Follow the following instructions
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server
+## Instructions to Run Client-Server Communication Between Rasp Pi and Server (Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
 3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
 4. Run Server.py on server host device. Class number used to validate students is hardcoded as this class 27483.
 5. Run Client.py on client host device.
 6. Scan ID.
-## Instructions for GUI
+## Instructions for GUI (Not Needed in Current Version)
 1. Ensure the validationSQL.py and gui.py files are in the same folder.
 2. On the command line, ensure you are inside the folder/directory.
 3. Run the command 'python gui.py' or 'python3 gui.py' depending on what version of python you have.
@@ -68,8 +68,17 @@ Example: Using last-control-number=0 along with the required parameters gets you
 course-code=eel3135 This parameter lets you pass the course code as a parameter \
 \
 **Class Number/Section** \
-class-num=12345 This parameter lets you pass the class/section number as a parameter 
-
+class-num=12345 This parameter lets you pass the class/section number as a parameter
+\
+**Meeting Days** \
+"day-m": 'true', \
+"day-t": 'false', \
+"day-w": 'false', \
+"day-r": 'false', \
+"day-f": 'false', \
+"day-s": 'false' \
+Note: The days are not set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. \
+\
 ## Course API and HTML Parser Helper Functions (AaronHelpFunc):
 ### Instructions
 1. Install required libraries: datetime, requests, BeautifulSoup from bs4, and re
@@ -115,16 +124,26 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 - Page Navigation
 
 ### Website API Endpoints
-- GET /kiosks/\[serial_num\]: Retrieves room number associated with kiosk
-- GET /roster/\[UFID or ISO\]: Retrieves UFID, ISO, first name, last name, class numbers associated with UFID or ISO (Not yet implemented)
-- POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database (Not yet implemented)
+- GET /kiosks/\[serial_num\]
+  - Retrieves room number associated with kiosk
+- GET /roster/\[serial_num\]\[ufid or iso\]
+  - Retrieves UFID, ISO, first name, last name, and class numbers associated with UFID or ISO
+  - Both serial_num and ufid or iso are required to get an actual result
+- GET /courses/\[day\]\[roomCode\]
+  - Retrieves code, classNumber, instructor(s), meetNo, meetDay, meetTimeBegin, meetTimeEnd, and meetRoomCode associated with that day and room
+  - Both day and roomCode are required to get an actual result
+  - 'day' can be M, T, W, R, F, or S
+  - Ex. roomCode: NSC215
+- POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[first_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
+  - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
+  - Saves ufid, iso, first name, last name, course code, class/section number, instructor, room number, and time to timesheet table in database
 
 ### Instructions for Admin Site
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com (to get to admin page use login admin1 for both username and password)
 2. Create pythonanywhere account
 3. Create webapp and set backend to flask
-4. Copy the UFIDWebapp folder into the mysite folder in the file tab
-* Structure:
+4. Copy the UFIDWebapp folder into the mysite folder in the file tab (The api and uploads folder can be omitted)
+* Structure: 
    * mysite
       * app.py
       * api/
