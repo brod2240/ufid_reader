@@ -1,5 +1,5 @@
 # UFID Reader
-Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
+System allows a magnetic stripe/RFID module to read, validate, and save student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
 1. Connect device to power, to monitor, and to keyboard as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
