@@ -158,6 +158,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
+\
 **Main Work Completed (Beta Build and Alpha Test):**
 * Software
    * Wrote program API-to-Database.py which utilized public course API to get all class sections for that semester and save them to a database
