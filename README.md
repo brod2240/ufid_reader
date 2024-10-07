@@ -1,12 +1,14 @@
 # UFID Reader
 Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
-## Instructions for Client Host Device Set Up
-1. Connect Power, HDMI to monitor, and keyboard
+## Instructions for Kiosk Device Set Up
+1. Connect power to device, HDMI to monitor, and keyboard to device as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
-3. Connect MRD5 scanner via USB. Make sure to hold power button to turn on.
-4. Git Pull repository
-5. Follow the following instructions
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server (Not Needed in Current Version)
+3. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
+4. Follow the following instructions
+## Instructions to Run Code on Device
+1. Git Pull from repository: BLANK, BLANK
+2. OTHER INSTR
+## Instructions to Run Client-Server Communication Between Rasp Pi and Server \ (Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
 3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
@@ -77,7 +79,7 @@ class-num=12345 This parameter lets you pass the class/section number as a param
 "day-r": 'false', \
 "day-f": 'false', \
 "day-s": 'false' \
-Note: The days are not set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
+Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
 \
 ## Course API and HTML Parser Helper Functions (AaronHelpFunc):
 ### Instructions
@@ -133,7 +135,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
   - Retrieves code, classNumber, instructor(s), meetNo, meetDay, meetTimeBegin, meetTimeEnd, and meetRoomCode associated with that day and room
   - Both day and roomCode are required to get an actual result
   - 'day' can be M, T, W, R, F, or S
-  - Ex. roomCode: NSC215
+  - Ex. roomCode: 'NSC215'
 - POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[first_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
   - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
   - Saves ufid, iso, first name, last name, course code, class/section number, instructor, room number, and time to timesheet table in database
@@ -156,6 +158,12 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
+**Main Work Completed (Beta Build):**
+* Software
+   * BLANK
+* Hardware
+   * BLANK
+
 \
 **Main Work Completed (Alpha Build):**
 * Software
