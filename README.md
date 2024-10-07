@@ -68,7 +68,7 @@ Example: Using last-control-number=0 along with the required parameters gets you
 course-code=eel3135 This parameter lets you pass the course code as a parameter \
 \
 **Class Number/Section** \
-class-num=12345 This parameter lets you pass the class/section number as a parameter
+class-num=12345 This parameter lets you pass the class/section number as a parameter \
 \
 **Meeting Days** \
 "day-m": 'true', \
@@ -77,7 +77,7 @@ class-num=12345 This parameter lets you pass the class/section number as a param
 "day-r": 'false', \
 "day-f": 'false', \
 "day-s": 'false' \
-Note: The days are not set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. \
+Note: The days are not set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
 \
 ## Course API and HTML Parser Helper Functions (AaronHelpFunc):
 ### Instructions
