@@ -170,7 +170,9 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    * Made POST API endpoint for the website to save timestamp data from the kiosk to the timesheet table of the database hosted on the website
    * Wrote validation.py code which utilized the new website API endpoints to obtain, validate, save, and return data
    * Added buttons to edit, delete, and delete all kiosks
-   * Fixed login to time out after 15 minutes and restrict access to the roster, kiosks, and timesheet page 
+   * Fixed login to time out after 15 minutes and restrict access to the roster, kiosks, and timesheet page
+   * Wrote Unit Tests for the API GET request to the website
+   * Wrote a time response test for public course API which analyzed how much time it took to receive and manually filter results given a day parameter. It also provided insight into how many sections and meeting times were loaded and the amount of results given a hardcoded time of 11 AM and a room code of NSC215. Note: No matter what time or room code were used, all meeting times of sections had to be iterated through. 
 * Hardware
    * BLANK
 
