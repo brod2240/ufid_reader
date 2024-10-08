@@ -1,19 +1,21 @@
 # UFID Reader
-Program to allow a barcode scanner and rfid module to read ufid numbers and output student information for attendance purposes.
-## Instructions for Client Host Device Set Up
-1. Connect Power, HDMI to monitor, and keyboard (ONLY FOR RASP PI 4)
+System allows a magnetic stripe/RFID module to read, validate, save, and return student information for attendance purposes.
+## Instructions for Kiosk Device Set Up
+1. Connect device to power, to monitor, and to keyboard as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
-3. Connect MRD5 scanner via USB. Make sure to hold power button to turn on.
-4. Git Pull repository
-5. Follow the following instructions
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server
+3. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
+4. Follow the following instructions
+## Instructions to Run Code on Device
+1. Git Pull from repository: BLANK, BLANK
+2. OTHER INSTR
+## Instructions to Run Client-Server Communication Between Rasp Pi and Server<br>(Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
 3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
 4. Run Server.py on server host device. Class number used to validate students is hardcoded as this class 27483.
 5. Run Client.py on client host device.
 6. Scan ID.
-## Instructions for GUI
+## Instructions for GUI (Not Needed in Current Version)
 1. Ensure the validationSQL.py and gui.py files are in the same folder.
 2. On the command line, ensure you are inside the folder/directory.
 3. Run the command 'python gui.py' or 'python3 gui.py' depending on what version of python you have.
@@ -68,8 +70,17 @@ Example: Using last-control-number=0 along with the required parameters gets you
 course-code=eel3135 This parameter lets you pass the course code as a parameter \
 \
 **Class Number/Section** \
-class-num=12345 This parameter lets you pass the class/section number as a parameter 
-
+class-num=12345 This parameter lets you pass the class/section number as a parameter \
+\
+**Meeting Days** \
+"day-m": 'true', \
+"day-t": 'false', \
+"day-w": 'false', \
+"day-r": 'false', \
+"day-f": 'false', \
+"day-s": 'false' \
+Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
+\
 ## Course API and HTML Parser Helper Functions (AaronHelpFunc):
 ### Instructions
 1. Install required libraries: datetime, requests, BeautifulSoup from bs4, and re
@@ -107,24 +118,34 @@ Test plan is provided on how testing was done, including testing API endpoints m
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
 ### Features
-- Accounts: These keep track of the courses each professor teaches. (Not yet implemented) Basic admin login capability is implemented.
-- Student Form: Adds or edits student data in student table in database.
-- Roster Page: Displays student data and has Student Form to add more data. (Search and filter to be added).
-- Timesheet Page: (Display timesheet data, has search and filter, ability to download sheet, all to be added).
-- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks (Add is implemented)(edit, delete, and display have been created but have not yet been integrated into the code).
+- Accounts: These keep track of the courses each professor teaches (Being Implemented in Brianna's Version). Basic admin login capability is implemented.
+- Student Form: Adds or edits student data in student table in roster database.
+- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. (Search and filter to be added)
+- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). (Search, filter, and ability to download sheet to be added).
+- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks.
 - Page Navigation
 
 ### Website API Endpoints
-- GET /kiosks/\[serial_num\]: Retrieves room number associated with kiosk
-- GET /roster/\[UFID or ISO\]: Retrieves UFID, ISO, first name, last name, class numbers associated with UFID or ISO (Not yet implemented)
-- POST /timesheet\[serial_num\]\[time\]\[UFID or ISO\]\[Matched Course\]: Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database, uses UFID or ISO to get the student info, saves time, student name/id, and class num in timesheet table in database (Not yet implemented)
+- GET /kiosks/\[serial_num\]
+  - Retrieves room number associated with kiosk
+- GET /roster/\[serial_num\]\[ufid or iso\]
+  - Retrieves UFID, ISO, first name, last name, and class numbers associated with UFID or ISO
+  - Both serial_num and ufid or iso are required to get an actual result
+- GET /courses/\[day\]\[roomCode\]
+  - Retrieves code, classNumber, instructor(s), meetNo, meetDay, meetTimeBegin, meetTimeEnd, and meetRoomCode associated with that day and room
+  - Both day and roomCode are required to get an actual result
+  - 'day' can be M, T, W, R, F, or S
+  - Ex. roomCode: 'NSC215'
+- POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[first_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
+  - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
+  - Saves ufid, iso, first name, last name, course code, class/section number, instructor, room number, and time to timesheet table in database
 
 ### Instructions for Admin Site
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com (to get to admin page use login admin1 for both username and password)
 2. Create pythonanywhere account
 3. Create webapp and set backend to flask
-4. Copy the UFIDWebapp folder into the mysite folder in the file tab
-* Structure:
+4. Copy the UFIDWebapp folder into the mysite folder in the file tab (The api and uploads folder can be omitted)
+* Structure: 
    * mysite
       * app.py
       * api/
@@ -137,6 +158,22 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
+\
+**Main Work Completed (Beta Build and Alpha Test):**
+* Software
+   * Wrote program API-to-Database.py which utilized public course API to get all class sections for that semester and save them to a database
+     * Database contains the code, classNumber, instructor(s), meetNo, meetDay, meetTimeBegin, meetTimeEnd, and meetRoomCode
+     * Classes were saved using the class section and meeting number as a composite key
+     * Allows custom API calls to be made, reducing lag by using new parameters to filter data before returning it
+   * Made GET API endpoints for the website to access the student, kiosk, and course data from the kiosk (Details of API endpoints found above)
+     * Courses GET endpoint reduces lag previously caused by calling public course API which had a lack of parameters leading to many result being returnned and manually filtered for
+   * Made POST API endpoint for the website to save timestamp data from the kiosk to the timesheet table of the database hosted on the website
+   * Wrote validation.py code which utilized the new website API endpoints to obtain, validate, save, and return data
+   * Added buttons to edit, delete, and delete all kiosks
+   * Fixed login to time out after 15 minutes and restrict access to the roster, kiosks, and timesheet page 
+* Hardware
+   * BLANK
+
 \
 **Main Work Completed (Alpha Build):**
 * Software
@@ -175,24 +212,47 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 * Created and Tested data validation of student ID. Prompts for class number which will become an admin function then with each scan checks if the student ID exists and if they are enrolled in the class by checking the class number. 
 ## Project Architecture
 Pre-Alpha Project Architecture: https://docs.google.com/document/d/1tP44RrBhFNyO9FV3hFwBYtD2954Nz5rZk2YErq-sL-Y/edit?usp=sharing <br /> <br />
-Current Project Architecture: https://docs.google.com/document/d/16P1VVmUHEkcT9Zi2FqWKvdya8piKoZl4C9z6rgN8DTU/edit?usp=sharing <br />
+Alpha Project Architecture: https://docs.google.com/document/d/16P1VVmUHEkcT9Zi2FqWKvdya8piKoZl4C9z6rgN8DTU/edit?usp=sharing <br /> <br />
+Current Project Architecture: https://docs.google.com/document/d/1MKxFBsCBQZ5DKFq7oUa7FJucZgOmg5q-gVv8mNC52VA/edit?usp=sharing <br />
 ### End Goal Project Architecture:
 #### External Interface
 Users will interface with a MRD5 scanner and LCD screen. The MRD5 scanner will take in input from either the magnetic stripe of a physical card or the NFC tap of a physical or mobile card. The validation of the ID will be displayed on screen (error, not in roster, present, etc.) along with the name and photo of the student. For admins, teachers, and IT they will interface with a website allowing them to see and manipulate data. 
 #### Persistent State
 The UF directory and ESODBC data warehouse will be the persistent state in which information such as the student ISO, name, ID number, photo, and class number of enrolled course can be accessed. Another database hosted on a UF server will be used to store the timestamp and Pi/Kiosk configuration data. This server could also host the website. Course data is available in one of the UF servers and can be accessed with a publicly available API. 
 #### Internal System
-The internal system will use its serial number to send a get request to the database with Pi/Kiosks configurations to get the room it is in. Using the time and room it will send another get request to the course database to find class numbers happening at that time in that room. It will also take in the input of the physical or mobile ID and request information related to the ISO or UFID number. It will then check if the class number of the student match that of the class numbers related to the ID. If the ID is valid it will be timestamped, sent to the database, adn outputted to the LCD. If invalid it will also be outputted with some error message. 
+The internal system will use its serial number to send a get request to the database with Pi/Kiosks configurations to get the room it is in. Using the time and room it will send another get request to the course database to find class numbers happening at that time in that room. It will also take in the input of the physical or mobile ID and request information related to the ISO or UFID number. It will then check if the class number of the student match that of the class numbers related to the ID. If the ID is valid it will be timestamped, sent to the database, and outputted to the LCD. If invalid it will also be outputted with some error message. 
 #### Communication Structures
-External communication to database with internet connection and API request with data being encrypted. Internal communication between microcontroller and MRD5 scanner with USB and communication between microcontroller and LCD screen with some type of HDMI. 
+External communication to database with secure internet connection and API request with data being encrypted. Internal communication between microcontroller and MRD5 scanner with USB and communication between microcontroller and LCD screen with some type of HDMI. 
 #### Integrity and Resiliance
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the student database as stated in the internal system section. Sensitive data will also encrypted before being sent through API requests and requests for sensitive data will need authorized device checked with the serial number of the kiosks in the Pi/Kiosks database. 
 ## Bugs/Issues
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
 \
+**Main Bugs/Issues (Beta Build and Alpha Test):**
+* Kiosks page can be accessed without login. Note: only temp form page can be seen at time of bug.
+  *  Fixed by integrating sessions in Kiosks page app routing
+* Sessions not ending after tab or window exited
+  *  Fixed using beforeunload listener along with navigation flag
+  *  Navigation flag ensures that session is only exited when tab closed and not when page is changed
+* Logout button on roster page not displaying properly
+  * Fixed with display: inline-block instead of inline
+* Kiosk form submit button kicks user out of session
+  * Form changed to table and no longer has submit button which kicks users out
+* Session kicks out after refreshing twice
+  * Session time out after 15 minutes of inactivity instead now not relying on beforeunload listener or navigation flags
+* Validation code produces unexpected output sometimes returning an error and other times the UFID, Name, and Validity
+  * Fixed by returning the UFID, Name, and Validity each time but with the validity being 0, -1, -2, -3 instead of a boolean. With the errors being converted to a -1, -2, or -3 validity representing serial number not found, UFID or ISO not found, and no matching class, respectively.
+* Incorrect output of validation function when cards sequentially scanned
+  * Tested validation function for output (Worked as expected)
+  * Fixed by clearing input using strip after each scan.
+* Lag in validation caused by lack of parameters for public course API
+  * Wrote API-to-Database.py program (similar to CourseFetch.py) to take data relating to a semester from the public course API and save it to a database
+  * Hosted new course database on website in /data folder
+
+\
 **Main Bugs/Issues (Alpha Build):**
 * Rasp Pi 4 display resolution too small on monitor
-  * Commandline still appears small but display of the GUI can be adapted to take up the whole screen
+  *  Commandline still appears small but display of the GUI can be adapted to take up the whole screen
 * Publicly available course API has inaccurate information with regards to the total rows returned
   *  Fixed by receiving data until all was there was no more
 * Publicly available course API not on whitelist of website on free version of pythonanywhere so it doesn't work
