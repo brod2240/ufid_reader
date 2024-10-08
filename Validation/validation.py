@@ -180,6 +180,8 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 
     day = now.weekday()
 
+    actual_now = datetime.now() #for prof website post request
+
     current_time = now.time()
     #current_time = datetime.strptime('10:40 AM', '%I:%M %p')
     #current_time = now.strptime('10:40:00 AM', '%I:%M:%S %p')
@@ -238,11 +240,29 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                     'room_num': course[7],
                     'time':  now.strftime("%m/%d/%Y %I:%M:%S %p")
                 }
+
+                checkin_site_params = {
+                    'serial_num': serial_num, 
+                    'ufid': ufid,
+                    'iso': iso, 
+                    'first_name': first_name, 
+                    'last_name': last_name,
+                    'course': course[0],
+                    'class': course[1],
+                    'instructor': course[2],
+                    'room_num': course[7],
+                    'time': actual_now.strftime("%Y-%m-%d %H:%M:%S")
+                }
+
                 #print(student_sec_num)
                 #do post request to timesheet
                 url = "https://gatorufid.pythonanywhere.com/timesheet"
                 response = requests.post(url, params=params)
-                #print(response)
+
+                checkin_web_url = "https://brirod2240.pythonanywhere.com/api/add_timesheet"
+                site_response = requests.post(checkin_web_url, json=checkin_site_params)
+                #print(site_response)
+                #print(site_response.text)
 
                 is_valid = 0
 
@@ -259,5 +279,5 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     return validation
 
 #fetch_courses(course_code="CHM6586")
-valid = validate("10000000d340eb60", card_ufid="12345678")
-print(valid)
+valid = validate("10000000d340eb60", card_ufid="77211373")
+#print(valid)
