@@ -108,13 +108,10 @@ class App(customtkinter.CTk):
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
-        success_label = customtkinter.CTkLabel(self.success_frame, text="Got ID Successfully!", font=("Roboto", 50))
-        success_label.grid(pady=5, padx=10)
-        success_label.place(anchor="c",relx=0.5, rely=0.15)
-        # self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
-        # self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
-        # self.success_image_label.grid(padx=10)
-        # self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
+        self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
+        self.success_image_label.grid(padx=10)
+        self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
 
 
@@ -122,13 +119,10 @@ class App(customtkinter.CTk):
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.fail_frame.grid_rowconfigure(0, weight=1)
         self.fail_frame.grid_columnconfigure(1, weight=1)
-        fail_label = customtkinter.CTkLabel(self.fail_frame, text="Not in the system!", font=("Roboto", 50))
-        fail_label.grid(pady=5, padx=10)
-        fail_label.place(anchor="c",relx=0.5, rely=0.15)
-        # self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
-        # self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
-        # self.fail_image_label.grid(padx=10)
-        # self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
+        self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
+        self.fail_image_label.grid(padx=10)
+        self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
 
 
