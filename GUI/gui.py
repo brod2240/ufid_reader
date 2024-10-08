@@ -98,7 +98,7 @@ class App(customtkinter.CTk):
         self.input_box = customtkinter.CTkEntry(self.manual_frame, placeholder_text="Type in UFID", height=50, width=200, justify='center', corner_radius=15, state="normal")
         self.input_box.grid(pady=20)
         self.input_box.place(anchor="c",relx=0.5, rely=0.5)
-        search_button = customtkinter.CTkButton(self.manual_frame, text="Search", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("fail"))
+        search_button = customtkinter.CTkButton(self.manual_frame, text="Search", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("success"))
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
 
