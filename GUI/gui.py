@@ -1,9 +1,6 @@
 import customtkinter
 import datetime
 from PIL import Image
-from src.validation import validate_course, validate_id
-
-
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -12,11 +9,14 @@ class App(customtkinter.CTk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
 
-        win.geometry(f"{screen_width}x{screen_height}")
+        self.geometry(f"{screen_width}x{screen_height}")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
+
+
+
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -45,6 +45,9 @@ class App(customtkinter.CTk):
                                                        anchor="w", command=lambda:self.destroy())
         self.exit_button.grid(row=7, column=0, sticky="ew")
 
+
+
+
         #create course id input page
         self.landing_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         landing_label = customtkinter.CTkLabel(self.landing_frame, text="Enter Course", font=("Roboto", 50))
@@ -56,9 +59,12 @@ class App(customtkinter.CTk):
         course_box = customtkinter.CTkEntry(self.landing_frame, placeholder_text="Type Course ID", height=50, width=200, justify='center', corner_radius=15, state="normal")
         course_box.grid(pady=20)
         course_box.place(anchor="c",relx=0.5, rely=0.5)
-        search_button = customtkinter.CTkButton(self.landing_frame, text="Enter", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.validate_course_id(course_box.get()))
+        search_button = customtkinter.CTkButton(self.landing_frame, text="Enter", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("scan"))
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
+
+
+
 
         # create scan frame
         self.scan_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -78,8 +84,8 @@ class App(customtkinter.CTk):
         img_label = customtkinter.CTkLabel(self.scan_frame, text='', image=img)
         img_label.grid(pady = 40)
 
-        #id_display = customtkinter.CTkLabel(self.scan_frame, text=input(), font=("Roboto", 50))
-        #id_display.grid(pady=5, padx=10) #need to fix this
+
+
 
         # create manual search frame
         self.manual_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -92,17 +98,40 @@ class App(customtkinter.CTk):
         self.input_box = customtkinter.CTkEntry(self.manual_frame, placeholder_text="Type in UFID", height=50, width=200, justify='center', corner_radius=15, state="normal")
         self.input_box.grid(pady=20)
         self.input_box.place(anchor="c",relx=0.5, rely=0.5)
-        search_button = customtkinter.CTkButton(self.manual_frame, text="Search", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.validate_student_id(course_box.get(),self.input_box.get()))
+        search_button = customtkinter.CTkButton(self.manual_frame, text="Search", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("fail"))
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
+
+
 
         #create success page
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
+        self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
+        self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
+        self.success_image_label.grid(padx=10)
+        self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
+
+
+
+        #create fail page
+        self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.fail_frame.grid_rowconfigure(0, weight=1)
+        self.fail_frame.grid_columnconfigure(1, weight=1)
+        self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
+        self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
+        self.fail_image_label.grid(padx=10)
+        self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
+
+
+
         
         # select default frame
         self.select_frame_by_name("course")
+
+
+
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -129,9 +158,14 @@ class App(customtkinter.CTk):
             self.landing_frame.grid_forget()
         if name == "success":
             self.success_frame.grid(row=0,column=1, sticky="nsew")
-            self.navigation_frame.grid_forget();
+            self.navigation_frame.grid_forget()
         else:
             self.success_frame.grid_forget()
+        if name == "fail":
+            self.fail_frame.grid(row=0,column=1, sticky="nsew")
+            self.navigation_frame.grid_forget()
+        else:
+            self.fail_frame.grid_forget()
 
     def scan_button_event(self):
         self.select_frame_by_name("scan")
@@ -141,45 +175,6 @@ class App(customtkinter.CTk):
 
     def course_button_event(self):
         self.select_frame_by_name("course")
-
-    def validate_course_id(self, course_id):
-        print(course_id)
-        if validate_course(course_id) == True:
-            self.select_frame_by_name("scan")
-        else:
-            incorrect_label = customtkinter.CTkLabel(self.landing_frame, text="Invalid Course ID Entered. Please Try Again.", font=("Roboto", 15), text_color="red")
-            incorrect_label.grid(padx=5, pady=5)
-            incorrect_label.place(anchor="c",relx=0.5, rely=0.40)
-            print("Invalid course id")
-
-    def validate_student_id(self, course_id, id_value):
-        self.input_box.delete(0,'end')
-        value = validate_id(course_id, id_value)
-        print(value[0])
-        if (value[0] == True):
-            currentTime = datetime.datetime.now().strftime("%Y-%m-%d, %I:%M %p")
-            self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(200,200))
-            self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
-            self.success_image_label.grid(padx=10)
-            self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
-            self.student_name = customtkinter.CTkLabel(self.success_frame, text=value[1], font=("Roboto", 50))
-            self.student_name.grid(row=1, column=0)
-            self.student_name.place(anchor="c",relx=0.25, rely=0.55)
-            self.student_id = customtkinter.CTkLabel(self.success_frame, text=value[2], font=("Roboto", 50))
-            self.student_id.grid(row=1, column=1)
-            self.student_id.place(anchor="c",relx=0.75, rely=0.55)
-            self.check_in = customtkinter.CTkLabel(self.success_frame, text=currentTime, font=("Roboto", 50))
-            self.check_in.grid(row=2, column=1, pady=5)
-            self.check_in.place(anchor="c",relx=0.5, rely=0.75)
-            self.next_button = customtkinter.CTkButton(self.success_frame, text="Next", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("scan"))
-            self.next_button.grid()
-            self.next_button.place(anchor="c", relx=0.85, rely=0.9)
-            self.select_frame_by_name("success")
-        else:
-            incorrect_label = customtkinter.CTkLabel(self.manual_frame, text="Invalid Student ID Entered. Please Try Again.", font=("Roboto", 15), text_color="red")
-            incorrect_label.grid(padx=5, pady=5)
-            incorrect_label.place(anchor="c",relx=0.5, rely=0.40)
-            print("Invalid student id")
 
 
     def change_appearance_mode_event(self, new_appearance_mode):
