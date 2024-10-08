@@ -67,7 +67,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 
     day = now.weekday()
 
-    actual_now = datetime.now() #for prof website post request
+    #actual_now = datetime.now() #for prof website post request
 
     current_time = now.time()
     #current_time = datetime.strptime('10:40 AM', '%I:%M %p')
@@ -146,7 +146,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                     'class': course[1],
                     'instructor': course[2],
                     'room_num': course[7],
-                    'time': actual_now.strftime("%Y-%m-%d %H:%M:%S")
+                    'time': now.strftime("%Y-%m-%d %H:%M:%S")
                 }
 
                 #print(student_sec_num)
