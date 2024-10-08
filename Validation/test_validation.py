@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta
 import requests
-import json
-import urllib.parse
-
 
 def web_api_get_request(page, params):
     url = "https://gatorufid.pythonanywhere.com/"
@@ -19,7 +16,6 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     }
 
     student = web_api_get_request(page="roster", params=params)
-    #print(student)
 
     if student.status_code != 200:
         if student.json()['error'] == "Serial number not found":
@@ -35,7 +31,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                 "UFID": None,
                 "First Name": None,
                 "Last Name": None,
-                "Valid": -2  # -2 indicates invalid UFID or ISO
+                "Valid": -2  # -1 indicates invalid serial number
             }
 
     student = student.json()
@@ -62,15 +58,14 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     #print(room)
     #print(room)
 
-    now = datetime.now()
-    #now = datetime(2024, 9, 19, 11, 0, 0)
+    #now = datetime.now()
+    now = datetime(2024, 9, 19, 11, 0, 0)
 
     day = now.weekday()
 
     current_time = now.time()
     #current_time = datetime.strptime('10:40 AM', '%I:%M %p')
     #current_time = now.strptime('10:40:00 AM', '%I:%M:%S %p')
-    #print(current_time)
 
     match day:
         case 0:  # Monday
@@ -86,12 +81,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
         case 5:  # Saturday
             day = 'S'
         case _:
-            return {
-                "UFID": None,
-                "First Name": None,
-                "Last Name": None,
-                "Valid": -4  # -4 indicates not school day
-            }
+            print("Invalid day")
         
     params = {
         "day": day,
@@ -99,8 +89,6 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     }
 
     results = (web_api_get_request(page='courses', params=params)).json()
-    # What if no class in room on day??
-    # Tested it with Saturday seems fine just registers as no match -3
 
     #print(results)
 
