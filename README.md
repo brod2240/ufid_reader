@@ -10,7 +10,7 @@ System allows a magnetic stripe/RFID module to read, validate, save, and return 
 1. git clone https://github.com/brod2240/ufid_reader.git
 2. cd ufid_reader
 3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
-4. DISPLAY=:0 python gui.py
+4. DISPLAY=:0 python GUI/gui.py
 5. The UFID Check-In System is running!
 ## Instructions to Run Client-Server Communication Between Rasp Pi and Server<br>(Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
