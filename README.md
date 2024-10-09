@@ -102,14 +102,14 @@ Gator Check In is a web application that allows professors to manage timesheets 
 
 ### API Endpoints
 BASE: https://brirod2240.pythonanywhere.com/api/
-		Endpoints: 
-        - /login : authenticates user
-        - /professor/<string:email>/courses : returns the courses taught by the professor with that email
-        - /timesheets : returns all timesheets in db
-        - /timesheets/search : based on filter parameters returns timesheet entries that meet that requirement
-        - /add_timesheet : adds time entry to timesheet table in tb and updates student record
-        - /courses/<course_code>/students : given course code, returns all students in that course
-        - /student/<ufid>/attendance_count : given the student id, return the number of scans made
+Endpoints: 
+        1. /login : authenticates user
+        2. /professor/<string:email>/courses : returns the courses taught by the professor with that email
+        3. /timesheets : returns all timesheets in db
+        4. /timesheets/search : based on filter parameters returns timesheet entries that meet that requirement
+        5. /add_timesheet : adds time entry to timesheet table in tb and updates student record
+        6. /courses/<course_code>/students : given course code, returns all students in that course
+        7. /student/<ufid>/attendance_count : given the student id, return the number of scans made
 
 ### Instructions for Admin Site
 1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build has username and password.
