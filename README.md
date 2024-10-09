@@ -3,11 +3,15 @@ System allows a magnetic stripe/RFID module to read, validate, save, and return 
 ## Instructions for Kiosk Device Set Up
 1. Connect device to power, to monitor, and to keyboard as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
-3. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
-4. Follow the following instructions
+3. Connect the RASP PI 4 to the internet, either by Wifi or ethernet
+4. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
+5. Follow the following instructions
 ## Instructions to Run Code on Device
-1. Git Pull from repository: BLANK, BLANK
-2. OTHER INSTR
+1. git clone https://github.com/brod2240/ufid_reader.git
+2. cd ufid_reader
+3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
+4. DISPLAY=:0 python gui.py
+5. The UFID Check-In System is running!
 ## Instructions to Run Client-Server Communication Between Rasp Pi and Server<br>(Not Needed in Current Version)
 1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
 2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
