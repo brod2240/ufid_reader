@@ -1,5 +1,5 @@
 # UFID Reader
-System allows a magnetic stripe/RFID module to read, validate, save, and return student information for attendance purposes.
+System allows a magnetic stripe/NFC module to read, validate, save, and return student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
 1. Connect device to power, to monitor, and to keyboard as temporary input
 2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
@@ -89,7 +89,7 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 ### Instructions
 1. Pip install requests if you have not already
 2. Run the python file
-3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively. This is the same way semesters/terms are set in the publicly available course API.
+3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively to the 5. This is the same way semesters/terms are set in the publicly available course API. (e.g. 2248 for Fall 2024 or 22456W1 for Summer A 2024)
 4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created
 
 ## Gator Check In Site (Hosted on Python Anywhere)
