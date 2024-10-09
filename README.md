@@ -6,7 +6,7 @@ System allows a magnetic stripe/RFID module to read, validate, save, and return 
 3. Connect the RASP PI 4 to the internet, either by Wifi or ethernet
 4. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
 5. Follow the following instructions
-## Instructions to Run Code on Device
+## Instructions to Run Code on Device (Current)
 1. git clone https://github.com/brod2240/ufid_reader.git
 2. cd ufid_reader
 3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
@@ -178,7 +178,14 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    * Wrote Unit Tests for the API GET request to the website
    * Wrote a time response test for public course API which analyzed how much time it took to receive and manually filter results given a day parameter. It also provided insight into how many sections and meeting times were loaded and the amount of results given a hardcoded time of 11 AM and a room code of NSC215. Note: No matter what time or room code were used, all meeting times of sections had to be iterated through. 
 * Hardware
-   * BLANK
+   * Created functioning system on the Pi 4 which reads a UFID and shows different frames based on program and validation statuses.
+     * Uses tkinter to display a user interface.
+     * Constantly polls for incoming UFID scan, with four different frames currently: request, loading, success, and failure.
+     * Communicates with the database website to determine if an incoming UFID is valid.
+     * Performs in an infinite loop, allowing for any number of potential scans without need for recalibration or interaction.
+   * Tested Pi 4 core temperature during operation to see if normal use can cause overheating. Exported results to csv for further analysis.
+   * Measured the average time the system took for a full iteration, starting at the time a UFID is scanned, and ending when the result frame is displayed. Exported results to csv for further analysis.
+   * Adjusted tkinter configuration to allow the display to work correctly on differently sized monitors.
 
 \
 **Main Work Completed (Alpha Build):**
