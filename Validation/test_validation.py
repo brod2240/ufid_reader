@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta
 import requests
-import json
-import urllib.parse
-
 
 def web_api_get_request(page, params):
     url = "https://gatorufid.pythonanywhere.com/"
@@ -19,7 +16,6 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     }
 
     student = web_api_get_request(page="roster", params=params)
-    #print(student)
 
     if student.status_code != 200:
         if student.json()['error'] == "Serial number not found":
@@ -35,7 +31,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                 "UFID": None,
                 "First Name": None,
                 "Last Name": None,
-                "Valid": -2  # -2 indicates invalid UFID or ISO
+                "Valid": -2  # -1 indicates invalid serial number
             }
 
     student = student.json()
@@ -62,17 +58,14 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     #print(room)
     #print(room)
 
-    now = datetime.now()
-    #now = datetime(2024, 9, 19, 11, 0, 0)
+    #now = datetime.now()
+    now = datetime(2024, 9, 19, 11, 0, 0)
 
     day = now.weekday()
-
-    #actual_now = datetime.now() #for prof website post request
 
     current_time = now.time()
     #current_time = datetime.strptime('10:40 AM', '%I:%M %p')
     #current_time = now.strptime('10:40:00 AM', '%I:%M:%S %p')
-    #print(current_time)
 
     match day:
         case 0:  # Monday
@@ -88,12 +81,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
         case 5:  # Saturday
             day = 'S'
         case _:
-            return {
-                "UFID": None,
-                "First Name": None,
-                "Last Name": None,
-                "Valid": -4  # -4 indicates not school day
-            }
+            print("Invalid day")
         
     params = {
         "day": day,
@@ -101,8 +89,6 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     }
 
     results = (web_api_get_request(page='courses', params=params)).json()
-    # What if no class in room on day??
-    # Tested it with Saturday seems fine just registers as no match -3
 
     #print(results)
 
@@ -135,29 +121,11 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                     'room_num': course[7],
                     'time':  now.strftime("%m/%d/%Y %I:%M:%S %p")
                 }
-
-                checkin_site_params = {
-                    'serial_num': serial_num, 
-                    'ufid': ufid,
-                    'iso': iso, 
-                    'first_name': first_name, 
-                    'last_name': last_name,
-                    'course': course[0],
-                    'class': course[1],
-                    'instructor': course[2],
-                    'room_num': course[7],
-                    'time': now.strftime("%Y-%m-%d %H:%M:%S")
-                }
-
                 #print(student_sec_num)
                 #do post request to timesheet
                 url = "https://gatorufid.pythonanywhere.com/timesheet"
                 response = requests.post(url, params=params)
-
-                checkin_web_url = "https://brirod2240.pythonanywhere.com/api/add_timesheet"
-                site_response = requests.post(checkin_web_url, json=checkin_site_params)
-                #print(site_response)
-                #print(site_response.text)
+                #print(response)
 
                 is_valid = 0
 
@@ -176,3 +144,5 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 #fetch_courses(course_code="CHM6586")
 valid = validate("10000000d340eb60", card_ufid="20000000")
 print(valid)
+#valid = validate("10000000d340eb60", card_ufid="77211373")
+#print(valid)
