@@ -85,12 +85,12 @@ class-num=12345 This parameter lets you pass the class/section number as a param
 "day-s": 'false' \
 Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
 \
-## Course API and HTML Parser Helper Functions (AaronHelpFunc):
+## API-to-Database.py (Validation):
 ### Instructions
-1. Install required libraries: datetime, requests, BeautifulSoup from bs4, and re
-2. Run python file of choice
-3. Depending on file it will automatically return results or prompt for input
-Note: Some files contain commented out blocks which can be switched out for slightly different result or was used for testing and is no longer needed
+1. Pip install requests if you have not already
+2. Run the python file
+3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively. This is the same way semesters/terms are set in the publicly available course API.
+4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created
 
 ## Gator Check In Site (Hosted on Python Anywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
