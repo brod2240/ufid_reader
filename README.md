@@ -22,10 +22,10 @@ System allows a magnetic stripe/NFC module to read, validate, save, and return s
 ## Instructions for GUI (Not Needed in Current Version)
 1. Ensure the validationSQL.py and gui.py files are in the same folder.
 2. On the command line, ensure you are inside the folder/directory.
-3. Run the command 'python gui.py' or 'python3 gui.py' depending on what version of python you have.
+3. Run the command 'python gui_main_loop.py' or 'python3 gui_main_loop.py' depending on what version of python you have.
 4. Enter course id manually (27483)
 5. Scan or input id (functionality for manual input implemented only)
-6. Manually input 93549135
+
 ## Public Course API
 ### Credit: 
 https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
