@@ -92,31 +92,37 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 3. Depending on file it will automatically return results or prompt for input
 Note: Some files contain commented out blocks which can be switched out for slightly different result or was used for testing and is no longer needed
 
-## Admin Site (Brianna Version Locally Hosted)
-UFID Check In is a web application that allows administrators manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
+## Gator Check In Site (Hosted on Python Anywhere)
+Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
 ### Features
-- Accounts: These keep track of the courses each professor teaches. (Hardcoded,  plan to implement in beta build)
+- Accounts: These keep track of the courses each professor teaches with login authentication
 - Course and Section management: Professors have their courses organized for them, in which each course card will display timesheet daata for only that course. (Additional accounts set for creation for beta build)
 - Attendance Tracking: Professors can track student attendance, taken from the backend, for all of their courses and section numbers. This application supports filtering of attendance records by date, course number, section number, and student name (plan to change to UFID in beta build). (Implemented for alpha build)
 - Responsive design: This application works across different screen devices, though there is room for improvement in layout adaptability. (Implemented for alpha build)
 
 ### API Endpoints
-- GET/api/professors/int:professor_id/courses: Retrieve courses taught by a specific professor
-- GET /api/courses: Get a list of all courses
-- GET /api/sections: Get a list of all sections numbers taught
-- GET /api/timesheets: Fetch timesheets with optional filters for date, course, section, and student
+BASE: https://brirod2240.pythonanywhere.com/api/
+		Endpoints: 
+        - /login : authenticates user
+        - /professor/<string:email>/courses : returns the courses taught by the professor with that email
+        - /timesheets : returns all timesheets in db
+        - /timesheets/search : based on filter parameters returns timesheet entries that meet that requirement
+        - /add_timesheet : adds time entry to timesheet table in tb and updates student record
+        - /courses/<course_code>/students : given course code, returns all students in that course
+        - /student/<ufid>/attendance_count : given the student id, return the number of scans made
 
 ### Instructions for Admin Site
-1. Unzip ufid-web folder
-2. In terminal: cd flask-backend
-3. enter command: pip install -r requirements.txt
-4. cd ../ufid-web
-5. enter command: npm install
-6. In flask-backend folder, run python app.py
-7. In ufid-web folder, run npm start
+1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build has username and password.
+2. If you want to recreate this, download ufid_web.zip
+3. Extract folder
+4. Create python anywhere account
+5. Create /web-app folder
+6. Place flask_backend and build folder in /web-app folder
+7. Reload website tab in Web section of python anywhere
+8. Click the link above the tab to look at the website
 
 ### Testing
-Test plan is provided on how testing was done, including testing API endpoints manually and verifying functionality of search filters and data displays.
+Test plan is provided on how testing was done, including testing API endpoints through unit testing, manual check with Postman, and filter verification.
 
 ## Admin Site (Aaron Version PythonAnywhere Hosted)
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
