@@ -43,7 +43,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 
     student_sec_nums = [student['student_data'][i] for i in range(4, 12) if student['student_data'][i] is not None]
 
-    #print(student_sec_nums)
+    print(student_sec_nums)
 
     # Extract UFID, first name, and last name
     ufid = student['student_data'][0]
@@ -60,7 +60,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     #print(params)
     room = (web_api_get_request(page="kiosks", params=params)).json()['room_num']
     #print(room)
-    #print(room)
+    print(room)
 
     now = datetime.now()
     #now = datetime(2024, 9, 19, 11, 0, 0)
@@ -94,6 +94,8 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                 "Last Name": None,
                 "Valid": -4  # -4 indicates not school day
             }
+    print(day)
+    print(room)
         
     params = {
         "day": day,
@@ -104,6 +106,8 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     # What if no class in room on day??
     # Tested it with Saturday seems fine just registers as no match -3
 
+
+    print(results)
     #print(results)
 
     courses = []
@@ -111,8 +115,13 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     #print(current_time)
 
     for result in results:
-        start = datetime.strptime(result[5], '%I:%M %p') - timedelta(minutes=15)
-        end = datetime.strptime(result[6], '%I:%M %p') + timedelta(minutes=15) #possible change
+        #start = datetime.strptime(result[5], '%I:%M %p') - timedelta(minutes=15)
+        #end = datetime.strptime(result[6], '%I:%M %p') + timedelta(minutes=15) #possible change
+        start = datetime.strptime(result[5], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) - timedelta(minutes=15)
+        end = datetime.strptime(result[6], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) + timedelta(minutes=15)
+        #print(start)
+        #print(current_time)
+        #print(end)
         if start.time() <= current_time <= end.time():
             courses.append(result)
 
@@ -174,5 +183,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     return validation
 
 #fetch_courses(course_code="CHM6586")
-valid = validate("10000000d340eb60", card_ufid="20000000")
+#valid = validate("10000000d340eb60", card_ufid="20000000")
+#print(valid)
+valid = validate("10000000d340eb60", card_ufid="77211373")
 print(valid)
