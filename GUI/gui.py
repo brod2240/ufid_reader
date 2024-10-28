@@ -1,6 +1,9 @@
 import customtkinter
 import datetime
+import sys
+import time
 from PIL import Image
+from gui_main_loop import *
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -10,6 +13,7 @@ class App(customtkinter.CTk):
         screen_height = self.winfo_screenheight()
 
         self.geometry(f"{screen_width}x{screen_height}")
+        self.scanner_input = ""
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -50,7 +54,7 @@ class App(customtkinter.CTk):
 
         #create course id input page
         self.landing_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        landing_label = customtkinter.CTkLabel(self.landing_frame, text="Enter Course", font=("Roboto", 50))
+        landing_label = customtkinter.CTkLabel(self.landing_frame, text="ID Scanned Successfully!", font=("Roboto", 50))
         landing_label.grid(pady=5, padx=10)
         landing_label.place(anchor="c",relx=0.5, rely=0.15)
         landing_label2 = customtkinter.CTkLabel(self.landing_frame, text="ID", font=("Roboto", 50))
@@ -108,13 +112,11 @@ class App(customtkinter.CTk):
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
-        success_label = customtkinter.CTkLabel(self.success_frame, text="Got ID Successfully!", font=("Roboto", 50))
-        success_label.grid(pady=5, padx=10)
-        success_label.place(anchor="c",relx=0.5, rely=0.15)
-        # self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
-        # self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
-        # self.success_image_label.grid(padx=10)
-        # self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        #self.success_frame.pack(expand=True, fill='both')
+        self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
+        self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
+        self.success_image_label.grid(padx=10)
+        self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
 
 
@@ -122,19 +124,17 @@ class App(customtkinter.CTk):
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.fail_frame.grid_rowconfigure(0, weight=1)
         self.fail_frame.grid_columnconfigure(1, weight=1)
-        fail_label = customtkinter.CTkLabel(self.fail_frame, text="Not in the system!", font=("Roboto", 50))
-        fail_label.grid(pady=5, padx=10)
-        fail_label.place(anchor="c",relx=0.5, rely=0.15)
-        # self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
-        # self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
-        # self.fail_image_label.grid(padx=10)
-        # self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
+        self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
+        self.fail_image_label.grid(padx=10)
+        self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
 
 
         
         # select default frame
-        self.select_frame_by_name("course")
+       # self.select_frame_by_name("course")
+        self.bind_all("<Key>", self.capture_scan)
 
 
 
@@ -164,12 +164,22 @@ class App(customtkinter.CTk):
             self.landing_frame.grid_forget()
         if name == "success":
             self.success_frame.grid(row=0,column=1, sticky="nsew")
-            self.navigation_frame.grid_forget()
+            self.success_frame.update_idletasks()
+           # time.sleep(2)
+            #self.select_frame_by_name("scan")
+            #self.success_frame.tkraise()
+            #print("Here")
+            #self.navigation_frame.grid_forget()
+            self.after(3000, lambda: self.select_frame_by_name("scan"))
+
         else:
             self.success_frame.grid_forget()
         if name == "fail":
             self.fail_frame.grid(row=0,column=1, sticky="nsew")
-            self.navigation_frame.grid_forget()
+           # self.navigation_frame.grid_forget()
+            self.fail_frame.update_idletasks()
+            
+            self.after(3000, lambda: self.select_frame_by_name("scan"))
         else:
             self.fail_frame.grid_forget()
 
@@ -185,6 +195,10 @@ class App(customtkinter.CTk):
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
+    def capture_scan(self,event):
+        self.scanner_input+=event.char
+        if event.keysym == "Return":
+            process_scan(self)
 
 if __name__ == "__main__":
     app = App()

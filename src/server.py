@@ -1,7 +1,7 @@
 import socket
 import datetime
 import csv
-from validation import validate_id, validate_course
+from validation import validate_id, validate_course, get_student_name
 
 scan_records = []  # List to hold scan records
 
@@ -27,10 +27,10 @@ def run_server(server_socket):
         print("Server socket clocsed.")
 
 def handle_client(client_socket):
-    #class_number = "27483"  # Hard code example class number, adjust as needed
-    # if not validate_course(class_number):
-    #     print("Invalid class number")
-    #     return
+    class_number = "27483"  # Hard code example class number, adjust as needed
+    if not validate_course(class_number):
+        print("Invalid class number")
+        return
 
     try:
         while True:
@@ -41,25 +41,23 @@ def handle_client(client_socket):
             if request == "close":  # Handle close command
                 break
 
-            # valid, first_name, last_name = validate_id(class_number, request)
+            valid, first_name, last_name = validate_id(class_number, request)
 
-            # response = "" + valid
+            response = "" + valid
 
-            # if valid:
-            #     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            #     record = (timestamp, request, f"{first_name} {last_name}")
-            #     scan_records.append(record)
+            if valid:
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                record = (timestamp, request, f"{first_name} {last_name}")
+                scan_records.append(record)
 
-            #     name = f"{first_name} {last_name}"
-            #     name_bytes = name.encode('utf-8') + 1
-            #     name_length = len(name_bytes)
-            #     response = valid.to_bytes(1) + name_length.to_bytes(1, byteorder='big') + name_bytes
-            # else:
-            #     temp = "Failure: UFID or ISO not found."
-            #     temp_length = len(temp) + 1
-            temp_length = 1
-            valid = True
-            response = valid.to_bytes(1) + temp_length.to_bytes()# + temp.encode('utf-8')
+                name = f"{first_name} {last_name}"
+                name_bytes = name.encode('utf-8') + 1
+                name_length = len(name_bytes)
+                response = valid.to_bytes(1) + name_length.to_bytes(1, byteorder='big') + name_bytes
+            else:
+                temp = "Failure: UFID or ISO not found."
+                temp_length = len(temp) + 1
+                response = valid.to_bytes(1) + temp_length.to_bytes() + temp.encode('utf-8')
             
 
             client_socket.sendall(response)

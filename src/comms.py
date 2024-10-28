@@ -44,24 +44,24 @@ def retrieve_data_socket(UFID, client_socket):
     try:
             client_socket.send(UFID.encode("utf-8"))
             valid = client_socket.recv(1) # 1 if found in corresponding database entry, 0 if not (bool)
+            valid_int = int.from_bytes(valid, "big")
+      
 
-            name_length_bytes = client_socket.recv(1)
-            name_length = int.from_bytes(name_length_bytes, byteorder='big')
-            if(name_length == -1):
-                print("Connection closed by server.")
-                return "closed"
+            #name_length_bytes = client_socket.recv(1)
+            #name_length = int.from_bytes(name_length_bytes, byteorder='big')
+            #if(name_length == -1):
+               # print("Connection closed by server.")
+                #return "closed"
             
-            name = client_socket.recv(name_length).decode("utf-8")
+            name = client_socket.recv(1).decode("utf-8")
             
-            return valid
+            return valid_int 
     except socket.error as err:
         print("Error when receiving info from server:", err)
     except KeyboardInterrupt:
         print("Keyboard Interrupt entered. Exiting...")
-    finally:
-        client_socket.close()
-
-
+   # finally:
+        #client_socket.close()
 
 # def daily_interrupt():
 #     #temp
