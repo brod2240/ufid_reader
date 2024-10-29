@@ -9,7 +9,7 @@ sys.path.append('../Validation')
 import validation
 from gui import *
 
-#f=open("../Testdata/time/scanTimes.txt","w")
+f=open("../Testdata/time/scanTimes.txt","w")
 def changeFrame(self,state):
     if state == 0 :
         self.select_frame_by_name("scan")
