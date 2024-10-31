@@ -24,7 +24,7 @@ def verify_imports():
     verify_pip()
     # now that we know that pip is installed and usable, we can use it to download dependencies in requirements.txt
 
-    req_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../requirements.txt')) # get absolute path, make sure can find the requirements.txt no matter where file is run from
+    req_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../ConfigFiles/requirements.txt')) # get absolute path, make sure can find the requirements.txt no matter where file is run from
 
     try:
         with open(req_path) as file: #use with to auto close file after reading requirements
