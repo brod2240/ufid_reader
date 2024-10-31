@@ -1,7 +1,9 @@
-import customtkinter
+import customtkinter, os
 from PIL import Image
 
-from UFIDReader.src.main import process_scan
+from src.main import process_scan
+
+image_dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'images'))
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -73,7 +75,9 @@ class App(customtkinter.CTk):
         label3 = customtkinter.CTkLabel(self.scan_frame, text="Tap Below", font=("Roboto", 50))
         label3.grid(pady=5, padx=10)
 
-        img = customtkinter.CTkImage(light_image=Image.open("images/arrow.png"), dark_image=Image.open("images/arrow.png"), size=(200,200))
+
+
+        img = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "arrow.png")), dark_image=Image.open(os.path.join(image_dir_path, "arrow.png")), size=(200,200))
         img_label = customtkinter.CTkLabel(self.scan_frame, text='', image=img)
         img_label.grid(pady = 40)
 
@@ -97,7 +101,7 @@ class App(customtkinter.CTk):
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
         #self.success_frame.pack(expand=True, fill='both')
-        self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
+        self.success_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "checkmark.png")), dark_image=Image.open(os.path.join(image_dir_path, "checkmark.png")), size=(500,500))
         self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
         self.success_image_label.grid(padx=10)
         self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
@@ -106,7 +110,7 @@ class App(customtkinter.CTk):
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.fail_frame.grid_rowconfigure(0, weight=1)
         self.fail_frame.grid_columnconfigure(1, weight=1)
-        self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
+        self.fail_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "incorrect.png")), dark_image=Image.open(os.path.join(image_dir_path, "incorrect.png")), size=(500,500))
         self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
         self.fail_image_label.grid(padx=10)
         self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
@@ -183,5 +187,3 @@ class App(customtkinter.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-
-
