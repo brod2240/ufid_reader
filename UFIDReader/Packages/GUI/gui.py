@@ -179,10 +179,10 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
         
-    def capture_scan(self,event):
-        self.scanner_input+=event.char
-        if event.keysym == "Return":
-            process_scan(self)
+    # def capture_scan(self,event):
+    #     self.scanner_input+=event.char
+    #     if event.keysym == "Return":
+    #         process_scan(self)
 
 if __name__ == "__main__":
     app = App()
