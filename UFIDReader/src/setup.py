@@ -1,6 +1,6 @@
-import sys, subprocess
+import sys, subprocess, os
 
-MIN_PYTHON_VERSION = (3,10)
+min_python_version = (3,10)
 
 def verify_all():
     verify_python()
@@ -8,7 +8,7 @@ def verify_all():
 
 def verify_python():
     current_python_version = sys.version_info
-    if current_python_version < MIN_PYTHON_VERSION:
+    if current_python_version < min_python_version:
         print(f"Current Python version {current_python_version.major}.{current_python_version.minor} is outdated.")
         print("Please update your Python version usng the following two lines:\nsudo apt update\nsudo apt install python3")
         sys.exit(1) 
@@ -24,8 +24,10 @@ def verify_imports():
     verify_pip()
     # now that we know that pip is installed and usable, we can use it to download dependencies in requirements.txt
 
+    req_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../requirements.txt')) # get absolute path, make sure can find the requirements.txt no matter where file is run from
+
     try:
-        with open('requirements.txt') as file: #use with to auto close file after reading requirements
+        with open(req_path) as file: #use with to auto close file after reading requirements
             requirements = file.read().splitlines()
 
         subprocess.check_call([sys.executable, "-m", "pip", "install", *requirements]) # *requirements splits tuple gotten from file and passes each argument seperately to pip install
@@ -38,5 +40,5 @@ def verify_imports():
         print(f"An error occurred while installing dependencies: {e}")
         sys.exit(1)
 
-if __name__ == "__main__":
+if __name__ == "__main__": # for calling directly
     verify_all()

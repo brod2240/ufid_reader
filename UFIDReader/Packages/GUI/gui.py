@@ -1,9 +1,7 @@
 import customtkinter
-import datetime
-import sys
-import time
 from PIL import Image
-from gui_main_loop import *
+
+from UFIDReader.src.main import process_scan
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -18,9 +16,6 @@ class App(customtkinter.CTk):
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-
-
-
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -49,9 +44,6 @@ class App(customtkinter.CTk):
                                                        anchor="w", command=lambda:self.destroy())
         self.exit_button.grid(row=7, column=0, sticky="ew")
 
-
-
-
         #create course id input page
         self.landing_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         landing_label = customtkinter.CTkLabel(self.landing_frame, text="ID Scanned Successfully!", font=("Roboto", 50))
@@ -66,9 +58,6 @@ class App(customtkinter.CTk):
         search_button = customtkinter.CTkButton(self.landing_frame, text="Enter", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("scan"))
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
-
-
-
 
         # create scan frame
         self.scan_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -88,9 +77,6 @@ class App(customtkinter.CTk):
         img_label = customtkinter.CTkLabel(self.scan_frame, text='', image=img)
         img_label.grid(pady = 40)
 
-
-
-
         # create manual search frame
         self.manual_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         manual_label = customtkinter.CTkLabel(self.manual_frame, text="Type UFID", font=("Roboto", 50))
@@ -106,8 +92,6 @@ class App(customtkinter.CTk):
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
 
-
-
         #create success page
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.success_frame.grid_rowconfigure(0, weight=1)
@@ -118,8 +102,6 @@ class App(customtkinter.CTk):
         self.success_image_label.grid(padx=10)
         self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
-
-
         #create fail page
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.fail_frame.grid_rowconfigure(0, weight=1)
@@ -129,9 +111,6 @@ class App(customtkinter.CTk):
         self.fail_image_label.grid(padx=10)
         self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
-
-
-        
         # select default frame
        # self.select_frame_by_name("course")
         self.bind_all("<Key>", self.capture_scan)
@@ -195,6 +174,7 @@ class App(customtkinter.CTk):
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
+        
     def capture_scan(self,event):
         self.scanner_input+=event.char
         if event.keysym == "Return":

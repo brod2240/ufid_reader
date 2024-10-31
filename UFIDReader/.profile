@@ -32,11 +32,16 @@ fi
 #default location
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     cd ~/ufid_reader
-    git pull
-    python -m venv venv
-    source venv/bin/activate
-    cd ~/new/ufid_reader/GUI
-    python setup.py
+    git pull # make sure project is up to date
+
+    cd UFIDReader
+    if [ ! -d "venv" ]; then # checks if the virtual env folder exists or not before creating. If there already, skip init
+        python -m venv venv # creates virtual python folder where the required dependencies are installed. 
+        # Mostly done to allow for running pip install without need for user confirmation in command line.
+    fi 
+
+    source venv/bin/activate # begin using created virtual env
+    python src/setup.py # verify dependencies in requirements.txt are installed and are the proper version. Also verifies pip and the proper python version is installed
     startx
 fi
 
