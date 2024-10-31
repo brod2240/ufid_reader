@@ -21,7 +21,7 @@ def process_scan(self):
     if not os.path.exists(path):
         os.makedirs(path)
 
-    scantimes_path = os.join(path, 'scanTimes.txt') # get absolute path, make sure can find the requirements.txt no matter where file is run from
+    scantimes_path = os.path.join(path, 'scanTimes.txt') # get absolute path, make sure can find the requirements.txt no matter where file is run from
 
     if not os.path.exists(scantimes_path):
         with open(scantimes_path, 'a') as f:
