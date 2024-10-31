@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cp ConfigFiles/.profile ~/.profile
+cp ConfigFiles/.xinitrc ~/.xinitrc

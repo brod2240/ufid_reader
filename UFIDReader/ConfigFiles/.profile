@@ -35,6 +35,12 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     git pull # make sure project is up to date
 
     cd UFIDReader
+
+    if [ -f "ConfigFiles/.profile" ] && [ -f "ConfigFiles/.xinitrc" ]; then
+        cp ConfigFiles/.profile ~/.profile
+        cp ConfigFiles/.xinitrc ~/.xinitrc
+    fi
+    
     if [ ! -d "venv" ]; then # checks if the virtual env folder exists or not before creating. If there already, skip init
         python -m venv venv # creates virtual python folder where the required dependencies are installed. 
         # Mostly done to allow for running pip install without need for user confirmation in command line.
