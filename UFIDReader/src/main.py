@@ -25,8 +25,6 @@ def process_scan(self):
         with open(scantimes_path, 'a') as f:
             f.write(str(time_total) + '\n')    
 
-    f.write(str(time_total)+'\n')
-    f.flush()
     if valid["Valid"] == 0:
         self.select_frame_by_name("success")
     else:
