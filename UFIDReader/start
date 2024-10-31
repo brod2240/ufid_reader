@@ -7,8 +7,8 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     cd UFIDReader
 
     if [ -f "ConfigFiles/.profile" ] && [ -f "ConfigFiles/.xinitrc" ]; then
-        mv ConfigFiles/.profile ~/.profile
-        mv ConfigFiles/.xinitrc ~/.xinitrc
+        cp ConfigFiles/.profile ~/.profile
+        cp ConfigFiles/.xinitrc ~/.xinitrc
     fi
 
     if [ ! -d "venv" ]; then # checks if the virtual env folder exists or not before creating. If there already, skip init
