@@ -16,7 +16,12 @@ def process_scan(self):
     time_total =(end - start)
     print(str(time_total))
 
-    scantimes_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Testdata/scanTimes.txt')) # get absolute path, make sure can find the requirements.txt no matter where file is run from
+    path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Testdata'))
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    scantimes_path = os.join(path, 'scanTimes.txt') # get absolute path, make sure can find the requirements.txt no matter where file is run from
 
     if not os.path.exists(scantimes_path):
         with open(scantimes_path, 'a') as f:

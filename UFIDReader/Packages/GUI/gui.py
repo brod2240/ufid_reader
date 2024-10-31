@@ -180,9 +180,9 @@ class App(customtkinter.CTk):
         customtkinter.set_appearance_mode(new_appearance_mode)
         
     def capture_scan(self,event):
-        # self.scanner_input+=event.char
-        # if event.keysym == "Return":
-        #     process_scan(self)
+        self.scanner_input+=event.char
+        if event.keysym == "Return":
+            process_scan(self)
 
 if __name__ == "__main__":
     app = App()
