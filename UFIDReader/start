@@ -6,7 +6,7 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
 
     cd UFIDReader
 
-    if [ -f "ConfigFiles/.profile"] && [-f "ConfigFiles/.xinitrc" ]; then
+    if [ -f "ConfigFiles/.profile" ] && [ -f "ConfigFiles/.xinitrc" ]; then
         mv ConfigFiles/.profile ~/.profile
         mv ConfigFiles/.xinitrc ~/.xinitrc
     fi
