@@ -1,4 +1,7 @@
 #!/bin/bash
 
-cp ConfigFiles/.profile ~/.profile
-cp ConfigFiles/.xinitrc ~/.xinitrc
+
+if [ -f "ConfigFiles/.profile" ] && [ -f "ConfigFiles/.xinitrc" ]; then
+    cp ConfigFiles/.profile ~/.profile
+    cp ConfigFiles/.xinitrc ~/.xinitrc
+fi
