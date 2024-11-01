@@ -12,19 +12,6 @@ System allows a magnetic stripe/NFC module to read, validate, save, and return s
 3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
 4. python gui_main_loop.py
 5. The UFID Check-In System is running!
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server<br>(Not Needed in Current Version)
-1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
-2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
-3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
-4. Run Server.py on server host device. Class number used to validate students is hardcoded as this class 27483.
-5. Run Client.py on client host device.
-6. Scan ID.
-## Instructions for GUI (Not Needed in Current Version)
-1. Ensure the validationSQL.py and gui.py files are in the same folder.
-2. On the command line, ensure you are inside the folder/directory.
-3. Run the command 'python gui_main_loop.py' or 'python3 gui_main_loop.py' depending on what version of python you have.
-4. Enter course id manually (27483)
-5. Scan or input id (functionality for manual input implemented only)
 
 ## Public Course API
 ### Credit: 
@@ -40,6 +27,13 @@ https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
 **Parameters:** \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
 \
+**Program/Category (Required)**
+RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
+CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond) \
+UFO: UF online program \
+IA: Innovation Academy \
+HUR: USVI and Puerto Rico \
+\
 **Semester/Term (Required)** \
 term = \[Year(with second digit removed\]\[Semester number\]\[optional Summer Semester\] \
 Spring: 1 \
@@ -47,13 +41,6 @@ Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C) \
 Fall: 8 \
 \
 Example: Summer A 2024 would be 22456W1; Fall 2024 would be 2248 \
-\
-**Program/Category (Required)** \
-RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
-CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond) \
-UFO: UF online program \
-IA: Innovation Academy \
-HUR: USVI and Puerto Rico \
 \
 **Number of Results** \
 The JSON response from the API includes the last control number, retrieved rows, and total number of rows as of the results as \
@@ -85,14 +72,15 @@ class-num=12345 This parameter lets you pass the class/section number as a param
 "day-s": 'false' \
 Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
 \
-## API-to-Database.py (Validation):
+## API-to-Database.py (UFIDReader/Packages/Validation):
 ### Instructions
 1. Pip install requests if you have not already
 2. Run the python file
 3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively to the 5. This is the same way semesters/terms are set in the publicly available course API. (e.g. 2248 for Fall 2024 or 22456W1 for Summer A 2024)
-4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created
+4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website.
+5. Place the courses_{term}.db in the /data folder for the admin website and place the json file in the professor website
 
-## Gator Check In Site (Hosted on Python Anywhere)
+## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
 ### Features
 - Accounts: These keep track of the courses each professor teaches with login authentication
@@ -111,8 +99,8 @@ Endpoints:
         6. /courses/<course_code>/students : given course code, returns all students in that course
         7. /student/<ufid>/attendance_count : given the student id, return the number of scans made
 
-### Instructions for Admin Site
-1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build has username and password.
+### Instructions for Professor Site
+1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build Report has username and password.
 2. If you want to recreate this, download ufid_web.zip
 3. Extract folder
 4. Create python anywhere account
@@ -124,15 +112,15 @@ Endpoints:
 ### Testing
 Test plan is provided on how testing was done, including testing API endpoints through unit testing, manual check with Postman, and filter verification.
 
-## Admin Site (Aaron Version PythonAnywhere Hosted)
+## Gator Check In Admin Site (Hosted on PythonAnywhere)
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
 ### Features
-- Accounts: These keep track of the courses each professor teaches (Being Implemented in Brianna's Version). Basic admin login capability is implemented.
+- Accounts: Basic admin login capability is implemented with sessions for data security.
 - Student Form: Adds or edits student data in student table in roster database.
-- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. (Search and filter to be added)
-- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). (Search, filter, and ability to download sheet to be added).
-- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks.
+- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. Also contains delete buttons for each entry as well as search bar.
+- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). Also contains delete all for debugging purposes and a search bar.
+- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, delete, and search for kiosks.
 - Page Navigation
 
 ### Website API Endpoints
