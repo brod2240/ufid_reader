@@ -1,6 +1,9 @@
-import customtkinter
-import datetime
+import customtkinter, os
 from PIL import Image
+
+from src.main import process_scan
+
+image_dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'images'))
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -10,13 +13,11 @@ class App(customtkinter.CTk):
         screen_height = self.winfo_screenheight()
 
         self.geometry(f"{screen_width}x{screen_height}")
+        self.scanner_input = ""
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-
-
-
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -45,12 +46,9 @@ class App(customtkinter.CTk):
                                                        anchor="w", command=lambda:self.destroy())
         self.exit_button.grid(row=7, column=0, sticky="ew")
 
-
-
-
         #create course id input page
         self.landing_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        landing_label = customtkinter.CTkLabel(self.landing_frame, text="Enter Course", font=("Roboto", 50))
+        landing_label = customtkinter.CTkLabel(self.landing_frame, text="ID Scanned Successfully!", font=("Roboto", 50))
         landing_label.grid(pady=5, padx=10)
         landing_label.place(anchor="c",relx=0.5, rely=0.15)
         landing_label2 = customtkinter.CTkLabel(self.landing_frame, text="ID", font=("Roboto", 50))
@@ -62,9 +60,6 @@ class App(customtkinter.CTk):
         search_button = customtkinter.CTkButton(self.landing_frame, text="Enter", width=150, height=40, corner_radius=10, font=("Roboto", 15), command=lambda:self.select_frame_by_name("scan"))
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
-
-
-
 
         # create scan frame
         self.scan_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -80,12 +75,11 @@ class App(customtkinter.CTk):
         label3 = customtkinter.CTkLabel(self.scan_frame, text="Tap Below", font=("Roboto", 50))
         label3.grid(pady=5, padx=10)
 
-        img = customtkinter.CTkImage(light_image=Image.open("images/arrow.png"), dark_image=Image.open("images/arrow.png"), size=(200,200))
+
+
+        img = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "arrow.png")), dark_image=Image.open(os.path.join(image_dir_path, "arrow.png")), size=(200,200))
         img_label = customtkinter.CTkLabel(self.scan_frame, text='', image=img)
         img_label.grid(pady = 40)
-
-
-
 
         # create manual search frame
         self.manual_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -102,33 +96,28 @@ class App(customtkinter.CTk):
         search_button.grid(padx=5, pady=10)
         search_button.place(anchor="c", relx=0.5, rely=0.65)
 
-
-
         #create success page
         self.success_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
-        self.success_image = customtkinter.CTkImage(light_image=Image.open("images/checkmark.png"), dark_image=Image.open("images/checkmark.png"), size=(500,500))
+        #self.success_frame.pack(expand=True, fill='both')
+        self.success_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "checkmark.png")), dark_image=Image.open(os.path.join(image_dir_path, "checkmark.png")), size=(500,500))
         self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
         self.success_image_label.grid(padx=10)
         self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
-
-
 
         #create fail page
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.fail_frame.grid_rowconfigure(0, weight=1)
         self.fail_frame.grid_columnconfigure(1, weight=1)
-        self.fail_image = customtkinter.CTkImage(light_image=Image.open("images/incorrect.png"), dark_image=Image.open("images/incorrect.png"), size=(500,500))
+        self.fail_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_dir_path, "incorrect.png")), dark_image=Image.open(os.path.join(image_dir_path, "incorrect.png")), size=(500,500))
         self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
         self.fail_image_label.grid(padx=10)
         self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
 
-
-
-        
         # select default frame
-        self.select_frame_by_name("course")
+       # self.select_frame_by_name("course")
+        self.bind_all("<Key>", self.capture_scan)
 
 
 
@@ -158,12 +147,22 @@ class App(customtkinter.CTk):
             self.landing_frame.grid_forget()
         if name == "success":
             self.success_frame.grid(row=0,column=1, sticky="nsew")
-            self.navigation_frame.grid_forget()
+            self.success_frame.update_idletasks()
+           # time.sleep(2)
+            #self.select_frame_by_name("scan")
+            #self.success_frame.tkraise()
+            #print("Here")
+            #self.navigation_frame.grid_forget()
+            self.after(3000, lambda: self.select_frame_by_name("scan"))
+
         else:
             self.success_frame.grid_forget()
         if name == "fail":
             self.fail_frame.grid(row=0,column=1, sticky="nsew")
-            self.navigation_frame.grid_forget()
+           # self.navigation_frame.grid_forget()
+            self.fail_frame.update_idletasks()
+            
+            self.after(3000, lambda: self.select_frame_by_name("scan"))
         else:
             self.fail_frame.grid_forget()
 
@@ -179,9 +178,12 @@ class App(customtkinter.CTk):
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
+        
+    def capture_scan(self,event):
+        self.scanner_input+=event.char
+        if event.keysym == "Return":
+            process_scan(self)
 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-
-

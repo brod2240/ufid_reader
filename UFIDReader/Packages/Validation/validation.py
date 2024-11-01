@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta
 import requests
-import json
-import urllib.parse
-
 
 def web_api_get_request(page, params):
     url = "https://gatorufid.pythonanywhere.com/"
@@ -185,5 +182,5 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 #fetch_courses(course_code="CHM6586")
 #valid = validate("10000000d340eb60", card_ufid="20000000")
 #print(valid)
-valid = validate("10000000d340eb60", card_ufid="77211373")
-print(valid)
+# valid = validate("10000000d340eb60", card_ufid="77211373")
+# print(valid)

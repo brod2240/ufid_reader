@@ -24,5 +24,4 @@ img_label.pack(pady = 40)
 search_button = customtkinter.CTkButton(master=landing_frame, text="Manual Search", width=75, height=50, corner_radius=10,fg_color="blue")
 search_button.place(x=350,y=500)
 
-
 root.mainloop()
