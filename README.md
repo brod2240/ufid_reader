@@ -1,7 +1,7 @@
 # UFID Reader
 System allows a magnetic stripe/NFC module to read, validate, save, and return student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
-1. Print [case](https://cad.onshape.com/documents/1842b01a4503db66c32f8896/w/fa3db0597467c5e1710e1e3d/e/0f7033d5ee01bef208a892d8?renderMode=0&uiState=67254f396d5fd65c42971bed) for kiosk. stl file for case can also be found in KioskCase folder (Optional)
+1. Print [case](https://cad.onshape.com/documents/1842b01a4503db66c32f8896/w/fa3db0597467c5e1710e1e3d/e/0f7033d5ee01bef208a892d8?renderMode=0&uiState=67254f396d5fd65c42971bed) for kiosk. STL file for case can also be found in KioskCase folder (Optional)
 2. Connect device to power, to monitor, and to keyboard and mouse as temporary input
 3. Install non-graphical raspbian (ONLY FOR RASP PI 4)
 4. Connect the device to the internet, either by Wifi or ethernet
