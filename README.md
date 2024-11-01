@@ -1,21 +1,23 @@
 # UFID Reader
 System allows a magnetic stripe/NFC module to read, validate, save, and return student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
-1. Connect device to power, to monitor, and to keyboard as temporary input
-2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
-3. Connect the RASP PI 4 to the internet, either by Wifi or ethernet
-4. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
-5. Follow the following instructions
-## Instructions to Run Code on Device (Current)
+1. Print [case](https://cad.onshape.com/documents/1842b01a4503db66c32f8896/w/fa3db0597467c5e1710e1e3d/e/0f7033d5ee01bef208a892d8?renderMode=0&uiState=67254f396d5fd65c42971bed) for kiosk (Optional)
+2. Connect device to power, to monitor, and to keyboard and mouse as temporary input
+3. Install non-graphical raspbian (ONLY FOR RASP PI 4)
+4. Connect the device to the internet, either by Wifi or ethernet
+5. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
+6. Follow the following instructions
+## Instructions to Run Code on Device
 1. git clone https://github.com/brod2240/ufid_reader.git
 2. cd ufid_reader/GUI
 3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
 4. python gui_main_loop.py
 5. The UFID Check-In System is running!
+Note: If creating your own admin website, make sure to change the base url in the validation code\
 
 ## Public Course API
 ### Credit: 
-https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
+[Rob Olsthoorn UF API](https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses)
 ### How to Use:
 **Base URL:**
 \[GET\] https://one.ufl.edu/apix/soc/schedule/[parameters] \
@@ -157,6 +159,16 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
 \
+**Main Work Completed (Release Candidate and Beta Test)**
+* Software
+   * Added a prof_profile function to the API-to-Database.py which iterates through the course database and returns a json file structured with the instructors, courses belonging to those instructors, and class sections belonging to those courses.
+   * Edited the validate function to incorporate an exam mode. (API calls and Database not created yet)
+   * Started encryption for both data at rest (SQL Databases) and in transit (REST API http requests)
+* Hardware
+   * Created a case to house and secure the Rasp Pi 4 and the wires. 
+   * Made the Rasp Pi 4 work off boot using cleaned up version of github repo
+
+\
 **Main Work Completed (Beta Build and Alpha Test):**
 * Software
    * Wrote program API-to-Database.py which utilized public course API to get all class sections for that semester and save them to a database
@@ -234,6 +246,10 @@ External communication to database with secure internet connection and API reque
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the student database as stated in the internal system section. Sensitive data will also encrypted before being sent through API requests and requests for sensitive data will need authorized device checked with the serial number of the kiosks in the Pi/Kiosks database. 
 ## Bugs/Issues
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
+\
+**Main Bugs/Issues (Release Candidate and Beta Test):**
+* 
+
 \
 **Main Bugs/Issues (Beta Build and Alpha Test):**
 * Kiosks page can be accessed without login. Note: only temp form page can be seen at time of bug.
