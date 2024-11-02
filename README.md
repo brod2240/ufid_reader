@@ -8,7 +8,7 @@ System allows a magnetic stripe/NFC module to read, validate, save, and return s
 5. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
 6. Follow the following instructions
 ## Instructions to Run Code on Device
-To run code from command line and setup for running from boot:
+To run code directly from command line and setup for running from boot:
 1. git clone https://github.com/brod2240/ufid_reader.git (within the root directory)
 2. cd ufid_reader/UFIDReader
 3. bash start
