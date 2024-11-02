@@ -164,6 +164,9 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    * Added a prof_profile function to the API-to-Database.py which iterates through the course database and returns a json file structured with the instructors, courses belonging to those instructors, and class sections belonging to those courses.
    * Edited the validate function to incorporate an exam mode. (API calls and Database not created yet)
    * Started encryption for both data at rest (SQL Databases) and in transit (REST API http requests)
+   * Created feature that allows users to export timesheet tables to a csv.
+   * Started working on faster refresh time of data that prevents users from having to reload the site to see updated scans.
+   * Worked on updating backend to allow for custom timsheets title changes for organization purposes.
 * Hardware
    * Created a case to house and secure the Rasp Pi 4 and the wires. 
    * Made the Rasp Pi 4 work off boot using cleaned up version of github repo
