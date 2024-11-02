@@ -21,7 +21,7 @@ To setup system for running from boot and reboot to test boot functionality:
 4. sudo reboot
 5. Once the Pi 4 has rebooted, the UFID Check-In System is running!
 
-Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of UFIDReader/Packages/Validation/validation.py
+Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of ufid_reader/UFIDReader/Packages/Validation/validation.py
 
 ## Public Course API
 ### Credit: 
