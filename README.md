@@ -177,7 +177,10 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    * Worked on updating backend to allow for custom timsheets title changes for organization purposes.
 * Hardware
    * Created a case to house and secure the Rasp Pi 4 and the wires. 
-   * Made the Rasp Pi 4 work off boot using cleaned up version of github repo
+   * Made the Rasp Pi 4 work off boot using an easier to understand github repository.
+   * Created easy to use bash scripts to simplify setup on a fresh system.
+   * Created setup.py file to verify python version, that pip is installed, and all dependencies are installed. Uses a requirements.txt file which can be added to if required.
+   * Formatted GUI and Validation folders as python packages for easy import and use in main.py.
 
 \
 **Main Work Completed (Beta Build and Alpha Test):**
