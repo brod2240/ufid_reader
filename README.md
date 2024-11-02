@@ -8,17 +8,18 @@ System allows a magnetic stripe/NFC module to read, validate, save, and return s
 5. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
 6. Follow the following instructions
 ## Instructions to Run Code on Device
+To run code from command line and setup for running from boot:
 1. git clone https://github.com/brod2240/ufid_reader.git (within the root directory)
 2. cd ufid_reader/UFIDReader
-
-To run code from command line and setup for running from boot:
-1. bash start
-2. The UFID Check-In System is running!
+3. bash start
+4. The UFID Check-In System is running!
 
 To setup system for running from boot and reboot to test boot functionality:
-1. bash copy_scripts
-2. sudo reboot
-3. Once the Pi 4 has rebooted, the UFID Check-In System is running!
+1. git clone https://github.com/brod2240/ufid_reader.git (within the root directory)
+2. cd ufid_reader/UFIDReader
+3. bash copy_scripts
+4. sudo reboot
+5. Once the Pi 4 has rebooted, the UFID Check-In System is running!
 
 Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of UFIDReader/Packages/Validation/validation.py
 
