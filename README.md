@@ -251,7 +251,25 @@ Data validation code will be written to ensure that the input is valid with rega
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
-* 
+* Main loop not running
+  * Print debugged and found problem to be unresolved error
+  * Made sure errors returned response from website and that these responses were translated to the correct validity 0, -1 , -2, -3
+* Using real time for validation code seems to not work
+  * Print debugged and found to be no problem
+  * Rather example tested with was the class section associated with CEN4908C which occurs on Tuesdays and Thursdays and the real-time was a Monday
+  * Adding a class section which meets on Monday to a student in the roster database and changing the room associated with the kiosk to the room of the new class that happens on Monday at that time fixes the issue and the student is valid.
+* There is no validation for exams
+  * Contacted UFIT, Dr. Blanchard, and Carsten to gain knowledge about the system
+  * Created the basic structure missing API request to a not yet existing database of exam room reservations
+  * Planning to create API request and database for exams
+* Case for Rasp Pi too small
+  * Made arms holding MRD5 higher so it would fit
+  * Made the box wider and longer so the wires would fit
+  * Made the wire holes deeper so they wouldn’t need to bend as much
+  * Moved the mount holes lower so the SD card on the Rasp Pi would have clearance
+* Program which takes course data and sorts it in json file by instructor, course, then section isn’t saving and has duplicates
+  * “f” used so that {term} would be recognized as a variable
+  * Duplicates removed by using sets instead
 
 \
 **Main Bugs/Issues (Beta Build and Alpha Test):**
