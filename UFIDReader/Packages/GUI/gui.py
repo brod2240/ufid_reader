@@ -6,6 +6,11 @@ from src.main import process_scan
 image_dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'images'))
 
 class App(customtkinter.CTk):
+
+            
+    #success_text_var = None
+
+    #fail_text_var = None
     def __init__(self):
         super().__init__()
 
@@ -13,7 +18,7 @@ class App(customtkinter.CTk):
         screen_height = self.winfo_screenheight()
 
         self.geometry(f"{screen_width}x{screen_height}")
-        self.scanner_input = ""
+        self.scanner_input = "" 
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -105,6 +110,9 @@ class App(customtkinter.CTk):
         self.success_image_label = customtkinter.CTkLabel(self.success_frame, text='', image=self.success_image)
         self.success_image_label.grid(padx=10)
         self.success_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        # self.success_text_label = customtkinter.CTkLabel(self.success_frame, text=success_text_var.get())
+        # self.success_text_label.grid(padx=10)
+        # self.success_text_label.place(anchor="c",relx=0.5, rely=0.25)
 
         #create fail page
         self.fail_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -114,57 +122,141 @@ class App(customtkinter.CTk):
         self.fail_image_label = customtkinter.CTkLabel(self.fail_frame, text='', image=self.fail_image)
         self.fail_image_label.grid(padx=10)
         self.fail_image_label.place(anchor="c",relx=0.5, rely=0.25)
+        # self.fail_text_label = customtkinter.CTkLabel(self.fail_frame, text=fail_text_var.get())
+        # self.fail_text_label.grid(padx=10)
+        # self.fail_text_label.place(anchor="c",relx=0.5, rely=0.25)
 
         # select default frame
        # self.select_frame_by_name("course")
         self.bind_all("<Key>", self.capture_scan)
 
-
-
-
-    def select_frame_by_name(self, name):
+    def select_frame_by_name(self, name, student_info):
         # set button color for selected button
         self.course_button.configure(fg_color=("gray75", "gray25") if name == "course" else "transparent")
         self.scan_button.configure(fg_color=("gray75", "gray25") if name == "scan" else "transparent")
         self.manual_button.configure(fg_color=("gray75", "gray25") if name == "manual" else "transparent")
-        # show selected frame
-        if name == "scan":
-            self.scan_frame.grid(row=0, column=1, sticky="nsew")
-            self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-            self.navigation_frame.grid_rowconfigure(4, weight=1)
-        else:
-            self.scan_frame.grid_forget()
-        if name == "manual":
-            self.manual_frame.grid(row=0, column=1, sticky="nsew")
-            self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-            self.navigation_frame.grid_rowconfigure(4, weight=1)
-        else:
-            self.manual_frame.grid_forget()
-        if name == "course":
-            self.landing_frame.grid(row=0, column=1, sticky="nsew")
-            self.navigation_frame.grid_forget()
-        else:
-            self.landing_frame.grid_forget()
-        if name == "success":
-            self.success_frame.grid(row=0,column=1, sticky="nsew")
-            self.success_frame.update_idletasks()
-           # time.sleep(2)
-            #self.select_frame_by_name("scan")
-            #self.success_frame.tkraise()
-            #print("Here")
-            #self.navigation_frame.grid_forget()
-            self.after(3000, lambda: self.select_frame_by_name("scan"))
 
-        else:
-            self.success_frame.grid_forget()
-        if name == "fail":
-            self.fail_frame.grid(row=0,column=1, sticky="nsew")
-           # self.navigation_frame.grid_forget()
-            self.fail_frame.update_idletasks()
+        self.scan_frame.grid_forget()
+        self.manual_frame.grid_forget()
+        self.landing_frame.grid_forget()
+        self.success_frame.grid_forget()
+        self.fail_frame.grid_forget()
+    
+        match name:
+            case "scan":
+                self.scan_frame.grid(row=0, column=1, sticky="nsew")
+                self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+                self.navigation_frame.grid_rowconfigure(4, weight=1)
+            case "manual":
+                    self.manual_frame.grid(row=0, column=1, sticky="nsew")
+                    self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+                    self.navigation_frame.grid_rowconfigure(4, weight=1)
+            case "course":
+                self.landing_frame.grid(row=0, column=1, sticky="nsew")
+                self.navigation_frame.grid_forget()
+            case "success":
+                output = "" + student_info["First Name"] + " " + student_info["Last Name"] + " has been validated successfully."
+
+                self.success_text_var = customtkinter.StringVar(value=output)
+                self.success_text_label = customtkinter.CTkLabel(self.success_frame, text=self.success_text_var.get())
+                self.success_text_label.grid(padx=10)
+                self.success_text_label.place(anchor="c", relx=0.5, rely=0.25)
+
+                self.success_frame.grid(row=0,column=1, sticky="nsew")
+                self.success_frame.update_idletasks()
+
+                self.after(2000, lambda: self.select_frame_by_name("scan", student_info=None))
+            case "fail":
+                output = ""
+                match student_info["Valid"]:
+                    case -1:
+                        output = "Serial Number not found. Please contact UF IT : number"
+                    case -2:
+                        output = "UFID not found. Please use the form provided by your professor to add yourself to the system."
+                    case -3:
+                        output = "Incorrect time. Please scan during your class period."
+                    case -4:
+                        output = "Please scan during a school day."
+                    case _:
+                        output = ""
+
+                self.fail_text_var = customtkinter.StringVar(value=output)
+                self.fail_text_label = customtkinter.CTkLabel(self.fail_frame, text=self.fail_text_var.get(), font=("Roboto", 50))
+                self.fail_text_label.grid(padx=10)
+                self.fail_text_label.place(anchor="c",relx=0.5, rely=0.75)
+
+                self.fail_frame.grid(row=0,column=1, sticky="nsew")
+                self.fail_frame.update_idletasks()
+                
+                self.after(3000, lambda: self.select_frame_by_name("scan", student_info=None))
+            case _:
+                self.scan_frame.grid_forget()
+
+
+        # show selected frame
+        # if name == "scan":
+        #     self.scan_frame.grid(row=0, column=1, sticky="nsew")
+        #     self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+        #     self.navigation_frame.grid_rowconfigure(4, weight=1)
+        # else:
+        #     self.scan_frame.grid_forget()
+
+        # if name == "manual":
+        #     self.manual_frame.grid(row=0, column=1, sticky="nsew")
+        #     self.navigation_frame.grid(row=0, column=0, sticky="nsew")
+        #     self.navigation_frame.grid_rowconfigure(4, weight=1)
+        # else:
+        #     self.manual_frame.grid_forget()
+
+        # if name == "course":
+        #     self.landing_frame.grid(row=0, column=1, sticky="nsew")
+        #     self.navigation_frame.grid_forget()
+        # else:
+        #     self.landing_frame.grid_forget()
+
+        # if name == "success":
+
+        #     output = "" + student_info["First Name"] + " " + student_info["Last Name"] + " has been validated successfully."
+
+        #     self.success_text_var = customtkinter.StringVar(value=output)
+        #     self.success_text_label = customtkinter.CTkLabel(self.success_frame, text=self.success_text_var.get())
+        #     self.success_text_label.grid(padx=10)
+        #     self.success_text_label.place(anchor="c", relx=0.5, rely=0.25)
+
+        #     self.success_frame.grid(row=0,column=1, sticky="nsew")
+        #     self.success_frame.update_idletasks()
+
+        #     self.after(2000, lambda: self.select_frame_by_name("scan", student_info=None))
+
+        # else:
+        #     self.success_frame.grid_forget()
+
+        # if name == "fail":
+        #     output = ""
+        #     match student_info["Valid"]:
+        #         case -1:
+        #             output = "Serial Number not found. Please contact UF IT : number"
+        #         case -2:
+        #             output = "UFID not found. Please use the form provided by your professor to add yourself to the system."
+        #         case -3:
+        #             output = "Incorrect time. Please scan during your class period."
+        #         case -4:
+        #             output = "Please scan during a school day."
+        #         case _:
+        #             output = ""
+
+                
+        #     self.fail_text_var = customtkinter.StringVar(value=output)
+        #     self.fail_text_label = customtkinter.CTkLabel(self.fail_frame, text=self.fail_text_var.get(), font=("Roboto", 50))
+        #     self.fail_text_label.grid(padx=10)
+        #     self.fail_text_label.place(anchor="c",relx=0.5, rely=0.75)
+
+        #     self.fail_frame.grid(row=0,column=1, sticky="nsew")
+        #     self.fail_frame.update_idletasks()
             
-            self.after(3000, lambda: self.select_frame_by_name("scan"))
-        else:
-            self.fail_frame.grid_forget()
+        #     self.after(3000, lambda: self.select_frame_by_name("scan", student_info=None))
+        # else:
+        #     self.fail_frame.grid_forget()
 
     def scan_button_event(self):
         self.select_frame_by_name("scan")
@@ -182,7 +274,7 @@ class App(customtkinter.CTk):
     def capture_scan(self,event):
         self.scanner_input+=event.char
         if event.keysym == "Return":
-            process_scan(self)
+            process_scan(self)    
 
 if __name__ == "__main__":
     app = App()

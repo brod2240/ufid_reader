@@ -31,14 +31,16 @@ def process_scan(self):
             f.write(str(time_total) + '\n')    
 
     if valid["Valid"] == 0:
-        self.select_frame_by_name("success")
+        self.select_frame_by_name("success", student_info=valid)
     else:
-        self.select_frame_by_name("fail")
+        self.select_frame_by_name("fail", student_info=valid)
+
+    # reset scanner_input for new scan
     self.scanner_input = ""
 
 def gui_main_loop():
     app=App()
-    app.select_frame_by_name("scan")
+    app.select_frame_by_name("scan", student_info=None)
     app.mainloop()
 
 if __name__ == "__main__":
