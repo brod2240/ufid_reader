@@ -114,8 +114,8 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     for result in results:
         #start = datetime.strptime(result[5], '%I:%M %p') - timedelta(minutes=15)
         #end = datetime.strptime(result[6], '%I:%M %p') + timedelta(minutes=15) #possible change
-        start = datetime.strptime(result[5], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) - timedelta(minutes=15)
-        end = datetime.strptime(result[6], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) + timedelta(minutes=15)
+        start = datetime.strptime(result[6], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) - timedelta(minutes=15)
+        end = datetime.strptime(result[7], '%I:%M %p').replace(year=now.year, month=now.month, day=now.day) + timedelta(minutes=15)
         #print(start)
         #print(current_time)
         #print(end)
@@ -126,7 +126,7 @@ def validate(serial_num, card_iso=None, card_ufid=None):
     #print(courses)
 
     for course in courses:
-        course_sec_num = course[1]
+        course_sec_num = course[2]
         for student_sec_num in student_sec_nums:
             if course_sec_num == student_sec_num:
                 params = {
@@ -136,9 +136,9 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                     'first_name': first_name, 
                     'last_name': last_name,
                     'course': course[0],
-                    'class': course[1],
-                    'instructor': course[2],
-                    'room_num': course[7],
+                    'class': course[2],
+                    'instructor': course[3],
+                    'room_num': course[8],
                     'time':  now.strftime("%m/%d/%Y %I:%M:%S %p")
                 }
 
@@ -149,9 +149,9 @@ def validate(serial_num, card_iso=None, card_ufid=None):
                     'first_name': first_name, 
                     'last_name': last_name,
                     'course': course[0],
-                    'class': course[1],
-                    'instructor': course[2],
-                    'room_num': course[7],
+                    'class': course[2],
+                    'instructor': course[3],
+                    'room_num': course[8],
                     'time': now.strftime("%Y-%m-%d %H:%M:%S")
                 }
 
