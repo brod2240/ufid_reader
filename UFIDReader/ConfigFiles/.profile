@@ -32,7 +32,7 @@ fi
 #default location
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     cd ~/ufid_reader
-    git pull # make sure project is up to date
+    #git pull # make sure project is up to date
 
     cd UFIDReader
 

@@ -4,7 +4,7 @@ import requests
 def web_api_get_request(page, params):
     url = "https://gatorufid.pythonanywhere.com/"
     url += page
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=10)
 
     return response    
 
