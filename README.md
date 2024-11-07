@@ -1,34 +1,31 @@
 # UFID Reader
 System allows a magnetic stripe/NFC module to read, validate, save, and return student information for attendance purposes.
 ## Instructions for Kiosk Device Set Up
-1. Connect device to power, to monitor, and to keyboard as temporary input
-2. Install non-graphical raspbian (ONLY FOR RASP PI 4)
-3. Connect the RASP PI 4 to the internet, either by Wifi or ethernet
-4. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
-5. Follow the following instructions
-## Instructions to Run Code on Device (Current)
-1. git clone https://github.com/brod2240/ufid_reader.git
-2. cd ufid_reader/GUI
-3. FRAMEBUFFER=/dev/fb1 startx -- -dpi 60
-4. python gui_main_loop.py
-5. The UFID Check-In System is running!
-## Instructions to Run Client-Server Communication Between Rasp Pi and Server<br>(Not Needed in Current Version)
-1. Ensure the Client.py, Server.py, Data.py, StudentCourse2.db, Validation.py, and ufid_barcodes.csv are all in the same folder.
-2. Run Data.py to ensure data is populated in the StudentCourse2.db. To check the database SQLite will have to be downloaded. To add data there is a function called add_student in the Data.py file. 
-3. Check the ip address of the server using ipconfig in a commandline on the device hosting the server and change the server ip in the both client.py and server.py file to match.
-4. Run Server.py on server host device. Class number used to validate students is hardcoded as this class 27483.
-5. Run Client.py on client host device.
-6. Scan ID.
-## Instructions for GUI (Not Needed in Current Version)
-1. Ensure the validationSQL.py and gui.py files are in the same folder.
-2. On the command line, ensure you are inside the folder/directory.
-3. Run the command 'python gui_main_loop.py' or 'python3 gui_main_loop.py' depending on what version of python you have.
-4. Enter course id manually (27483)
-5. Scan or input id (functionality for manual input implemented only)
+1. Print [case](https://cad.onshape.com/documents/1842b01a4503db66c32f8896/w/fa3db0597467c5e1710e1e3d/e/0f7033d5ee01bef208a892d8?renderMode=0&uiState=67254f396d5fd65c42971bed) for kiosk. STL file for case can also be found in KioskCase folder (Optional)
+2. Connect device to power, to monitor, and to keyboard and mouse as temporary input
+3. Install non-graphical raspbian (ONLY FOR RASP PI 4)
+4. Connect the device to the internet, either by Wifi or ethernet
+5. Connect MRD5 scanner via USB. Make sure to hold power button until the light stops flashing and the device beeps to turn on.
+6. Follow the following instructions
+## Instructions to Run Code on Device
+To run code directly from command line and setup for running from boot:
+1. git clone https://github.com/brod2240/ufid_reader.git (within the root directory)
+2. cd ufid_reader/UFIDReader
+3. bash start
+4. The UFID Check-In System is running!
+
+To setup system for running from boot and reboot to test boot functionality:
+1. git clone https://github.com/brod2240/ufid_reader.git (within the root directory)
+2. cd ufid_reader/UFIDReader
+3. bash copy_scripts
+4. sudo reboot
+5. Once the Pi 4 has rebooted, the UFID Check-In System is running!
+
+Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of ufid_reader/UFIDReader/Packages/Validation/validation.py
 
 ## Public Course API
 ### Credit: 
-https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses
+[Rob Olsthoorn UF API](https://github.com/Rolstenhouse/uf_api?tab=readme-ov-file#courses)
 ### How to Use:
 **Base URL:**
 \[GET\] https://one.ufl.edu/apix/soc/schedule/[parameters] \
@@ -40,6 +37,13 @@ https://one.ufl.edu/apix/soc/schedule/?category=RES&term=20165 \
 **Parameters:** \
 Appended to the BaseURL as parameter=value1&parameter2=value2 ... \
 \
+**Program/Category (Required)**
+RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
+CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond) \
+UFO: UF online program \
+IA: Innovation Academy \
+HUR: USVI and Puerto Rico \
+\
 **Semester/Term (Required)** \
 term = \[Year(with second digit removed\]\[Semester number\]\[optional Summer Semester\] \
 Spring: 1 \
@@ -47,13 +51,6 @@ Summer: 5 (Append 6W1 for A. 6W2 for B. 1 for C) \
 Fall: 8 \
 \
 Example: Summer A 2024 would be 22456W1; Fall 2024 would be 2248 \
-\
-**Program/Category (Required)** \
-RES: Campus/Web/Special Program (Regular) (For Summer 2018 and before) \
-CWSP: Campus/Web/Special Program (Regular) (Fall 2018 and beyond) \
-UFO: UF online program \
-IA: Innovation Academy \
-HUR: USVI and Puerto Rico \
 \
 **Number of Results** \
 The JSON response from the API includes the last control number, retrieved rows, and total number of rows as of the results as \
@@ -85,14 +82,15 @@ class-num=12345 This parameter lets you pass the class/section number as a param
 "day-s": 'false' \
 Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It is supposed to be lowercased. 
 \
-## API-to-Database.py (Validation):
+## API-to-Database.py (UFIDReader/Packages/Validation):
 ### Instructions
 1. Pip install requests if you have not already
 2. Run the python file
 3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively to the 5. This is the same way semesters/terms are set in the publicly available course API. (e.g. 2248 for Fall 2024 or 22456W1 for Summer A 2024)
-4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created
+4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website.
+5. Place the courses_{term}.db in the /data folder for the admin website and place the json file in the professor website
 
-## Gator Check In Site (Hosted on Python Anywhere)
+## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
 ### Features
 - Accounts: These keep track of the courses each professor teaches with login authentication
@@ -111,8 +109,8 @@ Endpoints:
         6. /courses/<course_code>/students : given course code, returns all students in that course
         7. /student/<ufid>/attendance_count : given the student id, return the number of scans made
 
-### Instructions for Admin Site
-1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build has username and password.
+### Instructions for Professor Site
+1. Enter url -> https://brirod2240.pythonanywhere.com/ to browse the website, Beta Build Report has username and password.
 2. If you want to recreate this, download ufid_web.zip
 3. Extract folder
 4. Create python anywhere account
@@ -124,15 +122,15 @@ Endpoints:
 ### Testing
 Test plan is provided on how testing was done, including testing API endpoints through unit testing, manual check with Postman, and filter verification.
 
-## Admin Site (Aaron Version PythonAnywhere Hosted)
+## Gator Check In Admin Site (Hosted on PythonAnywhere)
 GatorUFID or GatorCheck is a web application that allows for database hosting, data manipulation, data visualization, and kiosk configuration. In the validation code hosted on the RaspPi the website is used as an API to verify and save data. For teachers, admins, or IT the website serves to visualize this data in tables, manipulate the data with buttons and forms, and also download data. For the member of this project or for those who want to replicate it the website serves as a tool to easily add test data to the database. 
 
 ### Features
-- Accounts: These keep track of the courses each professor teaches (Being Implemented in Brianna's Version). Basic admin login capability is implemented.
+- Accounts: Basic admin login capability is implemented with sessions for data security.
 - Student Form: Adds or edits student data in student table in roster database.
-- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. (Search and filter to be added)
-- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). (Search, filter, and ability to download sheet to be added).
-- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, and delete kiosks.
+- Roster Page: Displays student data (UFID, ISO, Name, and Classes) and has Student Form to add more data. Also contains delete buttons for each entry as well as search bar.
+- Timesheet Page: Display timesheet data (UFID, ISO, Name, Course, Class, Instructor, Room, and Time). Also contains delete all for debugging purposes and a search bar.
+- Kiosks Page: Displays kiosk data (serial number and room number) and ability to add, edit, delete, and search for kiosks.
 - Page Navigation
 
 ### Website API Endpoints
@@ -168,6 +166,22 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
+\
+**Main Work Completed (Release Candidate and Beta Test)**
+* Software
+   * Added a prof_profile function to the API-to-Database.py which iterates through the course database and returns a json file structured with the instructors, courses belonging to those instructors, and class sections belonging to those courses.
+   * Edited the validate function to incorporate an exam mode. (API calls and Database not created yet)
+   * Started encryption for both data at rest (SQL Databases) and in transit (REST API http requests)
+   * Created feature that allows users to export timesheet tables to a csv.
+   * Started working on faster refresh time of data that prevents users from having to reload the site to see updated scans.
+   * Worked on updating backend to allow for custom timsheets title changes for organization purposes.
+* Hardware
+   * Created a case to house and secure the Rasp Pi 4 and the wires. 
+   * Made the Rasp Pi 4 work off boot using an easier to understand github repository.
+   * Created easy to use bash scripts to simplify setup on a fresh system.
+   * Created setup.py file to verify python version, that pip is installed, and all dependencies are installed. Uses a requirements.txt file which can be added to if required.
+   * Formatted GUI and Validation folders as python packages for easy import and use in main.py.
+
 \
 **Main Work Completed (Beta Build and Alpha Test):**
 * Software
@@ -246,6 +260,28 @@ External communication to database with secure internet connection and API reque
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the student database as stated in the internal system section. Sensitive data will also encrypted before being sent through API requests and requests for sensitive data will need authorized device checked with the serial number of the kiosks in the Pi/Kiosks database. 
 ## Bugs/Issues
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
+\
+**Main Bugs/Issues (Release Candidate and Beta Test):**
+* Main loop not running
+  * Print debugged and found problem to be unresolved error
+  * Made sure errors returned response from website and that these responses were translated to the correct validity 0, -1 , -2, -3
+* Using real time for validation code seems to not work
+  * Print debugged and found to be no problem
+  * Rather example tested with was the class section associated with CEN4908C which occurs on Tuesdays and Thursdays and the real-time was a Monday
+  * Adding a class section which meets on Monday to a student in the roster database and changing the room associated with the kiosk to the room of the new class that happens on Monday at that time fixes the issue and the student is valid.
+* There is no validation for exams
+  * Contacted UFIT, Dr. Blanchard, and Carsten to gain knowledge about the system
+  * Created the basic structure missing API request to a not yet existing database of exam room reservations
+  * Planning to create API request and database for exams
+* Case for Rasp Pi too small
+  * Made arms holding MRD5 higher so it would fit
+  * Made the box wider and longer so the wires would fit
+  * Made the wire holes deeper so they wouldn’t need to bend as much
+  * Moved the mount holes lower so the SD card on the Rasp Pi would have clearance
+* Program which takes course data and sorts it in json file by instructor, course, then section isn’t saving and has duplicates
+  * “f” used so that {term} would be recognized as a variable
+  * Duplicates removed by using sets instead
+
 \
 **Main Bugs/Issues (Beta Build and Alpha Test):**
 * Kiosks page can be accessed without login. Note: only temp form page can be seen at time of bug.

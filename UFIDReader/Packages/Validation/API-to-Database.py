@@ -57,6 +57,7 @@ if response.status_code == 200:
 import requests
 import sqlite3
 import sys
+import json
 
 def fetch_courses(term, course_code=None, class_num=None):
     # URL to send the GET request to
@@ -161,12 +162,12 @@ def save_to_db(db_name, course_data):
         
         existing_entry = cursor.fetchone()
 
-        if existing_entry:
+        if not existing_entry:
             # Print details of the existing entry and the new duplicate
-            print(f"Duplicate found:")
+            #print(f"Duplicate found:")
             #print(f"Existing entry - Class Number: {class_number}, Course Code: {existing_entry[0]}")
             #print(f"New entry - Class Number: {class_number}, Course Code: {course_code}")
-        else:
+        #else:
             # Insert new entry
             cursor.execute('''
                 INSERT INTO courses (course_code, class_number, instructors, meet_no, meet_days, meet_time_begin, meet_time_end, meet_room_code)
@@ -177,12 +178,63 @@ def save_to_db(db_name, course_data):
     conn.commit()
     conn.close()
 
+def prof_profile(db_name, term):
+    # Step 1: Connect to the Database
+    conn = sqlite3.connect(db_name)  # Replace with your database filename
+    cursor = conn.cursor()
+
+    # Step 2: Query the Data
+    query = '''
+    SELECT instructors, course_code, class_number
+    FROM courses
+    ORDER BY instructors, course_code, class_number
+    '''
+    cursor.execute(query)
+    rows = cursor.fetchall()
+
+    # Step 3: Organize Data by Individual Instructor with Unique Sections
+    # Structure: { instructor: { course_code: set(section_number, ...) } }
+    organized_data = {}
+
+    for row in rows:
+        instructor_field, course_code, section_number = row
+
+        # Step 4: Split the instructor field into individual names
+        instructors = [name.strip() for name in instructor_field.split(',')]
+
+        for instructor in instructors:
+            # Initialize dictionary structure if not already present for the instructor
+            if instructor not in organized_data:
+                organized_data[instructor] = {}
+
+            # Initialize set for course code if not already present
+            if course_code not in organized_data[instructor]:
+                organized_data[instructor][course_code] = set()
+
+            # Add the section number to the course code set (automatically ensures uniqueness)
+            organized_data[instructor][course_code].add(section_number)
+
+    # Step 5: Convert sets to lists for JSON serialization
+    for instructor, courses in organized_data.items():
+        for course_code in courses:
+            organized_data[instructor][course_code] = list(courses[course_code])
+
+    # Step 6: Output the Data
+    with open(f'organized_courses_{term}.json', 'w') as f:
+        json.dump(organized_data, f, indent=4)
+
+    # Close the connection
+    conn.close()
+
+    print("Data organized with unique sections and saved to organized_courses.json")
+
 def main():
     term = input("Enter the term (e.g., 1, 6W1, 6W2): ")
     db_name = f"courses_{term}.db"
 
     course_data = fetch_courses(term)
     save_to_db(db_name, course_data)
+    prof_profile(db_name, term)
 
     print(f"\nData successfully saved to {db_name}")
 
