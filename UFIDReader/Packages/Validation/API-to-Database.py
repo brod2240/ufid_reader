@@ -305,9 +305,9 @@ def main():
     db_name = f"courses_{term}.db"
     exam_db_name = f"exams_{term}.db"
 
-    #course_data = fetch_courses(term)
-    #save_to_db(db_name, course_data)
-    #prof_profile(db_name, term)
+    course_data = fetch_courses(term)
+    save_to_db(db_name, course_data)
+    prof_profile(db_name, term)
 
     exam_database(db_name, exam_db_name)
 
