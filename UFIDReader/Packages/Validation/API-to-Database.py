@@ -91,6 +91,7 @@ def fetch_courses(term, course_code=None, class_num=None):
             # Iterate through each course in the courses list
             for course in courses:
                 course_code = course.get('code')
+                course_name = course.get('name')
                 sections = course.get('sections', [])
                 for section in sections:
                     class_number = section.get('classNumber')
@@ -110,7 +111,8 @@ def fetch_courses(term, course_code=None, class_num=None):
                             'meetDays': meetDays,
                             'meetTimeBegin': meet_time_begin,
                             'meetTimeEnd': meet_time_end,
-                            'meetRoomCode': roomCode
+                            'meetRoomCode': roomCode,
+                            'name': course_name
                         })
 
                     # Update the progress indicator
@@ -131,9 +133,12 @@ def save_to_db(db_name, course_data):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
+    cursor.execute('DROP TABLE IF EXISTS courses')
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS courses (
             course_code TEXT,
+            course_name TEXT,
             class_number TEXT,
             instructors TEXT,
             meet_no TEXT,
@@ -147,6 +152,7 @@ def save_to_db(db_name, course_data):
 
     for course in course_data:
         code = course["code"]
+        name = course["name"]
         classNumber = course["classNumber"]
         instructor = course["instructor(s)"]
         meetNo = course["meetNo"]
@@ -170,9 +176,9 @@ def save_to_db(db_name, course_data):
         #else:
             # Insert new entry
             cursor.execute('''
-                INSERT INTO courses (course_code, class_number, instructors, meet_no, meet_days, meet_time_begin, meet_time_end, meet_room_code)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (code, classNumber, instructor, meetNo, meetDays, meetTimeBegin, meetTimeEnd, meetRoomCode))
+                INSERT INTO courses (course_code, course_name, class_number, instructors, meet_no, meet_days, meet_time_begin, meet_time_end, meet_room_code)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (code, name, classNumber, instructor, meetNo, meetDays, meetTimeBegin, meetTimeEnd, meetRoomCode))
 
     # Commit changes and close the connection
     conn.commit()
@@ -185,19 +191,19 @@ def prof_profile(db_name, term):
 
     # Step 2: Query the Data
     query = '''
-    SELECT instructors, course_code, class_number
+    SELECT instructors, course_code, course_name, class_number
     FROM courses
-    ORDER BY instructors, course_code, class_number
+    ORDER BY instructors, course_code, course_name, class_number
     '''
     cursor.execute(query)
     rows = cursor.fetchall()
 
-    # Step 3: Organize Data by Individual Instructor with Unique Sections
-    # Structure: { instructor: { course_code: set(section_number, ...) } }
+    # Step 3: Organize Data by Instructor -> Course Code + Course Name -> Section Number
+    # Structure: { instructor: { "course_code: course_name": set(section_number, ...) } }
     organized_data = {}
 
     for row in rows:
-        instructor_field, course_code, section_number = row
+        instructor_field, course_code, course_name, section_number = row
 
         # Step 4: Split the instructor field into individual names
         instructors = [name.strip() for name in instructor_field.split(',')]
@@ -207,17 +213,20 @@ def prof_profile(db_name, term):
             if instructor not in organized_data:
                 organized_data[instructor] = {}
 
-            # Initialize set for course code if not already present
-            if course_code not in organized_data[instructor]:
-                organized_data[instructor][course_code] = set()
+            # Combine course code and course name
+            course_key = f"{course_code}: {course_name}"
 
-            # Add the section number to the course code set (automatically ensures uniqueness)
-            organized_data[instructor][course_code].add(section_number)
+            # Initialize set for course if not already present
+            if course_key not in organized_data[instructor]:
+                organized_data[instructor][course_key] = set()
+
+            # Add the section number to the course set (automatically ensures uniqueness)
+            organized_data[instructor][course_key].add(section_number)
 
     # Step 5: Convert sets to lists for JSON serialization
     for instructor, courses in organized_data.items():
-        for course_code in courses:
-            organized_data[instructor][course_code] = list(courses[course_code])
+        for course_key in courses:
+            organized_data[instructor][course_key] = list(courses[course_key])
 
     # Step 6: Output the Data
     with open(f'organized_courses_{term}.json', 'w') as f:
@@ -226,15 +235,81 @@ def prof_profile(db_name, term):
     # Close the connection
     conn.close()
 
-    print("Data organized with unique sections and saved to organized_courses.json")
+    print(f"Data organized with unique sections and saved to organized_courses_{term}.json")
+
+def exam_database(db_name, exam_db_name):
+    source_conn = sqlite3.connect(db_name)
+    source_cursor = source_conn.cursor()
+
+    # Connect to the new database
+    new_conn = sqlite3.connect(exam_db_name)
+    new_cursor = new_conn.cursor()
+
+    # Create the new table with the specified fields
+    new_cursor.execute('''
+        CREATE TABLE IF NOT EXISTS courses (
+            course_code TEXT,
+            course_name TEXT,
+            instructors TEXT,
+            sections TEXT,
+            room TEXT DEFAULT NULL,
+            date TEXT DEFAULT NULL,
+            start_time TEXT DEFAULT NULL,
+            end_time TEXT DEFAULT NULL,
+            PRIMARY KEY (course_code, course_name)
+        )
+    ''')
+
+    # Query to retrieve all relevant data from the source database
+    source_cursor.execute('''
+        SELECT 
+            course_code, 
+            course_name, 
+            instructors, 
+            class_number
+        FROM courses
+    ''')
+
+    # Use a dictionary to collect unique instructors and sections for each course
+    course_data = {}
+
+    for row in source_cursor.fetchall():
+        course_code, course_name, instructor, section = row
+        key = (course_code, course_name)
+
+        # Initialize the entry in the dictionary if it doesn't exist
+        if key not in course_data:
+            course_data[key] = {"instructors": set(), "sections": set()}
+
+        # Add instructors and sections to the sets (automatically handles duplicates)
+        course_data[key]["instructors"].add(instructor)
+        course_data[key]["sections"].add(section)
+
+    # Insert the processed data into the new database
+    for (course_code, course_name), data in course_data.items():
+        instructors = ', '.join(data["instructors"])  # Convert sets to comma-separated strings
+        sections = ', '.join(data["sections"])
+
+        new_cursor.execute('''
+            INSERT INTO courses (course_code, course_name, instructors, sections)
+            VALUES (?, ?, ?, ?)
+        ''', (course_code, course_name, instructors, sections))
+
+    # Commit the changes and close the connections
+    new_conn.commit()
+    source_conn.close()
+    new_conn.close()
 
 def main():
     term = input("Enter the term (e.g., 1, 6W1, 6W2): ")
     db_name = f"courses_{term}.db"
+    exam_db_name = f"exams_{term}.db"
 
     course_data = fetch_courses(term)
     save_to_db(db_name, course_data)
     prof_profile(db_name, term)
+
+    exam_database(db_name, exam_db_name)
 
     print(f"\nData successfully saved to {db_name}")
 
