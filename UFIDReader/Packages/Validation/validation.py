@@ -184,3 +184,10 @@ def validate(serial_num, card_iso=None, card_ufid=None):
 #print(valid)
 # valid = validate("10000000d340eb60", card_ufid="77211373")
 # print(valid)
+
+# THIS ONE WORKS
+#valid = validate(1, "10000000d340eb60", card_ufid="77211373")
+#print(valid)
+
+valid = validate(0, "10000000d340eb60", card_ufid="77211373")
+print(valid)
