@@ -13,8 +13,9 @@ class App(customtkinter.CTk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
 
-        # screen_width = 1080
-        # screen_height = 720
+        # for hard coded resolution testing
+        #screen_width = 1080
+        #screen_height = 720
 
         # Dynamic font sizes based on screen size
         font_size_information = max(16, int(screen_height * 0.04))  # Minimum size for font is 16, make sure at least that value
@@ -26,15 +27,17 @@ class App(customtkinter.CTk):
         prompt_image_size = int(screen_height * 0.3)
         result_image_size = int(screen_height* 0.5)
         spinner_gif_size = int(screen_height* 0.3)
+        gator_logo_size = int(screen_height*0.25)
 
         self.geometry(f"{screen_width}x{screen_height}")
         self.scanner_input = ""
+        self.prev_scan = ""
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
         # create information frame, which contains project name and current date/time. Will be displayed at all times on left side of screen.
-        self.information_frame_init(font_size_information, screen_height)
+        self.information_frame_init(font_size_information, screen_height, gator_logo_size)
 
         # create scan frame with prompt text and arrow image
         self.scan_frame_init(font_size_prompt, screen_height, prompt_image_size)
@@ -51,7 +54,7 @@ class App(customtkinter.CTk):
         # make "interrupt" for any incoming key strokes in tkinter instance, which will be the iso or ufid
         self.bind_all("<Key>", self.capture_scan)
 
-    def information_frame_init(self, font_size_information, screen_height):
+    def information_frame_init(self, font_size_information, screen_height, gator_logo_size):
         self.information_frame = customtkinter.CTkFrame(
             self, 
             corner_radius=0
@@ -67,6 +70,20 @@ class App(customtkinter.CTk):
             font = customtkinter.CTkFont(size=font_size_information, weight="bold")
         )
         self.information_frame_title_top.grid(row=0, column=0, padx=0, pady=int(screen_height * 0.05), sticky="new")
+
+        self.information_frame_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_dir_path, "gators_logo.png")),
+            size=(gator_logo_size,gator_logo_size*(2/3))
+        )
+
+        self.information_frame_image_label = customtkinter.CTkLabel(
+            self.information_frame, 
+            text = "",
+            compound = "left", 
+            image = self.information_frame_image,
+            font = customtkinter.CTkFont(size=font_size_information, weight="bold")
+        )
+        self.information_frame_image_label.place(anchor="c", relx=0.5, rely=0.3)
 
         self.invisible_text_box = customtkinter.CTkEntry(
             self.information_frame,
@@ -99,7 +116,7 @@ class App(customtkinter.CTk):
             self.information_frame, 
             text = "", 
             compound = "left", 
-            font = customtkinter.CTkFont(size=font_size_information, weight="bold")
+            font = customtkinter.CTkFont(size=max(16,font_size_information-10), weight="bold")
         )
         self.information_frame_time.grid(row=3, column=0, padx=0, pady=(0, int(screen_height * 0.05)), sticky="sew")
         self.update_time() # start method to change current date and time every second, used to make sure display doesnt go to sleep
@@ -108,15 +125,18 @@ class App(customtkinter.CTk):
         self.scan_frame = customtkinter.CTkFrame(
             self, 
             corner_radius=0, 
-            fg_color="white"
+            fg_color="white",
+            bg_color="white"
         )
         self.scan_frame.grid_columnconfigure(0, weight=1)
 
         self.prompt_label = customtkinter.CTkLabel(
             self.scan_frame, 
-            text=" Swipe UFID or \n tap below:", 
-            font=("Roboto", font_size_prompt),
-            anchor="center"
+            text=" Swipe UFID or \n tap below", 
+            #font=("Roboto", font_size_prompt),
+            font=customtkinter.CTkFont("Roboto",size=font_size_prompt),#, weight="bold"),
+            anchor="center",
+            text_color="black"#'#0f4ef5'
         )
         self.prompt_label.grid(padx=0, pady=(int(screen_height * 0.1), int(screen_height * 0.01)))
 
@@ -179,20 +199,21 @@ class App(customtkinter.CTk):
         self.success_frame = customtkinter.CTkFrame(
             self, 
             corner_radius=0, 
-            fg_color="white"
+            fg_color="white",
+            bg_color="white"
         )
         self.success_frame.grid_rowconfigure(0, weight=1)
         self.success_frame.grid_columnconfigure(1, weight=1)
 
-        # self.success_image = customtkinter.CTkImage(
-        #     light_image=Image.open(os.path.join(image_dir_path, "success_gator_tp.png")),
-        #     size=(result_image_size,result_image_size)
-        # )
-        
         self.success_image = customtkinter.CTkImage(
-            light_image=Image.open(os.path.join(image_dir_path, "checkmark.png")),
+            light_image=Image.open(os.path.join(image_dir_path, "success_gator_tp.png")),
             size=(result_image_size,result_image_size)
-        )        
+        )
+        
+        # self.success_image = customtkinter.CTkImage(
+        #     light_image=Image.open(os.path.join(image_dir_path, "checkmark.png")),
+        #     size=(result_image_size,result_image_size)
+        # )        
         
         self.success_image_label = customtkinter.CTkLabel(
             self.success_frame, 
@@ -212,7 +233,8 @@ class App(customtkinter.CTk):
         self.fail_frame = customtkinter.CTkFrame(
             self, 
             corner_radius=0, 
-            fg_color="white"
+            fg_color="white",
+            bg_color="white"
         )
         self.fail_frame.grid_rowconfigure(0, weight=1)
         self.fail_frame.grid_columnconfigure(1, weight=1)
@@ -253,9 +275,9 @@ class App(customtkinter.CTk):
             self.after(10, lambda: self.update_animation(frame_index))
 
     def select_frame_by_name(self, name, student_info):
-        self.scan_frame.grid_forget()
-        self.success_frame.grid_forget()
-        self.fail_frame.grid_forget()
+        self.scan_frame.grid_remove()
+        self.success_frame.grid_remove()
+        self.fail_frame.grid_remove()
         #self.loading_frame.grid_forget()
     
         match name:
@@ -292,7 +314,10 @@ class App(customtkinter.CTk):
                 self.fail_text_label.configure(text=output)
                 self.fail_text_label.place(anchor="c", relx=0.5, rely=0.75)
 
-                self.fail_frame.grid(row=0,column=1, sticky="nsew")
+                self.fail_image_label.place(anchor="c",relx=0.5, rely=0.40)
+
+                self.after(100, lambda : self.fail_frame.grid(row=0,column=1, sticky="nsew"))
+                
                 self.fail_frame.update_idletasks()
                 
                 self.after(5000, lambda: self.select_frame_by_name("scan", student_info=None))
@@ -305,8 +330,7 @@ class App(customtkinter.CTk):
         self.scanner_input+=event.char
         if event.keysym == "Return":
                 #self.select_frame_by_name("load", student_info=None)
-                threading.Thread(target=process_scan(self)).start()
-                #process_scan(self) # scanner_input is reset w/in this function in main
+                process_scan(self)
                 self.invisible_text_box.delete(0, 'end') #testing purposes, clear text box
 
 if __name__ == "__main__":
