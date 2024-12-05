@@ -147,8 +147,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
   - 'day' can be M, T, W, R, F, or S
   - Ex. roomCode: 'NSC215'
 - GET /exams/\[serial_num\]\[date\]
-  - Retrieves course code, class number, instructor(s), sections, room code, date, start time, and end time associated with that date and room* \
-  *which it finds using the serial number and kiosk database
+  - Retrieves course code, class number, instructor(s), sections, room code, date, start time, and end time associated with that date and room (which it finds using the serial number and kiosk database)
   - Both serial_num and date are required to get an actual result
 - POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[last_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
   - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
@@ -277,7 +276,31 @@ Data validation code will be written to ensure that the input is valid with rega
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
 \
 **Assumptions/Bugs/Issues Remaining (Production Release and Post-Mortem):**
-* 
+* Assumptions
+  * Data would come from UF's Database so it would be complete and valid
+    * Database access was not granted
+    * Using a Public Course API the course data is the only data actually from UF
+    * All other data is created with the knowledge of what UF's Database contains and what is needed for the system to function
+  * Student information will be collected and updated from students voluntarily through a form or for the purpose of testing, dummy data can be generated
+    * This is due to FERPA laws
+    * Both function assumes that information given or created is acurate
+  * Stable internet and power is provided to the system
+    * Without connection to the internet the system cannot communicate with the databases hosted on the website 
+  * Exam information is updated after confering with the registrar
+    * Since there is not formal system for reserving rooms, instructor should confer with the registrar and update the date, time, and room of the exam on the website 
+  * Website information will be updated each semester
+    * In order for attendence to be validated accurately the course data needs to be updated using the API-to-Database.py code
+    * The rosters also need to be reset for students to enter their information or just updated if access to UF database is granted
+    * Instructor/professor ownership of course will also have to be update likely using the API-to-Database.py code
+  * Kiosk room data will be updated if moved
+    * In the Kiosk tab of the website, based on the serial number the kiosk's room can be changed 
+* Bugs/Issues
+  * Form for student data is inconvenient as anytime you need to update information you have to put in all the info again
+    * This was done purposely as it was thought that students would provide this information and should not see or have access to other information
+    * However, it is an inconvenience in testing and debugging
+    * To fix this issue the form can stay on the login page still being accessed by the form tab but after logging in the roster table could have editable fields like the rest of the table
+  * Button was not developed so mode has to manually edited
+    * This can be done in UFIDReader/src/main.py by changing the parameter to 1 for mode in the validate function which is called in the process_scan function
 
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
