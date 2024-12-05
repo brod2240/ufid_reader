@@ -22,7 +22,7 @@ To setup system for running from boot and reboot to test boot functionality:
 5. Once the Pi 4 has rebooted, the UFID Check-In System is running!
 
 Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of ufid_reader/UFIDReader/Packages/Validation/validation.py \
-Note: When setting the mode to 1 or exam mode there is no 15 minute time buffer whereas the regular mode has it. 
+Note: When setting the mode to 1 or exam mode as a parameter in the validate function, there is no 15 minute time buffer whereas the regular mode has it. 
 
 ## Public Course API
 ### Credit: 
@@ -147,7 +147,8 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
   - 'day' can be M, T, W, R, F, or S
   - Ex. roomCode: 'NSC215'
 - GET /exams/\[serial_num\]\[date\]
-  - Retrieves course code, class number, instructor(s), sections, room code, date, start time, and end time associated with that date and room (which it finds using the serial number and kiosk database)
+  - Retrieves course code, class number, instructor(s), sections, room code, date, start time, and end time associated with that date and room* \
+  *which it finds using the serial number and kiosk database
   - Both serial_num and date are required to get an actual result
 - POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[last_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
   - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
