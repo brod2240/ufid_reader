@@ -21,7 +21,8 @@ To setup system for running from boot and reboot to test boot functionality:
 4. sudo reboot
 5. Once the Pi 4 has rebooted, the UFID Check-In System is running!
 
-Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of ufid_reader/UFIDReader/Packages/Validation/validation.py
+Note: If creating your own admin website, make sure to change the base url in the validation code in the first function of ufid_reader/UFIDReader/Packages/Validation/validation.py \
+Note: When setting the mode to 1 or exam mode there is no 15 minute time buffer whereas the regular mode has it. 
 
 ## Public Course API
 ### Credit: 
@@ -87,8 +88,9 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 1. Pip install requests if you have not already
 2. Run the python file
 3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively to the 5. This is the same way semesters/terms are set in the publicly available course API. (e.g. 2248 for Fall 2024 or 22456W1 for Summer A 2024)
-4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website.
-5. Place the courses_{term}.db in the /data folder for the admin website and place the json file in the professor website
+4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website. This file contains sections sorted into their respective course code and name then sorted by instructors creating a hierarchical structure of instructors > course code and name > section number 
+5. Place the courses_{term}.db in the /data folder for the admin website and place the json file in the professor website. Also make sure to update the app.py file, specifically the part where COURSE_DATA is set based on the database file, so that it is pulling from the new course_{term}.db file.
+**Note: This should be updated every semester as course data chages** \
 
 ## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
@@ -144,7 +146,10 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
   - Both day and roomCode are required to get an actual result
   - 'day' can be M, T, W, R, F, or S
   - Ex. roomCode: 'NSC215'
-- POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[first_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
+- GET /exams/\[serial_num\]\[date\]
+  - Retrieves course code, class number, instructor(s), sections, room code, date, start time, and end time associated with that date and room (which it finds using the serial number and kiosk database)
+  - Both serial_num and date are required to get an actual result
+- POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[last_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
   - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
   - Saves ufid, iso, first name, last name, course code, class/section number, instructor, room number, and time to timesheet table in database
 
@@ -166,6 +171,13 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
+\
+**Main Work Completed (Production Release and Post-Mortem)**
+* Software
+   * A
+* Hardware
+   * C
+
 \
 **Main Work Completed (Release Candidate and Beta Test)**
 * Software
@@ -244,9 +256,11 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 * Created pseudo-database using a csv file populated with ISO number, student ID, name, and class number of enrolled courses.
 * Created and Tested data validation of student ID. Prompts for class number which will become an admin function then with each scan checks if the student ID exists and if they are enrolled in the class by checking the class number. 
 ## Project Architecture
-Pre-Alpha Project Architecture: https://docs.google.com/document/d/1tP44RrBhFNyO9FV3hFwBYtD2954Nz5rZk2YErq-sL-Y/edit?usp=sharing <br /> <br />
-Alpha Project Architecture: https://docs.google.com/document/d/16P1VVmUHEkcT9Zi2FqWKvdya8piKoZl4C9z6rgN8DTU/edit?usp=sharing <br /> <br />
-Current Project Architecture: https://docs.google.com/document/d/1MKxFBsCBQZ5DKFq7oUa7FJucZgOmg5q-gVv8mNC52VA/edit?usp=sharing <br />
+[Pre-Alpha Project Architecture](https://docs.google.com/document/d/1tP44RrBhFNyO9FV3hFwBYtD2954Nz5rZk2YErq-sL-Y/edit?usp=sharing) <br /> <br />
+[Alpha Project Architecture](https://docs.google.com/document/d/16P1VVmUHEkcT9Zi2FqWKvdya8piKoZl4C9z6rgN8DTU/edit?usp=sharing) <br /> <br />
+[Beta Project Architecture](https://docs.google.com/document/d/1MKxFBsCBQZ5DKFq7oUa7FJucZgOmg5q-gVv8mNC52VA/edit?usp=sharing) <br /> <br />
+[Release Candidate Project Architecture](https://docs.google.com/document/d/16aRJ4sdrChsQ3FNZG8HxqY1DyycS1shyQ8sEbhLPX2c/edit?usp=sharing) <br /> <br />
+[Current (Production Release / Post-Mortem) Project Architecture](https://docs.google.com/document/d/1qha_4NadV3Fd8RurmESXfrDfELBHAljv2odlNd1oOAU/edit?usp=sharing) <br />
 ### End Goal Project Architecture:
 #### External Interface
 Users will interface with a MRD5 scanner and LCD screen. The MRD5 scanner will take in input from either the magnetic stripe of a physical card or the NFC tap of a physical or mobile card. The validation of the ID will be displayed on screen (error, not in roster, present, etc.) along with the name and photo of the student. For admins, teachers, and IT they will interface with a website allowing them to see and manipulate data. 
@@ -260,6 +274,10 @@ External communication to database with secure internet connection and API reque
 Data validation code will be written to ensure that the input is valid with regards to fitting the 8 digit student ID or unique ISO number format. It will also be checked in terms of existing in the student database as stated in the internal system section. Sensitive data will also encrypted before being sent through API requests and requests for sensitive data will need authorized device checked with the serial number of the kiosks in the Pi/Kiosks database. 
 ## Bugs/Issues
 **Full and Detailed List of Bugs/Issues:** https://docs.google.com/document/d/19LEbZKjoLoHLEzeAZ4qlOMeJ4DfzlMnsj3Ypd5segmE/edit?usp=sharing \
+\
+**Assumptions/Bugs/Issues Remaining (Production Release and Post-Mortem):**
+* 
+
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
 * Main loop not running
