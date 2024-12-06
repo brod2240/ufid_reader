@@ -164,6 +164,29 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 - POST /timesheet\[serial_num\]\[ufid\]\[iso\]\[first_name\]\[last_name\]\[course\]\[class\]\[instructor\]\[room_num\]\[time\]
   - Uses serial_num to verify authorized device by checking it exist in the PiConfig table in the database
   - Saves ufid, iso, first name, last name, course code, class/section number, instructor, room number, and time to timesheet table in database
+ 
+### Encryption for Database Security
+
+To ensure the database is securely encrypted, follow these steps:
+
+1. Install the required Python packages in PythonAnywhere's bash console:
+
+```bash
+pip install sqlcipher3-binary
+pip install python-dotenv
+```
+
+The `.env` file contains hardcoded keys that are necessary for the encryption to work. The database in the GitHub directory is encrypted using this specific key. Using a different key will result in an error because the database cannot be decrypted without the exact key.
+
+To include a new, unencrypted database, follow these steps:
+
+1. Delete the existing encrypted database.
+2. Add the unencrypted database file to the appropriate directory.
+3. Update the encryption key in the `.env` file.
+
+**Recommendation**: Save a copy of the unencrypted database for backup purposes before proceeding. The unencrypted database will be overridden and encrypted using the key specified in the .env file.
+
+3. Re-run the website to complete the encryption process for the new database.
 
 ### Instructions for Admin Site
 1. If you want to replicate the app do the following, else if you just want access to the website go to the link https://gatorufid.pythonanywhere.com (to get to admin page use login admin1 for both username and password)
@@ -177,9 +200,10 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
       * data/
       * static/
       * templates/
-      * uploads/  
-5. Reload the website in the Web tab
-6. Click the link above the reload button to open the website  
+      * uploads/
+5. Install necessary packages for website encryption
+6. Reload the website in the Web tab
+7. Click the link above the reload button to open the website  
    
 ## Completed Work
 **Log of Completed Work:** https://docs.google.com/spreadsheets/d/1taW3SdkVjubU3CihEUra0HCIytSY2XjPeqCYWhKH5SU/edit?usp=sharing \
