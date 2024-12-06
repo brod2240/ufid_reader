@@ -96,7 +96,7 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 1. Check that power and internet is connected to Kiosk.
 2. Check that internet and website are functioning
 3. Check that the MRD5 scanner is powered up by pressing the power on button which lights up and makes a beeping noise when turned on.
-4. Check that required encryption packages (SQLcipter3-binary, python-dotenv) are installed. 
+4. Check that required encryption packages (SQLcipter3-binary, python-dotenv) are installed and that the key provided is the correct encryption key. 
 5. Check that the data for the courses and exams is up to date. 
 6. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
 7. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
@@ -177,9 +177,17 @@ pip install sqlcipher3-binary
 pip install python-dotenv
 ```
 
-The `.env` file contains hardcoded keys that are necessary for the encryption to work. The database in the GitHub directory is encrypted using this specific key. Using a different key will result in an error because the database cannot be decrypted without the exact key. For official deployment, ensure the .env file is excluded from the GitHub repository to maintain security.
+The .env file contains hardcoded keys that are necessary for the encryption to work. The database in the GitHub directory is encrypted using this specific key. Using a different key will result in an error because the database cannot be decrypted without the exact key. For official deployment, ensure the .env file is excluded from the GitHub repository to maintain security.
 
-To include a new, unencrypted database, follow these steps:
+The .env file must follow this format:
+
+```bash
+ENCRYPTION_KEY=#####################
+FLASK_SECRET_KEY=your_secret_key
+```
+**Note**: The variable names (ENCRYPTION_KEY and FLASK_SECRET_KEY) must remain exactly as shown, and no quotation marks should be used around the keys. Additionally, do not change the FLASK_SECRET_KEY, as doing so will cause the admin login to stop working.
+
+To encrypt a new, unencrypted database, follow these steps:
 
 1. Delete the existing encrypted database.
 2. Add the unencrypted database file to the appropriate directory.
