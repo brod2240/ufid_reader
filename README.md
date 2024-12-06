@@ -370,6 +370,8 @@ Data validation code will be written to ensure that the input is valid with rega
     * Response times range in speed from near instant to upwards of 4 seconds or more.
     * Variable due to the communication over the internet to the website database, not in processing speed on the Pi.
     * Not much to be done to speed this up, other than storing database info locally on the Pi, which might create security issues. 
+
+\
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
 * Main loop not running
