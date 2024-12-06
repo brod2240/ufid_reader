@@ -344,26 +344,25 @@ Data validation code will be written to ensure that the input is valid with rega
     * The rosters also need to be reset for students to enter their information or just updated if access to UF database is granted
     * Instructor/professor ownership of course will also have to be update likely using the API-to-Database.py code
   * Kiosk room data will be updated if moved
-    * In the Kiosk tab of the website, based on the serial number the kiosk's room can be changed 
+    * In the Kiosk tab of the website, based on the serial number the kiosk's room can be changed
 * Bugs/Issues
   * Form for student data is inconvenient as anytime you need to update information you have to put in all the info again
     * This was done purposely as it was thought that students would provide this information and should not see or have access to other information
     * However, it is an inconvenience in testing and debugging
     * To fix this issue the form can stay on the login page still being accessed by the form tab but after logging in the roster table could have editable fields like the rest of the table
-  * Button was not developed so mode has to manually edited
+  * Button was not developed so mode has to be manually edited
     * This can be done in UFIDReader/src/main.py by changing the parameter to 1 for mode in the validate function which is called in the process_scan function
   * Exams search filter latency
-    * Due to the amount of searchable fields for each course the dynamic search filter takes a few seconds to show the results
+    * Due to the amount of searchable fields for each course, the dynamic search filter takes a few seconds to show the results
   * Filter Breaks Pagination
-    * When the filter/search bar is used it breaks the pagination allowing more results than what is laid out in the pagination
-    * To fix this issue it might be a better idea to not do dynamic filtering but rather have a form which when submitted filters based on the fields entered.
+    * When the filter/search bar is used, it breaks the pagination allowing more results than what is laid out in the pagination
+    * To fix this issue, it might be a better idea to not do dynamic filtering but rather have a form which when submitted filters based on the fields entered.
   * Data is only encrypted at rest
     * Data is not encrypted in transit
     * Anyone who obtains the database file will not be able to access the information without the key
     * However, anyone who uses the API calls will be able to get the information since the routing decrypts the data
-    * To fix this issue the data should be encrypted before being sent and decrypted when received. 
+    * To fix this issue the data should be encrypted before being sent and decrypted when received
   * Kiosk frame latency
-  * 
 
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
