@@ -88,9 +88,20 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 1. Pip install requests if you have not already
 2. Run the python file
 3. The file will prompt for an input of the semester in the format of year and semester. Input the year without the second digit (e.g 2024 is 224) then the semester (1 for spring, 5 for summer, 8 for fall). For summer A, B, or C you have to append 6W1, 6W2, or 1 respectively to the 5. This is the same way semesters/terms are set in the publicly available course API. (e.g. 2248 for Fall 2024 or 22456W1 for Summer A 2024)
-4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website. This file contains sections sorted into their respective course code and name then sorted by instructors creating a hierarchical structure of instructors > course code and name > section number 
-5. Place the courses_{term}.db in the /data folder for the admin website and place the json file in the professor website. Also make sure to update the app.py file, specifically the part where COURSE_DATA is set based on the database file, so that it is pulling from the new course_{term}.db file.
+4. The number of sections loaded will be shown as they are loaded in. Once all are loaded in a success message will be shown and a SQL database named courses_{term}.db will be created. A json file will also be created for the use of professor accounts in the professor website. This file contains sections sorted into their respective course code and name then sorted by instructors creating a hierarchical structure of instructors > course code and name > section number. In addition to this, an exams_{term}.db file will also be created with the course code, name, instructors, sections, and empty fields for the room, date, start time, and end time.  
+5. Place the courses_{term}.db and exams_{term}.db in the /data folder for the admin website and place the json file in the professor website. Also make sure to update the app.py file, specifically the part where COURSE_DATA and EXAM_DATA is set based on the database files, so that it is pulling from the new course_{term}.db file and new exam_{term}.db file.
 **Note: This should be updated every semester as course data chages** \
+
+## System Test Checklist
+1. Check that power and internet is connected to Kiosk.
+2. Check that internet and website are functioning
+3. Check that the MRD5 scanner is powered up by pressing the power on button which lights up and makes a beeping noise when turned on. 
+4. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
+5. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
+6. Check that the student is in the roster with the correct ISO and UFID
+7. If an exam check that it is set to the correct room, date, and time.
+8. Check that the section associated with the student in the roster is happening in the time range of the course within 15 before and after, on the day the class is usually, and in the room that is usually in. If an exam check that section associated with the student is associated with a course that has a exam in the time range with no buffer, on the date, and in the room of the exam.
+9. Check that the mode parameter in the validate function is set to 1 for exam mode and any other number for regular mode. Though 0 should be commonly used for regular mode.  
 
 ## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
@@ -301,6 +312,9 @@ Data validation code will be written to ensure that the input is valid with rega
     * To fix this issue the form can stay on the login page still being accessed by the form tab but after logging in the roster table could have editable fields like the rest of the table
   * Button was not developed so mode has to manually edited
     * This can be done in UFIDReader/src/main.py by changing the parameter to 1 for mode in the validate function which is called in the process_scan function
+  * Exams search filter latency
+    * Due to the amount of searchable fields for each course the dynamic search filter takes a few seconds to show the results  
+  * Kiosk frame latency
 
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
