@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiosks</title>
+    <style>
+        /* Basic CSS for form styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a, .navbar button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover, .navbar button:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .required-note {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">GatorCheck</div>
+        <div>
+            <a href="/roster">Roster</a>
+            <a href="/timesheet">Time Sheet</a>
+            <a href='/kiosks'>Kiosks</a>
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline-block;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Enrolled Courses</h2>
+        <form action="{{ url_for('kiosks') }}" method="POST">
+            <div class="form-group">
+                <label for="serial_num">Kiosk Serial #:</label>
+                <input type="text" id="serial_num" name="serial_num">
+            </div>
+            <div class="form-group">
+                <label for="room_num">Room #:</label>
+                <input type="text" id="room_num" name="room_num">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            localStorage.removeItem('sidebar_state');
+        });
+
+        /*
+        let isNavigating = false;
+
+        window.addEventListener('beforeunload', function (e) {
+            if (!isNavigating) {
+                navigator.sendBeacon('/logout');
+            }
+        });
+
+        // Set flag on navigation links
+        document.querySelectorAll('.navbar a').forEach(link => {
+            link.addEventListener('click', function () {
+                isNavigating = true;
+            });
+        });
+
+        // Reset flag when navigating away from the page
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                isNavigating = true;
+            }
+        });
+        */
+    </script>
+</body>
+</html>

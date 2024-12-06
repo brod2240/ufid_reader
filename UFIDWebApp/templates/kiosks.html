@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiosks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+    /* Basic CSS for form styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a, .navbar button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover, .navbar button:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .login-img {
+            max-width: 50px;
+            margin-right: 10px; /* Space between image and text */
+        }
+        .navbar .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            padding: 10px;
+        }
+        .table-container {
+            flex: 1; /* Take remaining space */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent table from expanding */
+        }
+        #search-bar {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+        #search-bar:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        #add-pi-row input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        #add-pi-row button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #add-pi-row button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px; /* Add this line */
+            overflow: hidden; /* Add this line */
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap; /* Prevents text from wrapping to the next line */
+            overflow: hidden; /* Ensures that long text is cut off instead of making the column wider */
+            text-overflow: ellipsis; /* Adds an ellipsis (...) when text is too long */
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Set fixed widths for the columns */
+        th:nth-child(1), td:nth-child(1) {
+            width: 30%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 40%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 30%; /* Adjust this percentage as needed */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 0px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s;
+        }
+        button:last-child {
+            margin-right: 0;  /* Remove right margin from the last button in each cell */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .row-button {
+            padding: 5px 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;  /* Add right margin to all buttons */
+        }
+        .row-button-last-child {
+            margin-right: 0;  /* Remove right margin from the last button in each cell */
+        }
+        .delete-button {
+            background-color: red;
+            color: white; /* Ensures the text color is white for better readability */
+        }
+        .delete-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+        .delete-all-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+        .delete-all-button:hover {
+            background-color: darkred;
+        }
+        .delete-all-button:focus {
+            outline: none;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .pagination li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .pagination li a {
+            padding: 8px 12px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination li a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/login_img.fbb98084de73f8a59ca0.png') }}" alt="Logo" class="login-img">
+            <div class="logo">GatorCheck</div>
+        </div>
+        <div>
+            <a href="/roster">Roster</a>
+            <a href="/timesheet">Time Sheet</a>
+            <a href="/kiosks">Kiosks</a>
+            <a href="/exams">Exams</a>
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline-block;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <div class="table-container">
+            <h2>Kiosks</h2>
+
+            <!-- Search Bar -->
+            <input type="text" id="search-bar" placeholder="Search by Serial Number or Classroom" onkeyup="filterTable()">
+
+            <table id="pi-table">
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Classroom</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pi in kiosks %}
+                    <tr id="pi-{{ pi[0] }}">
+                        <td>
+                            <span id="view-serial-{{ pi[0] }}">{{ pi[0] }}</span>
+                            <input type="text" value="{{ pi[0] }}" id="edit-serial-{{ pi[0] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-classroom-{{ pi[0] }}">{{ pi[1] }}</span>
+                            <input type="text" value="{{ pi[1] }}" id="edit-classroom-{{ pi[0] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <button id="edit-button-{{ pi[0] }}" onclick="editPi('{{ pi[0] }}')" class="row-button">Edit</button>
+                            <button id="save-button-{{ pi[0] }}" onclick="savePi('{{ pi[0] }}')" style="display: none;" class="row-button">Save</button>
+                            <button onclick="deletePi('{{ pi[0] }}')" class="delete-button row-button">Delete</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No Raspberry Pis found.</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- Row for Adding a New Pi -->
+                    <tr id="add-pi-row">
+                        <td>
+                            <input type="text" id="new-serial" placeholder="Enter Serial Number">
+                        </td>
+                        <td>
+                            <input type="text" id="new-classroom" placeholder="Enter Classroom">
+                        </td>
+                        <td>
+                            <button onclick="addPi()">Add</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <ul>
+                    {% if page > 1 %}
+                    <li><a href="{{ url_for('kiosks', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('kiosks', page=page-1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {% if page == 1 %}
+                    <li><a href="{{ url_for('kiosks', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('kiosks', page=1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {# Determine start and end page numbers #}
+                    {% set start_page = page - 2 if page - 2 > 0 else 1 %}
+                    {% set end_page = start_page + 4 if start_page + 4 < total_pages else total_pages %}
+
+                    {# Adjust start_page if end_page is less than 5 #}
+                    {% if end_page - start_page < 4 %}
+                        {% set start_page = end_page - 4 if end_page - 4 > 0 else 1 %}
+                    {% endif %}
+
+                    {# Loop through the page numbers #}
+                    {% for num in range(start_page, end_page + 1) %}
+                        <li {% if num == page %}class="active"{% endif %}>
+                            <a href="{{ url_for('kiosks', page=num) }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page < total_pages %}
+                    <li><a href="{{ url_for('kiosks', page=page+1) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('kiosks', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+
+                    {% if page == total_pages %}
+                    <li><a href="{{ url_for('kiosks', page=total_pages) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('kiosks', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Delete All Entries Button -->
+            <button onclick="deleteAllEntries()" class="delete-button delete-all-button">
+                Delete All Entries
+            </button>
+        </div>
+    </div>
+    <script>
+
+    // Add Pi form submission
+    function addPi() {
+        var serialNumber = document.getElementById('new-serial').value;
+        var classroom = document.getElementById('new-classroom').value;
+
+        // Basic validation
+        if (!serialNumber || !classroom) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        fetch('/add_kiosk', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ serialNumber: serialNumber, classroom: classroom })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+
+                // Reload the page to reflect the new entry
+                window.location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to add Raspberry Pi.');
+        });
+    }
+
+    function deletePi(serialNumber) {
+        if (confirm('Are you sure you want to delete this Pi?')) {
+            fetch('/delete_kiosks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ serial_num: serialNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove the row from the table without reloading the page
+                    var row = document.getElementById('pi-' + serialNumber);
+                    if (row) {
+                        row.parentNode.removeChild(row);
+                    }
+                } else {
+                    console.error('Error:', data.message);
+                    alert('Failed to delete Raspberry Pi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to delete Raspberry Pi.');
+            });
+        }
+    }
+
+    function resetEditing() {
+        document.querySelectorAll('table tbody tr').forEach(row => {
+            const serialNumber = row.id.replace('pi-', '');
+
+            // Skip the 'add-pi-row' to avoid errors
+            if (serialNumber === 'add-row') {
+                return; // Skip this iteration for the add row
+            }
+
+            // Ensure the elements exist before accessing them
+            const viewSerial = document.getElementById('view-serial-' + serialNumber);
+            const viewClassroom = document.getElementById('view-classroom-' + serialNumber);
+            const editSerial = document.getElementById('edit-serial-' + serialNumber);
+            const editClassroom = document.getElementById('edit-classroom-' + serialNumber);
+            const editButton = document.getElementById('edit-button-' + serialNumber);
+            const saveButton = document.getElementById('save-button-' + serialNumber);
+
+            if (viewSerial && viewClassroom && editSerial && editClassroom && editButton && saveButton) {
+                // Reset view visibility
+                viewSerial.style.display = '';
+                viewClassroom.style.display = '';
+                editSerial.style.display = 'none';
+                editClassroom.style.display = 'none';
+
+                // Show the edit button, hide the save button
+                editButton.style.display = '';
+                saveButton.style.display = 'none';
+            } else {
+                console.error('One or more elements are missing for serial number:', serialNumber);
+            }
+        });
+    }
+
+    function editPi(serialNumber) {
+        console.log("Edit button clicked for:", serialNumber); // For debugging purposes
+
+        resetEditing(); // Ensure no other rows are in edit mode
+
+        // Enable editing for the selected row
+        document.getElementById('edit-serial-' + serialNumber).style.display = '';
+        document.getElementById('edit-classroom-' + serialNumber).style.display = '';
+        document.getElementById('view-serial-' + serialNumber).style.display = 'none';
+        document.getElementById('view-classroom-' + serialNumber).style.display = 'none';
+
+        // Adjust button visibility
+        document.getElementById('edit-button-' + serialNumber).style.display = 'none';
+        document.getElementById('save-button-' + serialNumber).style.display = '';
+    }
+
+    function savePi(serialNumber) {
+        const newSerial = document.getElementById('edit-serial-' + serialNumber).value;
+        const newClassroom = document.getElementById('edit-classroom-' + serialNumber).value;
+
+        fetch('/update_kiosks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ oldSerial: serialNumber, newSerial: newSerial, room_num: newClassroom })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the view with the new values
+                document.getElementById('view-serial-' + serialNumber).textContent = newSerial;
+                document.getElementById('view-classroom-' + serialNumber).textContent = newClassroom;
+
+                // Switch back to static view
+                document.getElementById('edit-serial-' + serialNumber).style.display = 'none';
+                document.getElementById('edit-classroom-' + serialNumber).style.display = 'none';
+                document.getElementById('view-serial-' + serialNumber).style.display = '';
+                document.getElementById('view-classroom-' + serialNumber).style.display = '';
+
+                // Reset button visibility
+                document.getElementById('edit-button-' + serialNumber).style.display = '';
+                document.getElementById('save-button-' + serialNumber).style.display = 'none';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update Raspberry Pi.');
+        });
+    }
+
+    function deleteAllEntries() {
+        if (confirm('Are you sure you want to delete all entries?')) {
+            fetch('/delete_all_kiosks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload the page to reflect the changes
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete all entries: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to delete all entries.');
+            });
+        }
+    }
+
+    // Store all kiosks data in an array
+    let allKiosks = [];
+
+    // Load all kiosks data when the page is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/all_kiosks')
+            .then(response => response.json())
+            .then(data => {
+                allKiosks = data; // Store all kiosks in the array
+            })
+            .catch(error => {
+                console.error('Error loading kiosks:', error);
+            });
+    });
+
+    // Filter through all kiosks in all pages
+    function filterTable() {
+        // Get the search input value
+        let input = document.getElementById("search-bar").value.toLowerCase();
+
+        // Get the table body and clear it
+        let tableBody = document.querySelector("#pi-table tbody");
+        tableBody.innerHTML = '';
+
+        // Loop through all kiosks and append matching rows to the table
+        allKiosks.forEach(function (pi) {
+            let serialNumber = pi[0].toLowerCase();
+            let classroom = pi[1].toLowerCase();
+
+            if (serialNumber.indexOf(input) > -1 || classroom.indexOf(input) > -1) {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <span id="view-serial-${pi[0]}">${pi[0]}</span>
+                        <input type="text" value="${pi[0]}" id="edit-serial-${pi[0]}" style="display: none;">
+                    </td>
+                    <td>
+                        <span id="view-classroom-${pi[0]}">${pi[1]}</span>
+                        <input type="text" value="${pi[1]}" id="edit-classroom-${pi[0]}" style="display: none;">
+                    </td>
+                    <td>
+                        <button id="edit-button-${pi[0]}" onclick="editPi('${pi[0]}')" class="row-button">Edit</button>
+                        <button id="save-button-${pi[0]}" onclick="savePi('${pi[0]}')" style="display: none;" class="row-button">Save</button>
+                        <button onclick="deletePi('${pi[0]}')" class="delete-button row-button">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+        });
+    }
+    </script>
+</body>
+</html>

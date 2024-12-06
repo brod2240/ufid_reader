@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Name Form</title>
+    <title>Student Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* Basic CSS for form styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f0f0f0;
             margin: 0;
         }
@@ -26,20 +27,34 @@
             box-sizing: border-box;
             z-index: 1000;
         }
-        .navbar a {
+        .navbar a, .navbar button {
             color: white;
             text-decoration: none;
             padding: 10px 15px;
             display: inline-block;
             transition: background-color 0.3s, color 0.3s;
         }
-        .navbar a:hover {
+        .navbar a:hover, .navbar button:hover {
             background-color: #0056b3;
             border-radius: 4px;
         }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .login-img {
+            max-width: 50px;
+            margin-right: 10px; /* Space between image and text */
+        }
         .navbar .logo {
-            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
             font-weight: bold;
+        }
+        .navbar form {
+            margin: 0;
+            margin-bottom: 0;
+            padding: 0;
         }
         .container {
             max-width: 400px;
@@ -48,6 +63,13 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 0; /* Remove top margin */
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -67,6 +89,7 @@
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 14px;
+            font-family: 'Poppins', sans-serif;
         }
         button {
             padding: 10px 20px;
@@ -77,6 +100,7 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            font-family: 'Poppins', sans-serif;
         }
         button:hover {
             background-color: #0056b3;
@@ -85,7 +109,10 @@
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">GatorCheck</div>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/login_img.fbb98084de73f8a59ca0.png') }}" alt="Logo" class="login-img">
+            <div class="logo">GatorCheck</div>
+        </div>
         <div>
             <a href="/form">Form</a>
             <a href="/login">Login</a>

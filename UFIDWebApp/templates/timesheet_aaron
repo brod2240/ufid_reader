@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet</title>
+    <style>
+        /* Basic CSS for form styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a, .navbar button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover, .navbar button:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1; /* Grow to take remaining space */
+            display: flex;
+            padding: 10px;
+        }
+
+
+        .table-container {
+            flex: 1; /* Take remaining space */
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent table from expanding */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px; /* Add this line */
+            overflow: hidden; /* Add this line */
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Styling for table rows to alternate colors */
+        tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Light grey for odd rows */
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff; /* White for even rows */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">GatorCheck</div>
+        <div>
+            <a href="/roster">Roster</a>
+            <a href="/timesheet">Time Sheet</a>
+            <a href="/kiosks">Kiosks</a>
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline-block;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <div class="table-container">
+            <h2>Time Sheet</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>UFID</th>
+                        <th>ISO</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Course</th>
+                        <th>Class</th>
+                        <th>Instructor</th>
+                        <th>Room Num</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in timesheet_data %}
+                    <tr>
+                        <td>{{ data[0] }}</td>  <!-- UFID -->
+                        <td>{{ data[1] }}</td>  <!-- ISO -->
+                        <td>{{ data[2] }}</td>  <!-- First Name -->
+                        <td>{{ data[3] }}</td>  <!-- Last Name -->
+                        <td>{{ data[4] }}</td>  <!-- Course -->
+                        <td>{{ data[5] }}</td>  <!-- Class -->
+                        <td>{{ data[6] }}</td>  <!-- Instructor -->
+                        <td>{{ data[7] }}</td>  <!-- Room Num -->
+                        <td>{{ data[8] }}</td>  <!-- Time -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            localStorage.removeItem('sidebar_state');
+        });
+
+        /*
+
+        let isNavigating = false;
+
+        window.addEventListener('beforeunload', function (e) {
+            if (!isNavigating) {
+                navigator.sendBeacon('/logout');
+            }
+        });
+
+        // Set flag on navigation links
+        document.querySelectorAll('.navbar a').forEach(link => {
+            link.addEventListener('click', function () {
+                isNavigating = true;
+            });
+        });
+
+        // Reset flag when navigating away from the page
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                isNavigating = true;
+            }
+        });
+        */
+    </script>
+</body>
+</html>

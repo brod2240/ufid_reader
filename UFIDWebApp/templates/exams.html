@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+    /* Basic CSS for form styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar a, .navbar button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar a:hover, .navbar button:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .login-img {
+            max-width: 50px;
+            margin-right: 10px; /* Space between image and text */
+        }
+        .navbar .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            padding: 10px;
+        }
+        .table-container {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        #search-bar {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 20px;
+        }
+        #search-bar:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-radius: 10px; /* Round the corners of the table */
+            overflow: hidden; /* Ensures the table content respects the rounded corners */
+            border-collapse: collapse; /* Removes borders between cells */
+        }
+
+        th, td {
+            padding: 6px; /* Add padding for a cleaner look */
+            text-align: left;
+            border: none; /* Remove border */
+            white-space: nowrap; /* Prevents text from wrapping to the next line */
+            overflow: hidden; /* Ensures that long text is cut off instead of making the column wider */
+            text-overflow: ellipsis; /* Adds an ellipsis (...) when text is too long */
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Set fixed widths for the columns */
+        th:nth-child(1), td:nth-child(1) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 15%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 15%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(4), td:nth-child(4) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(5), td:nth-child(5) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(6), td:nth-child(6) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(7), td:nth-child(7) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(8), td:nth-child(8) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        th:nth-child(9), td:nth-child(9) {
+            width: 10%; /* Adjust this percentage as needed */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 0px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s;
+        }
+        button:last-child {
+            margin-right: 0;  /* Remove right margin from the last button in each cell */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .row-button {
+            padding: 5px 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;  /* Add right margin to all buttons */
+        }
+
+        .clear-button {
+            background-color: red; /* Red background */
+            color: white;
+            margin-left: 5px; /* Adds spacing to the right of the edit button */
+            transition: background-color 0.3s;
+        }
+
+        .clear-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+
+        .row-button-last-child {
+            margin-right: 0;  /* Remove right margin from the last button in each cell */
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .pagination li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .pagination li a {
+            padding: 8px 12px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination li a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+       <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/login_img.fbb98084de73f8a59ca0.png') }}" alt="Logo" class="login-img">
+            <div class="logo">GatorCheck</div>
+        </div>
+        <div>
+            <a href="/roster">Roster</a>
+            <a href="/timesheet">Time Sheet</a>
+            <a href="/kiosks">Kiosks</a>
+            <a href="/exams">Exams</a>
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline-block;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <div class="table-container">
+            <h2>Exams</h2>
+
+            <!-- Search Bar -->
+            <input type="text" id="search-bar" placeholder="Search exams..." onkeyup="filterTable()">
+
+            <table id="exam-table">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Instructor(s)</th>
+                        <th>Sections</th>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                    <tr id="exam-{{ exam[0] }}-{{ exam[1] }}">
+                        <td>{{ exam[0] if exam[0] else '-' }}</td>
+                        <td>{{ exam[1] if exam[1] else '-' }}</td>
+                        <td>{{ exam[2] if exam[2] else '-' }}</td>
+                        <td>{{ exam[3] if exam[3] else '-' }}</td>
+                        <td>
+                            <span id="view-room-{{ exam[0] }}-{{ exam[1] }}">{{ exam[4] if exam[4] else '-' }}</span>
+                            <input type="text" id="edit-room-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-date-{{ exam[0] }}-{{ exam[1] }}">{{ exam[5] if exam[5] else '-' }}</span>
+                            <input type="date" id="edit-date-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-start-{{ exam[0] }}-{{ exam[1] }}">{{ exam[6] if exam[6] else '-' }}</span>
+                            <input type="time" id="edit-start-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-end-{{ exam[0] }}-{{ exam[1] }}">{{ exam[7] if exam[7] else '-' }}</span>
+                            <input type="time" id="edit-end-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <button id="edit-button-{{ exam[0] }}-{{ exam[1] }}" onclick="editExam('{{ exam[0] }}', '{{ exam[1] }}')" class="row-button">Edit</button>
+                            <button id="save-button-{{ exam[0] }}-{{ exam[1] }}" onclick="saveExam('{{ exam[0] }}', '{{ exam[1] }}')" style="display: none;" class="row-button">Save</button>
+                            <button id="clear-button-{{ exam[0] }}-{{ exam[1] }}" onclick="clearExam('{{ exam[0] }}', '{{ exam[1] }}')" class="row-button clear-button">Clear</button>
+                        </td>
+
+                        <td>{{ exam[0] if exam[0] else '-' }}</td>
+                        <td>{{ exam[1] if exam[1] else '-' }}</td>
+                        <td>{{ exam[2] if exam[2] else '-' }}</td>
+                        <td>{{ exam[3] if exam[3] else '-' }}</td>
+                        <td>
+                            <span id="view-room-{{ exam[0] }}-{{ exam[1] }}">{{ exam[4] if exam[4] else '-' }}</span>
+                            <input type="text" id="edit-room-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-date-{{ exam[0] }}-{{ exam[1] }}">{{ exam[5] if exam[5] else '-' }}</span>
+                            <input type="date" id="edit-date-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-start-{{ exam[0] }}-{{ exam[1] }}">{{ exam[6] if exam[6] else '-' }}</span>
+                            <input type="time" id="edit-start-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <span id="view-end-{{ exam[0] }}-{{ exam[1] }}">{{ exam[7] if exam[7] else '-' }}</span>
+                            <input type="time" id="edit-end-{{ exam[0] }}-{{ exam[1] }}" style="display: none;">
+                        </td>
+                        <td>
+                            <button id="edit-button-{{ exam[0] }}-{{ exam[1] }}" onclick="editExam('{{ exam[0] }}', '{{ exam[1] }}')" class="row-button">Edit</button>
+                            <button id="save-button-{{ exam[0] }}-{{ exam[1] }}" onclick="saveExam('{{ exam[0] }}', '{{ exam[1] }}')" style="display: none;" class="row-button">Save</button>
+                            <button id="clear-button-{{ exam[0] }}-{{ exam[1] }}" onclick="clearExam('{{ exam[0] }}', '{{ exam[1] }}')" class="row-button clear-button">Clear</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No Exams found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <ul>
+                    {% if page > 1 %}
+                    <li><a href="{{ url_for('exams', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('exams', page=page-1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {% if page == 1 %}
+                    <li><a href="{{ url_for('exams', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('exams', page=1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {# Determine start and end page numbers #}
+                    {% set start_page = page - 2 if page - 2 > 0 else 1 %}
+                    {% set end_page = start_page + 4 if start_page + 4 < total_pages else total_pages %}
+
+                    {# Adjust start_page if end_page is less than 5 #}
+                    {% if end_page - start_page < 4 %}
+                        {% set start_page = end_page - 4 if end_page - 4 > 0 else 1 %}
+                    {% endif %}
+
+                    {# Loop through the page numbers #}
+                    {% for num in range(start_page, end_page + 1) %}
+                        <li {% if num == page %}class="active"{% endif %}>
+                            <a href="{{ url_for('exams', page=num) }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page < total_pages %}
+                    <li><a href="{{ url_for('exams', page=page+1) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('exams', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+
+                    {% if page == total_pages %}
+                    <li><a href="{{ url_for('exams', page=total_pages) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('exams', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+    function resetEditing() {
+        document.querySelectorAll('table tbody tr').forEach(row => {
+            const courseCode = row.id.split('-')[1];
+            const courseName = row.id.split('-')[2];
+
+            // Ensure the elements exist before accessing them
+            const viewRoom = document.getElementById('view-room-' + courseCode + '-' + courseName);
+            const viewDate = document.getElementById('view-date-' + courseCode + '-' + courseName);
+            const viewStart = document.getElementById('view-start-' + courseCode + '-' + courseName);
+            const viewEnd = document.getElementById('view-end-' + courseCode + '-' + courseName);
+            const editRoom = document.getElementById('edit-room-' + courseCode + '-' + courseName);
+            const editDate = document.getElementById('edit-date-' + courseCode + '-' + courseName);
+            const editStart = document.getElementById('edit-start-' + courseCode + '-' + courseName);
+            const editEnd = document.getElementById('edit-end-' + courseCode + '-' + courseName);
+            const editButton = document.getElementById('edit-button-' + courseCode + '-' + courseName);
+            const saveButton = document.getElementById('save-button-' + courseCode + '-' + courseName);
+
+            if (viewRoom && viewDate && viewStart && viewEnd && editRoom && editDate && editStart && editEnd && editButton && saveButton) {
+                // Reset view visibility
+                viewRoom.style.display = '';
+                viewDate.style.display = '';
+                viewStart.style.display = '';
+                viewEnd.style.display = '';
+                editRoom.style.display = 'none';
+                editDate.style.display = 'none';
+                editStart.style.display = 'none';
+                editEnd.style.display = 'none';
+
+                // Show the edit button, hide the save button
+                editButton.style.display = '';
+                saveButton.style.display = 'none';
+            } else {
+                console.error('One or more elements are missing for course ${courseCode}: ${courseName}');
+            }
+        });
+    }
+
+    function editExam(courseCode, courseName) {
+        console.log("Edit button clicked for: ", courseCode, ": ", courseName); // For debugging purposes
+
+        resetEditing(); // Ensure no other rows are in edit mode
+
+        // Enable editing for the selected row
+        document.getElementById('edit-room-' + courseCode + '-' + courseName).style.display = 'inline';
+        document.getElementById('edit-date-' + courseCode + '-' + courseName).style.display = 'inline';
+        document.getElementById('edit-start-' + courseCode + '-' + courseName).style.display = 'inline';
+        document.getElementById('edit-end-' + courseCode + '-' + courseName).style.display = 'inline';
+
+        document.getElementById('view-room-' + courseCode + '-' + courseName).style.display = 'none';
+        document.getElementById('view-date-' + courseCode + '-' + courseName).style.display = 'none';
+        document.getElementById('view-start-' + courseCode + '-' + courseName).style.display = 'none';
+        document.getElementById('view-end-' + courseCode + '-' + courseName).style.display = 'none';
+
+        // Adjust button visibility
+        document.getElementById('edit-button-' + courseCode + '-' + courseName).style.display = 'none';
+        document.getElementById('save-button-' + courseCode + '-' + courseName).style.display = 'inline';
+    }
+
+    function saveExam(courseCode, courseName) {
+        const newRoom = document.getElementById('edit-room-' + courseCode + '-' + courseName).value;
+
+        const dateVal = document.getElementById('edit-date-' + courseCode + '-' + courseName).value;
+        const dateObj = new Date(dateVal);
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-indexed, so add 1
+        const day = String(dateObj.getDate() + 1).padStart(2, '0');
+        const year = dateObj.getFullYear();
+        const newDate = `${month}/${day}/${year}`;
+
+        const startVal = document.getElementById('edit-start-' + courseCode + '-' + courseName).value;
+        const endVal = document.getElementById('edit-end-' + courseCode + '-' + courseName).value;
+
+        // Function to convert time to HH:MM AM/PM format
+        function formatTime(timeValue) {
+            const timeObj = new Date(`1970-01-01T${timeValue}:00`); // Use "1970-01-01" to isolate the time
+            let hours = timeObj.getHours();
+            const minutes = String(timeObj.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert to 12-hour format, where 0 becomes 12
+            return `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+        }
+
+        // Format the start and end times
+        const newStart = formatTime(startVal);
+        const newEnd = formatTime(endVal);
+
+        fetch('/update_exams', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ courseCode: courseCode, courseName: courseName, room: newRoom, date: newDate, start: newStart, end: newEnd })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the view with the new values
+                document.getElementById('view-room-' + courseCode + '-' + courseName).textContent = newRoom;
+                document.getElementById('view-date-' + courseCode + '-' + courseName).textContent = newDate;
+                document.getElementById('view-start-' + courseCode + '-' + courseName).textContent = newStart;
+                document.getElementById('view-end-' + courseCode + '-' + courseName).textContent = newEnd;
+
+
+                // Switch back to static view
+                document.getElementById('edit-room-' + courseCode + '-' + courseName).style.display = 'none';
+                document.getElementById('edit-date-' + courseCode + '-' + courseName).style.display = 'none';
+                document.getElementById('edit-start-' + courseCode + '-' + courseName).style.display = 'none';
+                document.getElementById('edit-end-' + courseCode + '-' + courseName).style.display = 'none';
+                document.getElementById('view-room-' + courseCode + '-' + courseName).style.display = '';
+                document.getElementById('view-date-' + courseCode + '-' + courseName).style.display = '';
+                document.getElementById('view-start-' + courseCode + '-' + courseName).style.display = '';
+                document.getElementById('view-end-' + courseCode + '-' + courseName).style.display = '';
+
+                // Reset button visibility
+                document.getElementById('edit-button-' + courseCode + '-' + courseName).style.display = '';
+                document.getElementById('save-button-' + courseCode + '-' + courseName).style.display = 'none';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update Exam.');
+        });
+    }
+
+    function clearExam(courseCode, courseName) {
+        if (confirm('Are you sure you want to clear the exam details for this course?')) {
+            fetch('/update_exams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    courseCode: courseCode,
+                    courseName: courseName,
+                    room: null,
+                    date: null,
+                    start: null,
+                    end: null
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Exam details cleared successfully.");
+                    // Update the view to show '-'
+                    document.getElementById(`view-room-${courseCode}-${courseName}`).innerText = '-';
+                    document.getElementById(`view-date-${courseCode}-${courseName}`).innerText = '-';
+                    document.getElementById(`view-start-${courseCode}-${courseName}`).innerText = '-';
+                    document.getElementById(`view-end-${courseCode}-${courseName}`).innerText = '-';
+                } else {
+                    console.error('Error:', data.message);
+                    alert('Failed to clear exam details: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to clear exam details.');
+            });
+        }
+    }
+
+
+    // Store all kiosks data in an array
+    let allExams = [];
+
+    // Load all kiosks data when the page is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/all_exams')
+            .then(response => response.json())
+            .then(data => {
+                allExams = data; // Store all kiosks in the array
+            })
+            .catch(error => {
+                console.error('Error loading exams:', error);
+            });
+    });
+
+    // Filter through all kiosks in all pages
+    function filterTable() {
+        // Get the search input value
+        let input = document.getElementById("search-bar").value.toLowerCase();
+
+        // Get the table body and clear it
+        let tableBody = document.querySelector("#exam-table tbody");
+        tableBody.innerHTML = '';
+
+        // Loop through all exams and append matching rows to the table
+        allExams.forEach(function (exam) {
+            let courseCode = exam[0] ? exam[0].toLowerCase() : '';
+            let courseName = exam[1] ? exam[1].toLowerCase() : '';
+            let instructors = exam[2] ? exam[2].toLowerCase() : '';
+            let sections = exam[3] ? exam[3].toLowerCase() : '';
+            let room = exam[4] ? exam[4].toLowerCase() : '';
+            let date = exam[5] ? exam[5].toLowerCase() : '';
+            let start = exam[6] ? exam[6].toLowerCase() : '';
+            let end = exam[7] ? exam[7].toLowerCase() : '';
+
+            if (courseCode.indexOf(input) > -1 || courseName.indexOf(input) > -1 ||
+                instructors.indexOf(input) > -1 || sections.indexOf(input) > -1 ||
+                room.indexOf(input) > -1 || date.indexOf(input) > -1 ||
+                start.indexOf(input) > -1 || end.indexOf(input) > -1) {
+
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${exam[0] ? exam[0] : '-'}</td>
+                    <td>${exam[1] ? exam[1] : '-'}</td>
+                    <td>${exam[2] ? exam[2] : '-'}</td>
+                    <td>${exam[3] ? exam[3] : '-'}</td>
+                    <td>
+                        <span id="view-room-${exam[0]}-${exam[1]}">${exam[4] ? exam[4] : '-'}</span>
+                        <input type="text" id="edit-room-${exam[0]}-${exam[1]}" style="display: none;">
+                    </td>
+                    <td>
+                        <span id="view-date-${exam[0]}-${exam[1]}">${exam[5] ? exam[5] : '-'}</span>
+                        <input type="date" id="edit-date-${exam[0]}-${exam[1]}" style="display: none;">
+                    </td>
+                    <td>
+                        <span id="view-start-${exam[0]}-${exam[1]}">${exam[6] ? exam[6] : '-'}</span>
+                        <input type="time" id="edit-start-${exam[0]}-${exam[1]}" style="display: none;">
+                    </td>
+                    <td>
+                        <span id="view-end-${exam[0]}-${exam[1]}">${exam[7] ? exam[7] : '-'}</span>
+                        <input type="time" id="edit-end-${exam[0]}-${exam[1]}" style="display: none;">
+                    </td>
+                    <td>
+                        <button id="edit-button-${exam[0]}-${exam[1]}" onclick="editExam('${exam[0]}', '${exam[1]}')" class="row-button">Edit</button>
+                        <button id="save-button-${exam[0]}-${exam[1]}" onclick="saveExam('${exam[0]}', '${exam[1]}')" style="display: none;" class="row-button">Save</button>
+                        <button id="clear-button-${exam[0]}-${exam[1]}" onclick="clearExam('${exam[0]}', '${exam[1]}')" class="row-button clear-button">Clear</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+        });
+    }
+
+    </script>
+</body>
+</html>

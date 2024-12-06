@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timesheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* Basic CSS for form styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f0f0f0;
             margin: 0;
         }
@@ -19,40 +20,385 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: -webkit-sticky; /* For Safari */
             position: sticky;
             top: 0;
+            width: 100%;
+            box-sizing: border-box;
             z-index: 1000;
         }
-        .navbar a {
+        .navbar a, .navbar button {
             color: white;
             text-decoration: none;
             padding: 10px 15px;
             display: inline-block;
             transition: background-color 0.3s, color 0.3s;
         }
-        .navbar a:hover {
+        .navbar a:hover, .navbar button:hover {
             background-color: #0056b3;
             border-radius: 4px;
         }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .login-img {
+            max-width: 50px;
+            margin-right: 10px; /* Space between image and text */
+        }
         .navbar .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1; /* Grow to take remaining space */
+            display: flex;
+            padding: 10px;
+        }
+        .table-container {
+            flex: 1; /* Take remaining space */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent table from expanding */
+        }
+        #search-bar {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+        #search-bar:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px; /* Add this line */
+            overflow: hidden; /* Add this line */
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Styling for table rows to alternate colors */
+        tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Light grey for odd rows */
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff; /* White for even rows */
+        }
+        h2 {
             font-size: 24px;
             font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            margin-top: 0px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+                .delete-button {
+            background-color: red;
+            color: white; /* Ensures the text color is white for better readability */
+        }
+        .delete-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+        .delete-all-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+        .delete-all-button:hover {
+            background-color: darkred;
+        }
+        .delete-all-button:focus {
+            outline: none;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .pagination li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .pagination li a {
+            padding: 8px 12px;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination li a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">GatorCheck</div>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/login_img.fbb98084de73f8a59ca0.png') }}" alt="Logo" class="login-img">
+            <div class="logo">GatorCheck</div>
+        </div>
         <div>
             <a href="/roster">Roster</a>
-            <a href="/timesheet">Timesheet</a>
-            <a href="/logout">Logout</a>
+            <a href="/timesheet">Time Sheet</a>
+            <a href="/kiosks">Kiosks</a>
+            <a href="/exams">Exams</a>
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline-block;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <div class="table-container">
+            <h2>Time Sheet</h2>
+
+            <!-- Search Bar -->
+            <input type="text" id="search-bar" placeholder="Search by UFID, ISO, Name, Course, Class, Instructor, or Room Num" onkeyup="filterTable()">
+
+            <table id="timesheet-table">
+                <thead>
+                    <tr>
+                        <th>UFID</th>
+                        <th>ISO</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Course</th>
+                        <th>Class</th>
+                        <th>Instructor</th>
+                        <th>Room Num</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in timesheet_data %}
+                    <tr>
+                        <td>{{ data[0] }}</td>  <!-- UFID -->
+                        <td>{{ data[1] }}</td>  <!-- ISO -->
+                        <td>{{ data[2] }}</td>  <!-- First Name -->
+                        <td>{{ data[3] }}</td>  <!-- Last Name -->
+                        <td>{{ data[4] }}</td>  <!-- Course -->
+                        <td>{{ data[5] }}</td>  <!-- Class -->
+                        <td>{{ data[6] }}</td>  <!-- Instructor -->
+                        <td>{{ data[7] }}</td>  <!-- Room Num -->
+                        <td>{{ data[8] }}</td>  <!-- Time -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <ul id="pagination-list">
+                    {% if page > 1 %}
+                    <li><a href="{{ url_for('timesheet', page=1) }}">&laquo;</a></li>
+                    <li><a href="{{ url_for('timesheet', page=page-1) }}">&lsaquo;</a></li>
+                    {% endif %}
+
+                    {% set start_page = page - 2 if page - 2 > 0 else 1 %}
+                    {% set end_page = start_page + 4 if start_page + 4 < total_pages else total_pages %}
+
+                    {% for num in range(start_page, end_page + 1) %}
+                    <li {% if num == page %}class="active"{% endif %}>
+                        <a href="{{ url_for('timesheet', page=num) }}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page < total_pages %}
+                    <li><a href="{{ url_for('timesheet', page=page+1) }}">&rsaquo;</a></li>
+                    <li><a href="{{ url_for('timesheet', page=total_pages) }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <button onclick="deleteAllEntries()" class="delete-button delete-all-button">
+                Delete All Entries
+            </button>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('sidebar_state');
         });
+
+        function deleteAllEntries() {
+            if (confirm('Are you sure you want to delete all entries?')) {
+                fetch('/timesheet_delete_all', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reload the page to reflect the changes
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete all entries: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete all entries.');
+                });
+            }
+        }
+
+    let allData = [];
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/timesheet/data')
+            .then(response => response.json())
+            .then(data => {
+                allData = data; // Store all timesheet entries
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+            });
+    });
+
+    // Function to filter the timesheet table and reset pagination
+    function filterTable() {
+        // Get the search input value
+        let input = document.getElementById("search-bar").value.toLowerCase();
+
+        // Get the table body and clear it
+        let tableBody = document.querySelector("#timesheet-table tbody");
+        tableBody.innerHTML = '';
+
+        // Filter the data based on the search input
+        let filteredData = allData.filter(row => {
+            return row.some(value => value.toString().toLowerCase().includes(input));
+        });
+
+        // Display the filtered data in the table
+        filteredData.forEach(function(row) {
+            let newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+                <td>${row[5]}</td>
+                <td>${row[6]}</td>
+                <td>${row[7]}</td>
+                <td>${row[8]}</td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+
+        // Reset pagination if needed or apply other changes
+        currentPage = 1; // Reset to the first page after filtering
+        setupPagination(filteredData); // Recalculate pagination based on filtered data
+        displayPage(currentPage); // Display the first page of filtered data
+    }
+
+        // Setup pagination dynamically based on filtered data size
+        function setupPagination(filteredData) {
+        // Logic to calculate pages based on filteredData length
+        let totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+        // Update pagination UI, e.g., reset to page 1, calculate page numbers, etc.
+        // Update the pagination HTML dynamically
+    }
+
+    function displayPage(page) {
+        let start = (page - 1) * itemsPerPage;
+        let end = start + itemsPerPage;
+
+        let tableBody = document.querySelector("#timesheet-table tbody");
+        tableBody.innerHTML = ''; // Clear the table
+
+        // Display only the entries for the current page
+        filteredData.slice(start, end).forEach(function(row) {
+            let newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+                <td>${row[5]}</td>
+                <td>${row[6]}</td>
+                <td>${row[7]}</td>
+                <td>${row[8]}</td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    }
+
+        /*
+
+        let isNavigating = false;
+
+        window.addEventListener('beforeunload', function (e) {
+            if (!isNavigating) {
+                navigator.sendBeacon('/logout');
+            }
+        });
+
+        // Set flag on navigation links
+        document.querySelectorAll('.navbar a').forEach(link => {
+            link.addEventListener('click', function () {
+                isNavigating = true;
+            });
+        });
+
+        // Reset flag when navigating away from the page
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                isNavigating = true;
+            }
+        });
+        */
     </script>
 </body>
 </html>

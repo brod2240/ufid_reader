@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Basic CSS for form styling */
+        /* Basic CSS for centering and form styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
         .navbar {
             background-color: #007bff;
@@ -26,34 +31,67 @@
             box-sizing: border-box;
             z-index: 1000;
         }
-        .navbar a {
+        .navbar a, .navbar button {
             color: white;
             text-decoration: none;
             padding: 10px 15px;
             display: inline-block;
             transition: background-color 0.3s, color 0.3s;
         }
-        .navbar a:hover {
+        .navbar a:hover, .navbar button:hover {
             background-color: #0056b3;
             border-radius: 4px;
         }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .login-img {
+            max-width: 50px;
+            margin-right: 10px; /* Space between image and text */
+        }
         .navbar .logo {
-            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
             font-weight: bold;
+        }
+        .navbar form {
+            margin: 0;
+            margin-bottom: 0;
+            padding: 0;
         }
         .container {
             max-width: 400px;
-            margin: 20px auto;
+            width: 100%;
+            padding: 30px;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 20px; /* Space between navbar and container */
+            margin-bottom: 20px;
+        }
+        .container img {
+            max-width: 200px;
+            margin-bottom: 10px;
+            padding-top: 20px;
+
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 10px;
         }
         .form-group {
             margin-bottom: 20px;
+            text-align: left;
         }
         label {
             font-weight: bold;
+            color: #555;
+            font-size: 14px;
         }
         .required-note {
             color: red;
@@ -61,58 +99,83 @@
             margin-top: 5px;
         }
         input[type="text"], input[type="password"] {
-            width: 100%; /* Ensure the inputs take full width */
-            padding: 8px;
+            width: 100%;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            margin-top: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 12px;
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
         }
         button:hover {
             background-color: #0056b3;
+            box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3);
+        }
+        .footer-note {
+            font-size: 13px;
+            color: #888;
+            margin-top: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .logo-img {
+            max-width: 200px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">GatorCheck</div>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/login_img.fbb98084de73f8a59ca0.png') }}" alt="Logo" class="login-img">
+            <div class="logo">GatorCheck</div>
+        </div>
         <div>
             <a href="/form">Form</a>
             <a href="/login">Login</a>
         </div>
     </div>
     <div class="container">
-        <h2>Login</h2>
+        <img src="{{ url_for('static', filename='images/logo.1138eb89388350d3cdb2.png') }}" alt="Logo" class="logo-img">
+        <h2>Sign in to your account</h2>
         <form action="{{ url_for('login') }}" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <br>
                 <input type="text" id="username" name="username" required>
                 <div class="required-note">* Required</div>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <br>
                 <input type="password" id="password" name="password" required>
                 <div class="required-note">* Required</div>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit">Sign in</button>
+            <p class="footer-note">
+                <a href="https://brirod2240.pythonanywhere.com" target="_blank">Sign In to Professor Account</a>
+            </p>
         </form>
+        <div class="footer-note">© University of Florida</div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            localStorage.removeItem('sidebar_state');
-        });
-    </script>
 </body>
 </html>
