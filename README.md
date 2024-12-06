@@ -177,7 +177,7 @@ pip install sqlcipher3-binary
 pip install python-dotenv
 ```
 
-The `.env` file contains hardcoded keys that are necessary for the encryption to work. The database in the GitHub directory is encrypted using this specific key. Using a different key will result in an error because the database cannot be decrypted without the exact key.
+The `.env` file contains hardcoded keys that are necessary for the encryption to work. The database in the GitHub directory is encrypted using this specific key. Using a different key will result in an error because the database cannot be decrypted without the exact key. For official deployment, ensure the .env file is excluded from the GitHub repository to maintain security.
 
 To include a new, unencrypted database, follow these steps:
 
