@@ -95,13 +95,14 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 ## System Test Checklist
 1. Check that power and internet is connected to Kiosk.
 2. Check that internet and website are functioning
-3. Check that the MRD5 scanner is powered up by pressing the power on button which lights up and makes a beeping noise when turned on. 
-4. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
-5. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
-6. Check that the student is in the roster with the correct ISO and UFID
-7. If an exam check that it is set to the correct room, date, and time.
-8. Check that the section associated with the student in the roster is happening in the time range of the course within 15 before and after, on the day the class is usually, and in the room that is usually in. If an exam check that section associated with the student is associated with a course that has a exam in the time range with no buffer, on the date, and in the room of the exam.
-9. Check that the mode parameter in the validate function is set to 1 for exam mode and any other number for regular mode. Though 0 should be commonly used for regular mode.  
+3. Check that the MRD5 scanner is powered up by pressing the power on button which lights up and makes a beeping noise when turned on.
+4. Check that the data for the courses and exams is up to date. 
+5. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
+6. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
+7. Check that the student is in the roster with the correct ISO and UFID
+8. If an exam check that it is set to the correct room, date, and time.
+9. Check that the section associated with the student in the roster is happening in the time range of the course within 15 before and after, on the day the class is usually, and in the room that is usually in. If an exam check that section associated with the student is associated with a course that has a exam in the time range with no buffer, on the date, and in the room of the exam.
+10. Check that the mode parameter in the validate function is set to 1 for exam mode and any other number for regular mode. Though 0 should be commonly used for regular mode.  
 
 ## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
@@ -185,7 +186,13 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 \
 **Main Work Completed (Production Release and Post-Mortem)**
 * Software
-   * A
+   * Finished data at rest encryption of some of the database containing what could be considered sensitive data using SQLCipher.
+   * Created a database for exams containing the course code, name, instructors, sections, and empty fields for room, date, start time, and end time.
+   * Created a page for exams to view, edit, and filter them.
+   * Cleaned up the admin website to be more aesthetic.
+   * Tested validation code with newly encrypted database.
+   * Rerouted landing page to the login instead of the form.
+   * Added to the API-to-Database.py code to include a program which creates a new exam database depending on the semester inputted by the user
 * Hardware
    * C
 
@@ -194,7 +201,7 @@ GatorUFID or GatorCheck is a web application that allows for database hosting, d
 * Software
    * Added a prof_profile function to the API-to-Database.py which iterates through the course database and returns a json file structured with the instructors, courses belonging to those instructors, and class sections belonging to those courses.
    * Edited the validate function to incorporate an exam mode. (API calls and Database not created yet)
-   * Started encryption for both data at rest (SQL Databases) and in transit (REST API http requests)
+   * Started encryption for data at rest (SQL Databases)
    * Created feature that allows users to export timesheet tables to a csv.
    * Started working on faster refresh time of data that prevents users from having to reload the site to see updated scans.
    * Worked on updating backend to allow for custom timsheets title changes for organization purposes.
@@ -313,8 +320,17 @@ Data validation code will be written to ensure that the input is valid with rega
   * Button was not developed so mode has to manually edited
     * This can be done in UFIDReader/src/main.py by changing the parameter to 1 for mode in the validate function which is called in the process_scan function
   * Exams search filter latency
-    * Due to the amount of searchable fields for each course the dynamic search filter takes a few seconds to show the results  
+    * Due to the amount of searchable fields for each course the dynamic search filter takes a few seconds to show the results
+  * Filter Breaks Pagination
+    * When the filter/search bar is used it breaks the pagination allowing more results than what is laid out in the pagination
+    * To fix this issue it might be a better idea to not do dynamic filtering but rather have a form which when submitted filters based on the fields entered.
+  * Data is only encrypted at rest
+    * Data is not encrypted in transit
+    * Anyone who obtains the database file will not be able to access the information without the key
+    * However, anyone who uses the API calls will be able to get the information since the routing decrypts the data
+    * To fix this issue the data should be encrypted before being sent and decrypted when received. 
   * Kiosk frame latency
+  * 
 
 \
 **Main Bugs/Issues (Release Candidate and Beta Test):**
