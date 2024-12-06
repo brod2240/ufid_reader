@@ -227,7 +227,11 @@ To encrypt a new, unencrypted database, follow these steps:
    * Rerouted landing page to the login instead of the form.
    * Added to the API-to-Database.py code to include a program which creates a new exam database depending on the semester inputted by the user
 * Hardware
-   * C
+   * Created scripts to run GUI off of boot sequence.
+   * Created package to hold scripts for compatibility.
+   * Updated GUI main screen with Images and time clock.
+   * Improved relative sizing of GUI to match any size screen.
+   * Tested button capability wih GPIO on Raspi.
 
 \
 **Main Work Completed (Release Candidate and Beta Test)**
