@@ -96,13 +96,14 @@ Note: The days are NOT set as booleans but as strings of 'true' or 'false'. It i
 1. Check that power and internet is connected to Kiosk.
 2. Check that internet and website are functioning
 3. Check that the MRD5 scanner is powered up by pressing the power on button which lights up and makes a beeping noise when turned on.
-4. Check that the data for the courses and exams is up to date. 
-5. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
-6. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
-7. Check that the student is in the roster with the correct ISO and UFID
-8. If an exam check that it is set to the correct room, date, and time.
-9. Check that the section associated with the student in the roster is happening in the time range of the course within 15 before and after, on the day the class is usually, and in the room that is usually in. If an exam check that section associated with the student is associated with a course that has a exam in the time range with no buffer, on the date, and in the room of the exam.
-10. Check that the mode parameter in the validate function is set to 1 for exam mode and any other number for regular mode. Though 0 should be commonly used for regular mode.  
+4. Check that required encryption packages (SQLcipter3-binary, python-dotenv) are installed. 
+5. Check that the data for the courses and exams is up to date. 
+6. Check the serial number in the kiosk database matches that of the device used. In this case a Rasp Pi 4.
+7. Check that the room associated with the kiosk is the room that it is actually in or that you want to simulate it being in. Like 'NSC215'.
+8. Check that the student is in the roster with the correct ISO and UFID
+9. If an exam check that it is set to the correct room, date, and time.
+10. Check that the section associated with the student in the roster is happening in the time range of the course within 15 before and after, on the day the class is usually, and in the room that is usually in. If an exam check that section associated with the student is associated with a course that has a exam in the time range with no buffer, on the date, and in the room of the exam.
+11. Check that the mode parameter in the validate function is set to 1 for exam mode and any other number for regular mode. Though 0 should be commonly used for regular mode.  
 
 ## Gator Check In Site Professor Version (Hosted on PythonAnywhere)
 Gator Check In is a web application that allows professors to manage timesheets created when UFIDs are scanned on the raspberry pi, therefore getting a better gage on student attendance. In theory, admins will have an account that gives an overview of students marked present for their courses only. They have the option of filtering through that data to return specific students, dates, section numbers, and course ids to find what they are looking for.
